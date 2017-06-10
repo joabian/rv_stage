@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="~/Default.aspx" title="Inicio"  description="Página Inicial">
+    <siteMapNode title="Productos"  description="" roles="admin, inventory, employee, guest">
+      <siteMapNode url="productos/agreg_prod.aspx" title="Agregar"  description="" />
+      <siteMapNode url="productos/buscar_comp.aspx" title="Buscar (año,mod,marc)"  description="" />
+      <siteMapNode url="productos/buscar_codigo.aspx" title="Buscar (código)"  description="" />
+      <siteMapNode url="productos/edit_prod.aspx" title="Editar"  description="" />
+      <!--<siteMapNode url="productos/elim_prod.aspx" title="Eliminar"  description="" />-->
+      <siteMapNode url="productos/prod_categ.aspx" title="Por Categoría"  description="" />
+      <siteMapNode url="productos/add_category.aspx" title="Agregar Categoría"  description="" />
+      <siteMapNode url="productos/remove_categ.aspx" title="Eliminar Categoría"  description="" />
+      <siteMapNode url="productos/ajustar_precios.aspx" title="Ajustar Precios"  description="" />
+    </siteMapNode>
+    <!--<siteMapNode  title="Clientes y Proveedores"  description="" roles="admin">
+      <siteMapNode url="proveedores/agreg_clie.aspx" title="Agregar Clie"  description="" />
+      <siteMapNode url="proveedores/agreg_prov.aspx" title="Agregar Prov"  description="" />
+      <siteMapNode url="proveedores/busc_prov.aspx" title="Buscar Prov"  description="" />
+      <siteMapNode url="proveedores/edit_prov.aspx" title="Editar Prov"  description="" />
+      <siteMapNode url="proveedores/elim_prov.aspx" title="Eliminar Prov"  description="" />
+    </siteMapNode>-->
+    <!--<siteMapNode title="Sucursales"  description="" roles="admin">
+      <siteMapNode url="sucursales/agreg_suc.aspx" title="Agregar"  description="" />
+      <siteMapNode url="sucursales/busc_suc.aspx" title="Buscar"  description="" />
+      <siteMapNode url="sucursales/edit_suc.aspx" title="Editar"  description="" />
+      <siteMapNode url="sucursales/elim_suc.aspx" title="Eliminar"  description="" />
+    </siteMapNode>-->
+    <siteMapNode title="Reportes"  description="" roles="admin, inventory">
+      <siteMapNode url="reportes/Activity.aspx" title="Actividad Reciente"  description="" />
+      <siteMapNode url="reportes/ajustes.aspx" title="Ajustes"  description="" />
+      <!--<siteMapNode url="reportes/Bitacora.aspx" title="Bitácora"  description="" />-->
+      <siteMapNode url="reportes/clientes.aspx" title="Clientes"  description="" />
+      <siteMapNode url="reportes/total_stock.aspx" title="Inventario Completo"  description="" />
+      <siteMapNode url="reportes/stock_by_location.aspx" title="Inventario por Sucursal"  description="" />
+      <siteMapNode url="reportes/moves.aspx" title="Movimientos"  description="" />
+      <siteMapNode url="reportes/negadas.aspx" title="Negadas"  description="" />
+      <siteMapNode url="reportes/checadas.aspx" title="Nómina Ent/Sal"  description="" />
+      <siteMapNode url="reportes/orders.aspx" title="Pedidos"  description="" />
+      <siteMapNode url="reportes/pedidos_tapa.aspx" title="Pedidos por Tapa"  description="" />
+      <siteMapNode url="reportes/relleno.aspx" title="Relleno"  description="" />
+      <siteMapNode url="reportes/resurtido.aspx" title="Resurtido Sucursal"  description="" />
+
+    </siteMapNode>
+    <siteMapNode  title="Movimientos"  description="" roles="admin, inventory">
+      <!--<siteMapNode url="movimientos/add_to_stock.aspx" title="Agregar a Inventario"  description="" />-->
+      <siteMapNode url="movimientos/auth_ajustes.aspx" title="Ajustes"  description="" />
+      <siteMapNode url="movimientos/clientes.aspx" title="Clientes"  description="" />
+      <!--<siteMapNode url="movimientos/modif_stock.aspx" title="Modificar Inventario"  description="" />-->
+      <siteMapNode url="movimientos/entries.aspx" title="Entradas"  description="" />
+      <siteMapNode url="movimientos/egrees.aspx" title="Salidas"  description="" />
+      <siteMapNode url="movimientos/cambios.aspx" title="Cambios"  description="" />
+      <siteMapNode url="movimientos/intra_trnsfr.aspx" title="Transferencias"  description="" />
+      <!--<siteMapNode url="movimientos/intra_trnsfr.aspx" title="Transf Interna"  description="" />-->
+      <siteMapNode url="movimientos/sort_stock.aspx" title="Asignar Racks"  description="" />
+      <siteMapNode url="movimientos/new_order.aspx" title="Hacer Pedido"  description="" />
+      <siteMapNode url="movimientos/pedidosParaSurtir.aspx" title="Surtir Pedido"  description="" />
+      <siteMapNode url="movimientos/update_prices.aspx" title="Subir Precios"  description="" />
+      <!--<siteMapNode url="movimientos/verif_pedido.aspx" title="Verificar pedido"  description="" />-->
+    </siteMapNode>
+    <siteMapNode title="Usuarios"  description="" roles="admin">
+      <siteMapNode url="usuarios/agreg_user.aspx" title="Agregar"  description="" />
+      <siteMapNode url="usuarios/busc_user.aspx" title="Buscar"  description="" />
+      <siteMapNode url="usuarios/edit_user.aspx" title="Editar"  description="" />
+      <!--<siteMapNode url="usuarios/elim_user.aspx" title="Eliminar"  description="" />--> 
+      <siteMapNode url="usuarios/add_ips.aspx" title="Agregar IPs"  description="" />
+      <siteMapNode url="usuarios/terminalsql.aspx" title="SQL Queries"  description="" />
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>

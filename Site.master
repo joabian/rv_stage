@@ -1,0 +1,100 @@
+﻿    <%@ Master Language="VB" CodeFile="Site.master.vb" Inherits="Site" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="icon" type="image/gif" href="animated_favicon1.gif" />
+    <link href="Styles/Site.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body >
+    <form id="Form1" runat="server">
+        <asp:Panel ID="loginpanel" runat="server" Visible="true">
+            <div class="page">
+                <div class="header">
+                    <div class="title">
+                        <h1>
+                            Radiadores Vencedores                            
+                        </h1>
+                    </div>
+                    <div class="loginDisplay">
+                        <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
+                            <AnonymousTemplate>
+                                [ <a href="~/Account/Login.aspx" ID="HeadLoginStatus" runat="server">Entrar</a> ]
+                            </AnonymousTemplate>
+                            <LoggedInTemplate>
+                                Usuario: <span class="bold"><asp:LoginName ID="HeadLoginName" runat="server" /></span>
+                                [ <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="Salir" LogoutPageUrl="~/"/> ]
+                                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Account/ChangePassword.aspx">Cambiar Contraseña</asp:HyperLink>
+                            </LoggedInTemplate>
+                        </asp:LoginView>
+                    </div>
+                    <div class="clear hideSkiplink" style="z-index:1000">
+                        <asp:LoginView ID="LoginView1" runat="server">
+                            <AnonymousTemplate>
+                            </AnonymousTemplate>
+                            <LoggedInTemplate>
+                                <asp:SiteMapPath ID="SiteMapPath1" runat="server" CssClass="path">
+                                </asp:SiteMapPath>
+                                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" 
+                                    EnableViewState="False" IncludeStyleBlock="False" Orientation="Horizontal" 
+                                    DataSourceID="SiteMapDataSource1" DynamicEnableDefaultPopOutImage="True" StaticDisplayLevels="2">
+                                </asp:Menu>
+                                <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" />
+                            </LoggedInTemplate>
+                        </asp:LoginView>
+                    </div>
+                </div>
+                <div class="main">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
+                </div>
+        <!--<div class="clear">
+        </div>-->
+            </div>
+            <div class="footer">
+        
+            </div>
+        </asp:Panel>
+    </form>
+</>
+    <!--Start of Tawk.to Script-->
+
+    <script type="text/javascript">
+        /*
+        setInterval(function () {
+            var serializedData = {};
+            serializedData.option = "resetSession";
+
+            $.ajax({
+                type: "POST",
+                url: "../ajax_response.aspx",
+                cache: false,
+                data: serializedData,
+                async: false,
+                success: function (data) {
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    window.close();
+                }
+            });
+            
+        }, 180000);
+        */
+    </script>
+<%--<script type="text/javascript">
+    var $_Tawk_API = {}, $_Tawk_LoadStart = new Date();
+    (function () {
+        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/5781baa974888c1b4a85bbac/default';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
+    })();
+</script>--%>
+<!--End of Tawk.to Script-->
+</html>
