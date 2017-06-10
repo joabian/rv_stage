@@ -1,0 +1,67 @@
+﻿.autocompleteContent
+{
+	width:400px;
+	float:left;
+}
+
+.validationPointer
+{
+	width:20px;
+	float:left;
+	margin-left:5px;		
+	margin-top:5px;
+}
+
+.validationText
+{
+	width:50px;	
+	float:left;
+	margin-top:3px;
+	font-size:11px;
+	overflow:hidden;
+}
+
+.validation
+{
+	 width:75px;
+	 float:left;
+	 overflow:hidden;
+	 display:none;
+}
+
+.searchResults
+{
+	width: 400px;
+	border:1px solid #999;	
+	background-color: #fff;
+	display :none; 
+	z-index: 1000;
+	overflow:hidden;	
+	position:absolute;
+	text-align: left;
+}
+
+.resultsNormal
+{
+	width: 400px;
+	height: 25px;
+	color: #000000;
+	background-color: #fff;
+	float: left;
+	cursor: pointer;
+	overflow:hidden;
+}
+
+.resultsHighlight 
+{
+	width: 400px;
+	height: 15px;	
+	padding-top:4px;
+	padding-bottom:4px;
+	background-color:#71cbed;
+	color: #fff;
+	float: left;
+	cursor: pointer;
+	overflow:hidden;
+	border: 1px solid #08a5e1;
+}
