@@ -191,8 +191,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-
-    <fieldset><legend>Seleccione Sucursal:</legend>
+    <h1 align="center">Reporte de resurtido</h1>
+    <br /><hr />
+    <fieldset><legend>Seleccionar Sucursal</legend>
         <select id="Locations"></select>&nbsp&nbsp&nbsp  
         <%--<asp:DropDownList ID="DDL_Location" runat="server" AppendDataBoundItems="True">
             <asp:ListItem Value="-">Seleccione...</asp:ListItem>
@@ -201,7 +202,7 @@
         <%--<asp:Button ID="btn_export" runat="server" Text="Exportar a Excel" />--%>
         <button type="button" onclick="PrintElem('#Printdiv');">Imprimir</button>
     </fieldset>
-    <br />
+    <hr /><br />
     <div style="text-align:center;">
         <%--style="/*display:none; width:30px;*/"--%>
         <img id="progress_bar_pd" alt="Prossecing..." src="../images/progress_bar.gif" style="display:none;"/>

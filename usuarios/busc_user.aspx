@@ -3,7 +3,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<h1 align="center">página para buscar usuarios</h1>
+<h1 align="center">Búsqueda de usuarios</h1>
+    <br /><hr />
 <fieldset><legend>Opciones de Búsqueda</legend>
 Seleccione el campo:
     <asp:DropDownList ID="lista_campos" runat="server">

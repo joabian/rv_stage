@@ -1,16 +1,14 @@
-﻿    <%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="negadas.aspx.vb" Inherits="reportes_negadas" %>
+﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="negadas.aspx.vb" Inherits="reportes_negadas" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
-
-
-     <script src="../Scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="Server">
+    <script src="../Scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script src="Scripts/jquery.js" type="text/javascript"></script>
-    <script src="../Scripts/jquery-ui-1.8.22.custom.min.js" type="text/javascript" ></script>
+    <script src="../Scripts/jquery-ui-1.8.22.custom.min.js" type="text/javascript"></script>
     <script src="../Scripts/jquery-ui-1.7.1.custom.min.js" type="text/javascript"></script>
     <script src="../Scripts/calendar/datepicker.js" type="text/javascript"></script>
     <script src="../Scripts/calendar/datepicker-es.js" type="text/javascript"></script>
     <link href="../Styles/calendar/datepicker.css" rel="stylesheet" type="text/css" />
-    <link href="../Styles/redmond/jquery-ui-1.8.22.custom.css" type="text/css" rel="stylesheet" />    
+    <link href="../Styles/redmond/jquery-ui-1.8.22.custom.css" type="text/css" rel="stylesheet" />
 
     <script type="text/javascript">
         var day_date;
@@ -81,22 +79,27 @@
 
     </script>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-
-    <asp:CheckBox ID="cbx_existente" runat="server" Text="Existentes" Checked="true" />
-    <asp:CheckBox ID="cbx_no_existentes" runat="server" Text="No Existentes" />&nbsp;&nbsp;&nbsp;&nbsp;
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server">
+    <h1 align="center">Reporte de piezas negadas</h1>
+    <br />
+    <hr />
+    <fieldset>
+        <legend>Filtrar Piezas Negadas</legend>
+        <asp:CheckBox ID="cbx_existente" runat="server" Text="Existentes" Checked="true" />
+        <asp:CheckBox ID="cbx_no_existentes" runat="server" Text="No Existentes" />&nbsp;&nbsp;&nbsp;&nbsp;
     Desde:
-    <input type="text" id="from_date" name="from_date" class="textBox" style="width:100px; margin-top:3px;" />&nbsp;&nbsp;&nbsp;
+    <input type="text" id="from_date" name="from_date" class="textBox" style="width: 100px; margin-top: 3px;" />&nbsp;&nbsp;&nbsp;
     Hasta:
-    <input type="text" id="to_date" name="to_date" class="textBox" style="width:100px; margin-top:3px;" />&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="text" id="to_date" name="to_date" class="textBox" style="width: 100px; margin-top: 3px;" />&nbsp;&nbsp;&nbsp;&nbsp;
     <asp:Button ID="btn_get_report" runat="server" Text="Generar Reporte" />&nbsp;&nbsp;&nbsp;&nbsp;
     <asp:Button ID="btn_export" runat="server" Text="Exportar a Excel" />
-
+    </fieldset>
     <hr />
-    <center><asp:GridView ID="gv_report" runat="server">
-    </asp:GridView></center>
+    <center>
+        <asp:GridView ID="gv_report" runat="server">
+        </asp:GridView>
+    </center>
     <asp:Label ID="lblerror" runat="server" Text="" ForeColor="Red"></asp:Label>
     <asp:HiddenField ID="hifd_query" runat="server" />
-
 </asp:Content>
 

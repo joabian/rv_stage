@@ -4,10 +4,11 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <fieldset style="width:40%; float:left;">
-        <legend>
-            Relleno 
-        </legend>
+    <h1 align="center">Reporte de relleno</h1>
+    <br /><hr />
+    <!-- <fieldset style="width:40%; float:left;"> -->
+    <fieldset>
+        <legend>Filtrar Relleno</legend>
         De sucursal:
         <asp:DropDownList ID="ddl_from_location" runat="server" AppendDataBoundItems="true">
             <asp:ListItem Value="0">Seleccione...</asp:ListItem>

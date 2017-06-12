@@ -52,8 +52,6 @@ Partial Class usuarios_edit_user
         show_info(username)
 
     End Sub
-
-
     Protected Sub btn_change_pass_Click(sender As Object, e As EventArgs) Handles btn_change_pass.Click
         Dim username As String
         username = ddl_users.SelectedValue.ToString()
@@ -190,4 +188,11 @@ Partial Class usuarios_edit_user
 
         show_info(username)
     End Sub
+
+    Protected Sub Button1_Click(sender As Object, e As System.EventArgs) Handles Button1.Click
+        Dim username = ddl_users.SelectedValue.ToString()
+        Membership.DeleteUser(username)
+        Response.Redirect("edit_user.aspx")
+    End Sub
+
 End Class

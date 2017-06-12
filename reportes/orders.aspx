@@ -36,7 +36,10 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <fieldset><legend>Filtros:</legend>
+    <h1 align="center">Reporte de Pedidos</h1>
+    <br /><hr />
+    <fieldset>
+        <legend>Filtrar Pedidos</legend>
         Desde:
         <asp:TextBox ID="from_date" runat="server"></asp:TextBox>&nbsp&nbsp&nbsp
         Hasta:
@@ -45,7 +48,7 @@
         <asp:Button ID="btn_export" runat="server" Text="Exportar a Excel" Enabled="false" />&nbsp&nbsp&nbsp
         <asp:Button ID="btn_get_report_items" runat="server" Text="Generar Reporte Pedidos Desglosados" />
     </fieldset>
- 
+    <hr />
     <center><asp:GridView ID="gv_results" runat="server">
     </asp:GridView></center>
     <asp:Label ID="lbl_error" runat="server" Text="" ForeColor="Red"></asp:Label>

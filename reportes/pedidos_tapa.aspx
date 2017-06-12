@@ -13,14 +13,16 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-
-    <fieldset><legend>Filtros:</legend>
+    <h1 align="center">Reporte de pedidos por tapa</h1>
+    <br /><hr />
+    <fieldset>
+        <legend>Filtrar Pedidos</legend>
         # de Pedido:
         <asp:TextBox ID="order_number" runat="server"></asp:TextBox>&nbsp&nbsp&nbsp
         <asp:Button ID="btn_get_report" runat="server" Text="Generar Reporte" />&nbsp&nbsp&nbsp
         <asp:Button ID="btn_export" runat="server" Text="Exportar a Excel" Enabled="false" />
     </fieldset>
- 
+    <hr />
     <center><asp:GridView ID="gv_results" runat="server">
     </asp:GridView></center>
     <asp:Label ID="lbl_error" runat="server" Text="" ForeColor="Red"></asp:Label>

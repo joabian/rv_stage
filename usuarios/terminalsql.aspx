@@ -3,6 +3,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
+    <h1 align="center">Terminal SQL</h1>
+    <br /><hr />
     <div style="text-align:center;">
         <asp:TextBox ID="txt_query" runat="server" Height="120px" Width="100%" TextMode="MultiLine"></asp:TextBox><br /><br />
         <asp:Button ID="Button1" runat="server" Text="Get Query" />

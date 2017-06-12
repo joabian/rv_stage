@@ -8,10 +8,11 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <h1 align="center">Agregar Cliente</h1>
+    <h1 align="center">Agregar cliente</h1>
+    <br /><hr />
 <div>
         <fieldset>
-            <legend>Datos de la Compañía:</legend>
+            <legend>Datos del Cliente</legend>
             <table>
                 <tr>
                     <td><asp:Label ID="ComanyNameLabel" runat="server" Text="Nombre de Compañía: "></asp:Label></td>

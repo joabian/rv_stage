@@ -52,7 +52,8 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-
+    <h1 align="center">Pedidos para surtir</h1>
+    <br /><hr /><br />
     <div id="pedidosTable" style="text-align:center">
 
     </div>

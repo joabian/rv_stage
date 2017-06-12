@@ -3,10 +3,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <fieldset style="width:40%; float:left;">
-        <legend>
-            Transferencias 
-        </legend>
+    <h1 align="center">Transferencia de productos</h1>
+    <br /><hr />
+    <fieldset> <!--style="width:40%; float:left;"-->
+        <legend>Transferencias</legend>
         De sucursal:&nbsp;&nbsp;
         <asp:DropDownList ID="ddl_from_location" runat="server" AppendDataBoundItems="true" AutoPostBack="true">
             <asp:ListItem Value="-">Seleccione...</asp:ListItem>
@@ -15,6 +15,7 @@
             <asp:ListItem Value="-">Seleccione...</asp:ListItem>
         </asp:DropDownList>
     </fieldset>
+    <hr />
     <div style="clear:both"> </div>
     <div style="float:left; padding:0px 15px 0px;">
         <table border="1" style="border-collapse:collapse;">
@@ -374,8 +375,9 @@
         </table>
     
     </div>
-    <div style="width:40%; float:left;">
-        <asp:Button ID="btn_transfer" runat="server" Text="Transferir" Enabled="False" /><br /><br />
+    <asp:Button ID="btn_transfer" runat="server" Text="Transferir" Enabled="False" /><br /><br />
+    <div style="width:40%; float:left; margin-left:150px">
+      
         <asp:Label ID="lbl_error" runat="server" Text="" ForeColor="Red"></asp:Label>
         <br />
         <asp:Label ID="lbl_msg" runat="server" Text="" ForeColor="green"></asp:Label>

@@ -3,6 +3,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
+    <h1 align="center">Reporte de inventario por sucursal</h1>
+    <br /><hr />
     <fieldset><legend>Seleccione Sucursal:</legend>
     <asp:DropDownList ID="DDL_Location" runat="server" AppendDataBoundItems="True">
         <asp:ListItem Value="-">Seleccione...</asp:ListItem>

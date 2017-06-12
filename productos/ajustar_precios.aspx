@@ -143,12 +143,10 @@
 
 
     </script>
-
-
-
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <center><h1>Ajuste de precios</h1></center>
+    <h1 align="center">Ajuste de precios</h1>
+    <br /><hr />
     <fieldset>
         <legend>Opciones de Ajustes Masivos:</legend>
         <h2>Incrementar precio a todos los radiadores</h2><br />

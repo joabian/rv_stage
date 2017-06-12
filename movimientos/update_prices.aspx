@@ -3,15 +3,15 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <br /><br />
-
+    <h1 align="center">Aumento de Precios Masivo</h1>
+    <br /><hr />
     <div style ="margin-left:auto; margin-right:auto; text-align:center">
         <b>Actualización Masiva de Precios<br />
         Ejemplo de Archivo:<br /></b>
         Columna A: Código del Producto<br />
         Columna B: Precio del Producto<br />
         <b>No incluir títulos de columnas, el archivo se empieza a leer desde la línea 1</b><br />
-        <br />
+        <asp:Image ID="Image1" runat="server" ImageUrl="~/images/excel image update prices.PNG" Width="360px" /><br /><br />
         Campo a Actualizar: 
         <asp:DropDownList ID="ddlFieldToUpdate" runat="server">
             <asp:ListItem>PRECIO_JUAREZ</asp:ListItem>
@@ -26,7 +26,7 @@
             <asp:ListItem>precio_rito</asp:ListItem>
             <asp:ListItem>precio_rito2</asp:ListItem>
         </asp:DropDownList>
-        <asp:Image ID="Image1" runat="server" ImageUrl="~/images/excel image update prices.PNG" Width="360px" /><br /><br />
+        <br /><br />
         Cargar Excel: 
         <asp:FileUpload ID="File1" runat="server" Width="40%" />
         <asp:Button ID="leadexcel" runat="server" Text="Subir Excel" />

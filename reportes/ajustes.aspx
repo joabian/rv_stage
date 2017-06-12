@@ -37,6 +37,8 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
+    <h1 align="center">Reporte de ajustes</h1>
+    <br /><hr />
     <fieldset><legend>Filtros:</legend>
         Desde:
         <asp:TextBox ID="from_date" runat="server"></asp:TextBox>&nbsp&nbsp

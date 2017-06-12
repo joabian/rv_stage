@@ -12,12 +12,11 @@
 
     <script type="text/javascript">
 
-
         $(function () {
             var dates = $("#<%=from_date.ClientID%>, #<%=to_date.ClientID%>").datepicker({
                 numberOfMonths: 1,
                 changeYear: true,
-                yearRange: '2010:2200',
+                yearRange: '2010:2200', 
                 dateFormat: 'mm/dd/yy',
                 //  showWeek: true,
                 firstDay: 1//,
@@ -36,8 +35,10 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <fieldset><legend>Filtros:</legend>
-
+    <h1 align="center">Reporte por clientes</h1>
+    <br /><hr />
+    <fieldset>
+        <legend>Filtros:</legend>
         <asp:DropDownList ID="ddl_cliente" runat="server" AppendDataBoundItems="true">
             <asp:ListItem Value="-" Text="Seleccione un Cliente..."></asp:ListItem>
         </asp:DropDownList><br /><br />

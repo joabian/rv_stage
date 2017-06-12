@@ -27,8 +27,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
+    <h1 align="center">Hacer pedido</h1>
+    <br /><hr />
     <asp:Panel ID="panel_header" runat="server">
-        <br /><br />
         <div style="text-align:center">
             <asp:Button ID="btn_open" runat="server" Text="Abrir Nuevo Pedido" />
             <hr />

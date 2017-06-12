@@ -1,6 +1,6 @@
-﻿<%@ Page Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="sort_stock.aspx.vb" Inherits="movimientos_sort_stock" title="Untitled Page" %>
+﻿<%@ Page Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="sort_stock.aspx.vb" Inherits="movimientos_sort_stock" Title="Untitled Page" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="Server">
     <script src="../Scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script src="../Scripts/jquery.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -43,25 +43,30 @@
                 alert("Ingrese un rack")
             }
 
-            
+
         }
     </script>
 
 
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <asp:Label ID="LBL_error" runat="server" Text="" ForeColor="Red"></asp:Label><br /><br />
-
-    Sucursal:&nbsp;&nbsp;
-    <asp:DropDownList ID="ddl_from_location" runat="server" AppendDataBoundItems="true" AutoPostBack="true">
-        <asp:ListItem Value="0">Seleccione...</asp:ListItem>
-    </asp:DropDownList><br />
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server">
+    <h1 align="center">Asignación de racks</h1>
+    <br />
+    <hr />
+    <fieldset>
+        <legend>Elegir Sucursal</legend>
+        <asp:Label ID="LBL_error" runat="server" Text="" ForeColor="Red"></asp:Label><br />
+        Sucursal:&nbsp;&nbsp;
+        <asp:DropDownList ID="ddl_from_location" runat="server" AppendDataBoundItems="true" AutoPostBack="true">
+            <asp:ListItem Value="0">Seleccione...</asp:ListItem>
+        </asp:DropDownList><br />
+    </fieldset>
     <hr />
     <br />
-    <asp:Label ID="lbl_table" runat="server" Text="" ></asp:Label><br /><br />
-    <asp:Button ID="btn_save" runat="server" Text="Salvar" />
+    <asp:Label ID="lbl_table" runat="server" Text=""></asp:Label><br />
+    <center><asp:Button ID="btn_save" runat="server" Text="Salvar" /></center>
     <asp:HiddenField ID="hifd_location" runat="server" />
-    
+
     <%--<asp:GridView ID="GV_tranfers" runat="server" AutoGenerateColumns="False" OnRowCancelingEdit="GV_tranfers_RowCancelingEdit" 
         OnRowEditing="GV_tranfers_RowEditing" 
         OnRowUpdating="GV_tranfers_RowUpdating" >

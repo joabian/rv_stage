@@ -81,7 +81,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-<fieldset><legend>Filtros:</legend>
+    <h1 align="center">Reporte de movimientos</h1>
+    <br /><hr />
+<fieldset><legend>Filtrar Movimientos:</legend>
     Tipo:
     <asp:DropDownList ID="typeDDL" runat="server">
         <asp:ListItem Value="0">TODOS</asp:ListItem>
@@ -112,7 +114,7 @@
     <input type="text" id="from_date" name="from_date" class="textBox" style="width:100px; margin-top:3px;" />&nbsp;&nbsp;&nbsp;
     Hasta:
     <input type="text" id="to_date" name="to_date" class="textBox" style="width:100px; margin-top:3px;" />&nbsp;&nbsp;&nbsp;
-    <asp:Button ID="btn_get_report" runat="server" Text="Generar Reporte" />&nbsp;&nbsp;&nbsp;
+    <br /><br /><asp:Button ID="btn_get_report" runat="server" Text="Generar Reporte" />&nbsp;&nbsp;&nbsp;
     <asp:Button ID="Button1" runat="server" Text="Exportar a Excel" />
 </fieldset>
  

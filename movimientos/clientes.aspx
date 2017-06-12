@@ -38,11 +38,12 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <center><h1>Lista de Clientes</h1></center>
+    <h1 align="center">Lista de Clientes</h1>
+    <br /><hr />
     <div style="text-align:right;">
         <asp:Button ID="btn_add_client" runat="server" Text="+ Agregar Cliente" />
     </div>
-    <br /><hr /><br />
+    <hr /><br />
     <div id="div_tabla_clientes">
 
 

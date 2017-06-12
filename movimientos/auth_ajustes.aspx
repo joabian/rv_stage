@@ -206,11 +206,10 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <div id="mydiv">
-            
+    <h1 align="center">Ajustes</h1>
+    <br /><hr /><br />
+    <div id="mydiv">            
     </div>
     <asp:Label ID="lbl_msg" runat="server" Text="" ForeColor="Green"></asp:Label>
-    
-
 </asp:Content>
 

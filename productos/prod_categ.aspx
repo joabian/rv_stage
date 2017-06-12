@@ -30,6 +30,8 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
+    <h1 align="center"> Productos por categoría </h1>
+    <br /><hr />
     <fieldset><legend>Seleccione una Categoría:</legend>
         <asp:DropDownList ID="ddl_category" runat="server" AutoPostBack="True" AppendDataBoundItems="True">
             <asp:ListItem Value="0">Seleccione...</asp:ListItem>
@@ -39,10 +41,9 @@
         <asp:Button ID="btn_run" runat="server" Text="Generar" />&nbsp&nbsp&nbsp&nbsp
         <button type="button" onclick="PrintElem('#Printdiv');">Imprimir</button>
     </fieldset>
-    <br />
     <asp:Label ID="lbl_error" runat="server" CssClass="ErrorLabel"></asp:Label>
-    <hr />
-
+    <br /><hr />
+    <br />
     <div id="Printdiv">
         <asp:Label ID="lbl_table" runat="server"></asp:Label>
         <%--<img alt="" src="../images/tapas/603-001.jpg" />--%>

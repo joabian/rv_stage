@@ -68,7 +68,7 @@ Partial Class productos_buscar_comp
         query = "select * from models where model = '" + model.ToString() + "' and make = '" + make.ToString() + "' and year_beg <= " + year.ToString() + " and year_end >= " + year.ToString() + "order by model"
         ds = Dataconnect.GetAll(query)
         If ds.Tables(0).Rows.Count > 0 Then
-            lbl_comp.Text = "Compatibilidad"
+            lbl_comp.Text = "Compatibilidad:"
             gv_info.DataSource = ds.Tables(0)
             gv_info.DataBind()
             query = "select distinct convert(varchar, dpi_no) + ' (DPI)' as PROD from models where model = '" + model.ToString() + "' and make = '" + make.ToString() + "' and year_beg <= " + year.ToString() + " and year_end >= " + year.ToString()
@@ -141,7 +141,7 @@ Partial Class productos_buscar_comp
             img_product.ImageUrl = "~/images/tapas/" + code + ".jpg"
             'img_product.ImageUrl = "~/images/dpis/no-image.jpg" 'modificar cuando se tengan las imagenes
             If ds.Tables(0).Rows.Count > 0 Then
-                lbl_product_info.Text = "Informacion del Producto:"
+                lbl_product_info.Text = "Información del Producto:"
                 gv_product_info.DataSource = ds.Tables(0)
                 gv_product_info.DataBind()
             Else

@@ -3,6 +3,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
+    <h1 align="center"> Editar producto </h1>
+    <br />
+    <hr />
     <fieldset><legend>Campos de búsqueda: </legend>
         <asp:Label ID="Label16" runat="server" Text="Código: " ></asp:Label>
         <asp:TextBox ID="tbx_search" runat="server"></asp:TextBox>
