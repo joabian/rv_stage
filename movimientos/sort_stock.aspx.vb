@@ -61,15 +61,15 @@ Partial Class movimientos_sort_stock
         ds = Dataconnect.GetAll(query)
         If ds.Tables(0).Rows.Count > 0 Then
             Dim myhtmltable As String = ""
-            myhtmltable = "<table style='border-collapse:collapse;border:solid 1px black;' border=1 align='center'><tr><th>De Sucursal</th><th>Fecha</th><th>Código</th><th>Descripción</th><th>Cantidad</th><th><b>Nuevo Rack</b></th></tr>"
+            myhtmltable = "<table style='border-collapse:collapse;border:solid 1px black;' border=1><tr><th>De Sucursal</th><th>Fecha</th><th>Codigo</th><th>Descripcion</th><th>Cantidad</th><th><b>Nuevo Rack</b></th></tr>"
             For i = 0 To ds.Tables(0).Rows.Count - 1
                 Dim stockid As String = ds.Tables(0).Rows(i)("id").ToString()
                 myhtmltable += "<tr>"
-                myhtmltable += "<td align='center'>" + ds.Tables(0).Rows(i)("from_location").ToString() + "</td>"
-                myhtmltable += "<td align='center'>" + ds.Tables(0).Rows(i)("fecha").ToString() + "</td>"
-                myhtmltable += "<td align='center'>" + ds.Tables(0).Rows(i)("product_code").ToString() + "</td>"
-                myhtmltable += "<td align='center'>" + ds.Tables(0).Rows(i)("product_description").ToString() + "</td>"
-                myhtmltable += "<td align='center'>" + ds.Tables(0).Rows(i)("qty").ToString() + "</td>"
+                myhtmltable += "<td>" + ds.Tables(0).Rows(i)("from_location").ToString() + "</td>"
+                myhtmltable += "<td>" + ds.Tables(0).Rows(i)("fecha").ToString() + "</td>"
+                myhtmltable += "<td>" + ds.Tables(0).Rows(i)("product_code").ToString() + "</td>"
+                myhtmltable += "<td>" + ds.Tables(0).Rows(i)("product_description").ToString() + "</td>"
+                myhtmltable += "<td>" + ds.Tables(0).Rows(i)("qty").ToString() + "</td>"
                 'myhtmltable += "<td><input type='button' value='Asignar' onclick='reasignar(" + stockid.ToString() + ");' /></td>"
                 myhtmltable += "<td><input id='tb_" + stockid.ToString() + "' name='tb_" + stockid.ToString() + "' type='text' size='5' /></td>"
 

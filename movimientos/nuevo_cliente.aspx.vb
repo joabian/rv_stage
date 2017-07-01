@@ -33,9 +33,9 @@ Partial Class movimientos_nuevo_cliente
         sucursal = location.SelectedValue.ToString()
 
         If contact = "" Or comp_name = "" Or street = "" Or sucursal = "0" Or precio = "" Then
-            lbl_error.Text = "Algún campo obligatorio está vacío"
+            lbl_error.Text = "Algun campo obligatorio esta vacio"
         ElseIf Not IsNumeric(precio) Then
-            lbl_error.Text = "El precio no es numérico"
+            lbl_error.Text = "El precio no es numerico"
         Else
             bill_addres = street.ToString() 
 
@@ -52,7 +52,7 @@ Partial Class movimientos_nuevo_cliente
             Dataconnect.runquery(query)
             cleanFields()
             lbl_error.ForeColor = Drawing.Color.Green
-            lbl_error.Text = "Cliente guardado con éxito"
+            lbl_error.Text = "Cliente guardado con exito"
         End If
 
     End Sub

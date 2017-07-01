@@ -3,6 +3,8 @@ Imports System.Text
 Imports System.Drawing
 Imports System.IO
 Imports Excel
+Imports OfficeOpenXml
+
 
 Partial Class movimientos_egrees
     Inherits System.Web.UI.Page
@@ -34,8 +36,8 @@ Partial Class movimientos_egrees
 
         If reason.ToUpper() = "VENTA" And cliente = "" Then
             errorlbl.Text = "Es obligatorio que ingrese el nombre del cliente para ingresar una venta"
-        ElseIf rackid.ToUpper() = "TEMPORAL" Then
-            errorlbl.Text = "No es posible hacer ventas del rack temporal"
+            'ElseIf rackid.ToUpper() = "TEMPORAL" Then
+            '    errorlbl.Text = "No es posible hacer ventas del rack temporal"
         ElseIf reason.ToUpper() = "AJUSTE INVENTARIO" Then
             If (location_name.ToUpper = "HENEQUEN" And username = "estefania") Or location_name <> "HENEQUEN" Then
                 query = "insert into ajustes (username,location,item,rack,qty,notes,create_date,tipo) values ('" + username.ToString() + "','" + location.SelectedItem.Text.ToString() + "','"
@@ -237,55 +239,55 @@ Partial Class movimientos_egrees
     'End Sub
 
 	
-	Public Sub readExcelNew()
-        'Dim filepath As String = "C:\Users\212331260\Desktop"
-        Dim filepath As String = "e:\HostingSpaces\vencedo2\radiadoresvencedores.com\wwwroot\docs"
-        Dim uploadedFiles As HttpFileCollection = Request.Files
-        Dim i As Integer = 0
-        Do Until i = uploadedFiles.Count
-            Dim userPostedFile As HttpPostedFile = uploadedFiles(i)
-            Try
-                If (userPostedFile.ContentLength > 0) Then
-                    Dim filename As String = Replace(System.IO.Path.GetFileName(userPostedFile.FileName), "'", "")
-					Dim fullpath as string = filepath & "\" & filename
-                    Try
-                        userPostedFile.SaveAs(fullpath)
+    'Public Sub readExcelNew()
+    '       'Dim filepath As String = "C:\Users\212331260\Desktop"
+    '       Dim filepath As String = "e:\HostingSpaces\vencedo2\radiadoresvencedores.com\wwwroot\docs"
+    '       Dim uploadedFiles As HttpFileCollection = Request.Files
+    '       Dim i As Integer = 0
+    '       Do Until i = uploadedFiles.Count
+    '           Dim userPostedFile As HttpPostedFile = uploadedFiles(i)
+    '           Try
+    '               If (userPostedFile.ContentLength > 0) Then
+    '                   Dim filename As String = Replace(System.IO.Path.GetFileName(userPostedFile.FileName), "'", "")
+    '				Dim fullpath as string = filepath & "\" & filename
+    '                   Try
+    '                       userPostedFile.SaveAs(fullpath)
 
-                        Dim stream As FileStream = File.Open(fullpath, FileMode.Open, FileAccess.Read)
-						
-						Dim excelReader As IExcelDataReader = ExcelReaderFactory.CreateOpenXmlReader(stream)
-                        excelReader.IsFirstRowAsColumnNames = False
-						Dim result As DataSet = excelReader.AsDataSet()
-						
-                        'If result.Tables(0).Rows.Count > 0 Then
+    '                       Dim stream As FileStream = File.Open(fullpath, FileMode.Open, FileAccess.Read)
 
-                        '                      For h As Integer = 0 To result.Tables(0).Rows.Count - 1
-                        '                          For j As Integer = 0 To result.Tables(0).Columns.Count - 1
-                        '                              items += result.Tables(0).Rows(h)(j).ToString() + "}"
-                        '                          Next
-                        '                          items = items.Substring(0, items.Length - 1)
-                        '                          items += "]"
-                        '                      Next
+    '					Dim excelReader As IExcelDataReader = ExcelReaderFactory.CreateOpenXmlReader(stream)
+    '                       excelReader.IsFirstRowAsColumnNames = False
+    '					Dim result As DataSet = excelReader.AsDataSet()
 
-                        'End If
-						
-                        File.Delete(fullpath)
+    '                       'If result.Tables(0).Rows.Count > 0 Then
 
-                        'items = items.Substring(0, items.Length - 1)
+    '                       '                      For h As Integer = 0 To result.Tables(0).Rows.Count - 1
+    '                       '                          For j As Integer = 0 To result.Tables(0).Columns.Count - 1
+    '                       '                              items += result.Tables(0).Rows(h)(j).ToString() + "}"
+    '                       '                          Next
+    '                       '                          items = items.Substring(0, items.Length - 1)
+    '                       '                          items += "]"
+    '                       '                      Next
 
-                        remove_itemsNew(result)
+    '                       'End If
 
-                    Catch ex As Exception
-                        lbl_error_file.Text = ex.Message
-                    End Try
-                End If
-            Catch ex As Exception
-                lbl_error_file.Text = ex.Message
-            End Try
-            i += 1
-        Loop
+    '                       File.Delete(fullpath)
 
-    End Sub
+    '                       'items = items.Substring(0, items.Length - 1)
+
+    '                       remove_itemsNew(result)
+
+    '                   Catch ex As Exception
+    '                       lbl_error_file.Text = ex.Message
+    '                   End Try
+    '               End If
+    '           Catch ex As Exception
+    '               lbl_error_file.Text = ex.Message
+    '           End Try
+    '           i += 1
+    '       Loop
+
+    '   End Sub
     Protected Sub leadexcel_Click(sender As Object, e As EventArgs) Handles leadexcel.Click
         'readExcel()
         If type.SelectedValue = "VENTA" And tbx_cliente.Text = "" Then
@@ -293,7 +295,114 @@ Partial Class movimientos_egrees
         ElseIf type.SelectedValue = "AJUSTE INVENTARIO" Then
             errorlbl.Text = "Los ajustes de inventario no se pueden realizar masivos"
         Else
-            readExcelNew()
+            'readExcelNew()
+            ReadExcelStream()
+        End If
+
+    End Sub
+
+    Public Sub ReadExcelStream()
+        Dim sucursal As String
+        sucursal = location.SelectedValue.ToString()
+
+        If sucursal <> "Seleccionar..." Then
+            If File1.HasFile Then
+                If Path.GetExtension(File1.FileName) = ".xlsx" Then
+                    Dim excel As New ExcelPackage(File1.FileContent)
+
+                    Dim ws As ExcelWorksheet = excel.Workbook.Worksheets.First()
+
+                    ProcessExcelFile(ws, sucursal)
+                Else
+                    lbl_error_file.Text = "Only Excel files are allowed"
+
+                End If
+            Else
+                lbl_error_file.Text = "Select a file"
+            End If
+        Else
+            lbl_error_file.Text = "<br />seleccione Sucursal"
+        End If
+        
+    End Sub
+
+    Public Sub ProcessExcelFile(ByVal ws As ExcelWorksheet, ByVal sucursal As String)
+        Dim motivo, error_msg, item, rack, qty, id_record, logevent, cliente, mycliente, fullQuery As String
+        error_msg = ""
+        Dim qtyleft, qtyOrig As Integer
+
+        motivo = type.SelectedValue.ToString()
+        cliente = Replace(tbx_cliente.Text & "'", "'", "")
+        Dim username As String = Membership.GetUser().UserName
+        If cliente <> "" Then
+            mycliente = " Cliente: " & cliente.ToString()
+        Else
+            mycliente = ""
+        End If
+
+        Dim totalCols As Integer = ws.Dimension.[End].Column
+        Dim totalRows As Integer = ws.Dimension.[End].Row
+        Dim startRow As Integer = 1
+        Dim myline As String = ""
+        Dim mylineValues() As String
+        Dim wsRow As ExcelRange
+        fullQuery = ""
+
+        For rowNum As Integer = startRow To totalRows
+            wsRow = ws.Cells(rowNum, 1, rowNum, totalCols)
+            myline = ""
+            For Each cell In wsRow
+                myline += cell.Text + ","
+            Next
+            mylineValues = myline.Split(",")
+
+            item = Replace(Replace(mylineValues(0).ToString(), "'", ""), " ", "").ToUpper()
+            qty = mylineValues(2).ToString()
+            rack = mylineValues(1).ToString().ToUpper()
+
+            If Not IsNumeric(qty) Or qty = "0" Then
+                error_msg += "Campo de Cantidad en 0 o esta incorrecto en item: " + item.ToString() + "<br />"
+                'ElseIf rack.ToUpper() = "TEMPORAL" Then
+                '    error_msg += "No es posible dar de baja de rack TEMPORAL en linea: " + item.ToString() + "<br />"
+            Else
+                query = "select * from products where code = '" + item.ToString() + "'"
+                ds = Dataconnect.GetAll(query)
+                If ds.Tables(0).Rows.Count > 0 Then
+                    Dim prod_id As String = ds.Tables(0).Rows(0)("id").ToString()
+                    'verificamos si existe una linea en la orden, para sumarla a la cantidad actual
+                    query = "select * from stock where product_code = '" + item.ToString() + "' and rack = '" + rack.ToString() + "' and location = '" + sucursal.ToString() + "' and qty >= " + qty.ToString()
+                    ds = Dataconnect.GetAll(query)
+                    If ds.Tables(0).Rows.Count > 0 Then
+                        'sumar a la cantidad actual
+                        id_record = ds.Tables(0).Rows(0)("id").ToString()
+                        qtyOrig = Convert.ToInt32(ds.Tables(0).Rows(0)("qty").ToString())
+                        qtyleft = qtyOrig - Convert.ToInt32(qty)
+
+                        fullQuery += " update stock set qty = (qty - " + qty.ToString() + ") where id = " + id_record.ToString()
+                        
+                        fullQuery += " insert into moves (product_id,product_code,reason,type,comments,location,rack,[user],row_date,qty) values (" + prod_id.ToString().ToUpper() + ", '" + item.ToString().ToUpper() + "', '" + motivo.ToString().ToUpper() + "', 'SALIDA', 'Baja masiva" & mycliente.ToString() + "', '" + sucursal.ToString().ToUpper() + "', '" + rack.ToString().ToUpper() + "', '" + username.ToString() + "', getDate(), " + qty.ToString() + ")"
+                        
+                        logevent = "Salida de producto: " + item.ToString() + " de la sucursal: " + sucursal.ToString() + " del rack: " + rack.ToString() + ", por la cantidad de: " + qty.ToString() + ", dejando el inventario actual en: " + qtyleft.ToString()
+
+                        fullQuery += " INSERT INTO logs(user_name, event, date) VALUES ('" + username.ToString() + "', '" + logevent.ToString() + "', getDate())"
+
+                    Else
+                        error_msg += "No existe suficiente inventario en " + sucursal.ToString() + " rack " + rack.ToString() + " del item: " + item.ToString() + "<br />"
+                    End If
+                Else
+                    error_msg += "El item: " + item.ToString() + " no existe en la base de datos<br />"
+                End If
+            End If
+        Next
+
+        If error_msg <> "" Then
+            lbl_error_file.Text = "<br />Antes de continuar corrija los siguiente errores e intente subir de nuevo el archivo completo:<br />" + error_msg
+        Else
+            fullQuery += " delete from stock where qty <= 0"
+            Dataconnect.runquery(fullQuery)
+
+            lbl_error_file.ForeColor = Color.Green
+            lbl_error_file.Text = "<br />El archivo se cargo con exito!"
         End If
 
     End Sub

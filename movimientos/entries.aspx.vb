@@ -3,6 +3,7 @@ Imports System.Text
 Imports System.Drawing
 Imports System.IO
 Imports Excel
+Imports OfficeOpenXml
 
 Partial Class movimientos_entries
     Inherits System.Web.UI.Page
@@ -16,7 +17,6 @@ Partial Class movimientos_entries
     Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         username = Membership.GetUser().UserName
         If Not IsPostBack Then
-
             populate_ddl_locations()
         End If
 
@@ -106,23 +106,23 @@ Partial Class movimientos_entries
                     query = "update stock set qty = (qty + " + intQty.ToString() + "), last_update = getDate() where product_code = '" + prod_code.ToString() + "' and location_id = '" + location.SelectedValue.ToString() + "' and rack = '" + rackid.ToString() + "'"
                     Dataconnect.runquery(query)
 
-                    logevent = "Entrada de producto: " + prod_code.ToString() + " de la sucursal: " + location.SelectedItem.Text.ToString() + " en el rack: " + rackid.ToString() + " por la cantidad de: " + qty.Text.ToString() + " dejando el inventario actual en: " + newqty.ToString()
+                    logevent = "Entrada de producto: " + prod_code.ToString() + " de la sucursal: " + location.SelectedItem.Text.ToString() + " en el rack: " + rackid.ToString() + " por la cantidad de: " + intQty.ToString() + " dejando el inventario actual en: " + newqty.ToString()
 
                     queryLog = "INSERT INTO logs(user_name, event, date) VALUES ('" + username.ToString() + "', '" + logevent.ToString() + "', getDate())"
                     Dataconnect.runquery(queryLog)
                 Else
                     query = "insert into stock (product_id,product_code,product_description,product_model,product_low_inventory,product_category,qty,location,last_update,rack,from_location,location_id) select products.id, products.code, products.description, products.model,"
-                    query += " products.low_inventory, categories.name, " + qty.Text.ToString() + ", '" + location.SelectedItem.Text.ToString()
+                    query += " products.low_inventory, categories.name, " + intQty.ToString() + ", '" + location.SelectedItem.Text.ToString()
                     query += "', getDate(), '" + rackid.ToString().ToUpper() + "', 'ENTRADA', '" + location.SelectedValue.ToString().ToUpper() + "' from products inner join categories on products.category"
                     query += " = categories.id where products.id = " + intProduct_id.ToString().ToUpper()
                     Dataconnect.runquery(query)
 
-                    logevent = "Ingreso un nuevo producto al inventario de la sucursal: " + location.SelectedItem.Text.ToString() + " en el rack: " + rackid.ToString() + ", producto: " + prod_code.ToString() + ", cantidad: " + qty.Text.ToString()
+                    logevent = "Ingreso producto al inventario de la sucursal: " + location.SelectedItem.Text.ToString() + " en el rack: " + rackid.ToString() + ", producto: " + prod_code.ToString() + ", cantidad: " + intQty.ToString() + " dejando el inventario en: " + intQty.ToString()
 
                     queryLog = "INSERT INTO logs(user_name, event, date) VALUES ('" + username.ToString() + "', '" + logevent.ToString() + "', getDate())"
                     Dataconnect.runquery(queryLog)
                 End If
-                query = "insert into moves (product_id,product_code,reason,type,comments,location,rack,[user],row_date,qty) values (" + intProduct_id.ToString().ToUpper() + ", '" + prod_code.ToString().ToUpper() + "', '" + reason.ToString().ToUpper() + "', 'ENTRADA', '" + comm.ToString().ToUpper() + "', '" + location.SelectedItem.Text.ToString().ToUpper() + "', '" + rackid.ToString().ToUpper() + "', '" + username.ToString() + "', getDate(), " + qty.Text + ")"
+                query = "insert into moves (product_id,product_code,reason,type,comments,location,rack,[user],row_date,qty) values (" + intProduct_id.ToString().ToUpper() + ", '" + prod_code.ToString().ToUpper() + "', '" + reason.ToString().ToUpper() + "', 'ENTRADA', '" + comm.ToString().ToUpper() + "', '" + location.SelectedItem.Text.ToString().ToUpper() + "', '" + rackid.ToString().ToUpper() + "', '" + username.ToString() + "', getDate(), " + intQty.ToString() + ")"
                 Dataconnect.runquery(query)
                 Response.Redirect("entries.aspx")
             End If
