@@ -3,6 +3,7 @@ Imports System.Text
 Imports System.Drawing
 Imports System.IO
 Imports Excel
+Imports System.Data.SqlClient
 
 Partial Class movimientos_intra_trnsfr
     Inherits System.Web.UI.Page
@@ -19,15 +20,15 @@ Partial Class movimientos_intra_trnsfr
             Dim loc As String = ""
             Dim loc_id As String = "0"
             username = Membership.GetUser().UserName
-            query = "select location, alias from users left join locations on users.location = locations.id where user_name = '" + username + "' "
+            query = "SELECT location, alias FROM users LEFT JOIN locations ON users.location = locations.id WHERE user_name = '" + username + "' "
             ds = Dataconnect.GetAll(query)
             If ds.Tables(0).Rows.Count > 0 Then
                 loc = ds.Tables(0).Rows(0)("alias").ToString()
                 loc_id = ds.Tables(0).Rows(0)("location").ToString()
                 If loc_id = "0" Then
-                    query = "select id, alias from locations"
+                    query = "SELECT id, alias FROM locations"
                 Else
-                    query = "select id, alias from locations"
+                    query = "SELECT id, alias FROM locations"
                     'query = "select alias from locations where id = " + location_st.ToString()
                 End If
             End If
@@ -43,7 +44,6 @@ Partial Class movimientos_intra_trnsfr
                 ddl_to_location.DataValueField = "id"
                 ddl_to_location.DataTextField = "alias"
                 ddl_to_location.DataBind()
-
             Else
                 ddl_from_location.DataSource = Nothing
                 ddl_from_location.DataBind()
@@ -53,46 +53,51 @@ Partial Class movimientos_intra_trnsfr
             End If
 
             If loc_id <> "0" Then
-                ddl_from_location.SelectedValue = loc_id
-                ddl_to_location.SelectedValue = loc_id
-                btn_transfer.Enabled = True
+                'ddl_from_location.SelectedValue = loc_id
+                'ddl_to_location.SelectedValue = loc_id
+                ddl_from_location.SelectedValue = loc
+                ddl_to_location.SelectedValue = loc
             End If
-
         Else
-
+            If ddl_from_location.SelectedValue <> ddl_to_location.SelectedValue And ddl_to_location.SelectedValue <> "-" Then
+                toRack.Text = "TEMPORAL"
+                toRack.Enabled = False
+            Else
+                toRack.Text = ""
+                toRack.Enabled = True
+            End If
         End If
     End Sub
 
-    Protected Sub btn_transfer_Click(sender As Object, e As System.EventArgs) Handles btn_transfer.Click
-        Dim strModel, strFromRack, strToRack, strQty As String
-        Dim items_list As String = ""
+    'Protected Sub btn_transfer_Click(sender As Object, e As System.EventArgs) Handles btn_transfer.Click
+    '    Dim strModel, strFromRack, strToRack, strQty As String
+    '    Dim items_list As String = ""
 
-        For i = 1 To 20
-            Dim model_name, fromRname, toRname, qty_name As String
+    '    For i = 1 To 20
+    '        Dim model_name, fromRname, toRname, qty_name As String
 
-            model_name = "codigo_" + i.ToString()
-            fromRname = "from_R_" + i.ToString()
-            toRname = "to_R_" + i.ToString()
-            qty_name = "qty_" + i.ToString()
+    '        model_name = "codigo_" + i.ToString()
+    '        fromRname = "from_R_" + i.ToString()
+    '        toRname = "to_R_" + i.ToString()
+    '        qty_name = "qty_" + i.ToString()
 
-            strModel = Request.Form(model_name).ToString()
-            strFromRack = Request.Form(fromRname).ToString()
-            strQty = Request.Form(qty_name).ToString()
-            strToRack = Request.Form(toRname).ToString()
+    '        strModel = Request.Form(model_name).ToString()
+    '        strFromRack = Request.Form(fromRname).ToString()
+    '        strQty = Request.Form(qty_name).ToString()
+    '        strToRack = Request.Form(toRname).ToString()
 
-            If strModel <> "" Then
-                items_list += strModel.ToString() + "}" + strQty.ToString() + "}" + strFromRack.ToString() + "}" + strToRack.ToString() + "]"
-            Else
-                Exit For
-            End If
+    '        If strModel <> "" Then
+    '            items_list += strModel.ToString() + "}" + strQty.ToString() + "}" + strFromRack.ToString() + "}" + strToRack.ToString() + "]"
+    '        Else
+    '            Exit For
+    '        End If
+    '    Next
 
-        Next
+    '    items_list = items_list.Substring(0, items_list.Length - 1)
 
-        items_list = items_list.Substring(0, items_list.Length - 1)
+    '    transfer_items(items_list)
 
-        transfer_items(items_list)
-
-    End Sub
+    'End Sub
 
     Protected Sub ddl_from_location_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddl_from_location.SelectedIndexChanged
         validateSelection()
@@ -105,11 +110,11 @@ Partial Class movimientos_intra_trnsfr
     Sub validateSelection()
         Dim selection As String = ddl_from_location.SelectedValue
         Dim selection2 As String = ddl_to_location.SelectedValue
-        If selection = "-" Or selection2 = "-" Then
-            btn_transfer.Enabled = False
-        Else
-            btn_transfer.Enabled = True
-        End If
+        'If selection = "-" Or selection2 = "-" Then
+        '    btn_transfer.Enabled = False
+        'Else
+        '    btn_transfer.Enabled = True
+        'End If
     End Sub
 
     Public Sub readExcel()
@@ -285,7 +290,6 @@ Partial Class movimientos_intra_trnsfr
         'Response.Redirect("intra_trnsfr.aspx")
     End Sub
 
-
     Public Sub transfer_items(ByVal items_list As String)
         Dim items() As String = items_list.Split("]")
         Dim strModel, strFromRack, strToRack, strLocation, strQty, error_msg, strToLocation As String
@@ -429,17 +433,13 @@ Partial Class movimientos_intra_trnsfr
                             'cantidad menor que cero
                             error_msg += "No ingrese cantidades menores a cero verifique el codigo " + strModel + " - linea: " + (i + 1).ToString() + "<br />"
                         End If
-
                     Else
                         'error en datos
                         error_msg += "Verifique la informacion del codigo " + strModel + " - linea: " + (i + 1).ToString() + "<br />"
-
                     End If
-
                 Else
                     'se acaba salto de renglon o ultimo renglon
                 End If
-
             Next
         End If
 
@@ -454,5 +454,8 @@ Partial Class movimientos_intra_trnsfr
 
     Protected Sub leadexcel_Click(sender As Object, e As EventArgs) Handles leadexcel.Click
         readExcel()
+    End Sub
+    Protected Sub ddl_from_location_SelectedIndexChanged1(sender As Object, e As EventArgs)
+
     End Sub
 End Class

@@ -297,7 +297,6 @@ Partial Class movimientos_sales_order
             orig_status_name = ds.Tables(0).Rows(0)("status_name").ToString()
             orig_location = ds.Tables(0).Rows(0)("location").ToString()
 
-
             Dim username As String
             Dim logevent As String
             username = Membership.GetUser().UserName
@@ -506,7 +505,6 @@ Partial Class movimientos_sales_order
     '    populateItemsGridView()
 
     'End Sub
-
 
     Public Sub readExcelNew()
         'Dim filepath As String = "C:\Users\212331260"

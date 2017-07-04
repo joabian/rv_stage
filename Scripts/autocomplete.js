@@ -8,7 +8,8 @@
             case 'Cliente': $('[asp_id="id_Cliente"]').val(value); break;
             case 'Vendedor': $('[asp_id="id_Vendedor"]').val(value); break;
             case 'Sucursal': $('[asp_id="id_Sucursal"]').val(value); break;
-			
+            case 'Rack': $('[asp_id="id_Rack"]').val(value); break;
+    
         }   
         //ActionFormMain(id_element,value); //Scrips/default               
     }
@@ -20,14 +21,13 @@
             case 'Cliente': $('[asp_id="id_Cliente"]').val('0'); break;
             case 'Vendedor': $('[asp_id="id_Vendedor"]').val('0'); break;
             case 'Sucursal': $('[asp_id="id_Sucursal"]').val('0'); break;
-		}       
-    
-    }
+            case 'Rack': $('[asp_id="id_Rack"]').val('0'); break;
 
+		}
+    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////************************************         CODE        *****************************************//////////////
-
 
     var indexOfSelectedElement=-1;
     var dataForValidate = false;
@@ -66,41 +66,46 @@
         indexOfSelectedElement=-1;StatusElement(jqueryObjet.attr("id"),"reset");jqueryObjet.val("");
     }
 
-    function KeyPress (e,id_element){    
-        var jqueryObjet = $('#'+id_element);
-        dataForValidate=true;   
-            
+    function KeyPress(e, id_element) {
+        var jqueryObjet = $('#' + id_element);
+        dataForValidate = true;
+
         if (e.keyCode == '40') {
-		    // Down Key		
-		    SelectResult(indexOfSelectedElement+1,id_element);		
-    		
-	    } else if (e.keyCode == '38') {
-		    // Up Key
-		    SelectResult(indexOfSelectedElement-1,id_element);	
-        
+            // Down Key		
+            SelectResult(indexOfSelectedElement + 1, id_element);
+        } else if (e.keyCode == '38') {
+            // Up Key
+            SelectResult(indexOfSelectedElement - 1, id_element);
         } else if (e.keyCode == '13') {
-		    // Enter Key		
-		    EnterKeyPressed(id_element);
-	    } else {	    	        						
+            // Enter Key		
+            EnterKeyPressed(id_element);
+        } else {
             indexOfSelectedElement = -1;
             //var server = "http://localhost:61961/";
-		    var search="../autocomplete.aspx?q="+jqueryObjet.val()+"&op="+jqueryObjet.attr('search')+"&id_element="+id_element; 		
-		    search = replaceAll(search,"'","");
-		    
-		    if (jqueryObjet.val().length > 0) {
-			    $.ajax({
-			      url: search,
-			      cache:false,
-			      success: function(data) {
-			            jqueryObjet=$('#searchResults'+id_element);
-					    jqueryObjet.stop(true,true).html(data).css({'display': 'block'});													
-			      }
-			    });			
-		    }
-	    }	
+            //alert($('[asp_id="id_Sucursal"]').val());
+
+            if (jqueryObjet.attr('search') == "Rack") {
+                alert($('#Codigo').val());
+            }
+
+            var search = "../autocomplete.aspx?q=" + jqueryObjet.val() + "&op=" + jqueryObjet.attr('search') + "&id_element=" + id_element;
+            search = replaceAll(search, "'", "");
+
+            if (jqueryObjet.val().length > 0) {
+                $.ajax({
+                    url: search,
+                    cache: false,
+                    success: function (data) {
+                        jqueryObjet = $('#searchResults' + id_element);
+                        jqueryObjet.stop(true, true).html(data).css({ 'display': 'block' });
+                    }
+                });
+            }
+        }
     }
 
-    function SelectResult(indexOfElementToSelect,id_element) {	
+    function SelectResult(indexOfElementToSelect, id_element) {
+        
         dataForValidate=true;
         indexOfElementToSelect=(indexOfElementToSelect>=0)? indexOfElementToSelect:0;
 	    var jqueryObjet = $('#'+id_element+indexOfElementToSelect);
@@ -172,7 +177,7 @@
             Action (id_element,$('#'+id_element + indexOfSelectedElement).attr("id_element"));
             StatusElement(id_element,'true');
         }    
-    }
+    }   
 
     function StatusElement (id_element,value){
         switch(value)
