@@ -32,6 +32,14 @@ Partial Class ajax_response
     Dim selectedPrice As String
     Dim increaseType As String
     Dim qty_value As String
+    Dim fromLocation As String
+    Dim toLocation As String
+    Dim fromRack As String
+    Dim toRack As String
+    Dim Codigo As String
+    Dim table As String
+    Dim array As String
+    Dim idSucursal As String
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         _REQUEST()
@@ -44,6 +52,7 @@ Partial Class ajax_response
         If _OPTION = "salvarItemsdePedido" Then salvarItemsdePedido()
         If _OPTION = "verificarPedido" Then verificarPedido()
         If _OPTION = "ingresarItemAPedido" Then ingresarItemAPedido()
+        If _OPTION = "hacerTransferencia" Then hacerTransferencia()
         If _OPTION = "loadTableItems" Then loadTableItems()
         If _OPTION = "removeItemFromPedido" Then removeItemFromPedido()
         If _OPTION = "SaveOrderInfo" Then SaveOrderInfo()
@@ -65,6 +74,8 @@ Partial Class ajax_response
         If _OPTION = "loadTableProductPrices" Then loadTableProductPrices()
         If _OPTION = "salvarNuevoPrecio" Then salvarNuevoPrecio()
         If _OPTION = "salvarPreciosMasivo" Then salvarPreciosMasivo()
+        If _OPTION = "cantDisponible" Then cantDisponible()
+        If _OPTION = "convSucursal" Then convSucursal()
 
     End Sub
 
@@ -95,7 +106,13 @@ Partial Class ajax_response
         selectedPrice = Request("selectedPrice")
         qty_value = Request("qty_value")
         increaseType = Request("increaseType")
-
+        fromLocation = Request("fromSuc")
+        toLocation = Request("toSuc")
+        fromRack = Request("fromRack")
+        toRack = Request("toRack")
+        Codigo = Request("codigo")
+        array = Request("arrayTransfer")
+        idSucursal = Request("idSucursal")
     End Sub
 
     Public Sub salvarPreciosMasivo()
@@ -319,31 +336,32 @@ Partial Class ajax_response
                 If user = "sgonzalez" Or user = "cesar" Or user = "admin" Then
                     html_table += "<img src='../images/icons/edit.png' style='cursor:pointer; width:15px;' onClick='showAjuste(""" + ds.Tables(0).Rows(i)("id").ToString() + """);' />"
                 End If
-
                 html_table += "</td></tr>"
             Next
             html_table += "</tbody></table>"
         Else
             html_table = "<h2 style='color:red'>No existen ajustes pendientes</h2>"
         End If
-
         Response.Write(html_table)
-
 
     End Sub
 
     Public Sub getRacks()
-        Dim res As String = "n/a"
-        query = "select rack from stock where product_code = '" + codigo_tras.ToString() + "' and qty > 0 and location = '" + location.ToString() + "'"
+        Dim res As String = ""
+        query = "SELECT alias FROM locations WHERE id = '" + fromLocation + "'"
         ds = Dataconnect.GetAll(query)
         If ds.Tables(0).Rows.Count > 0 Then
-            res = "Rack: <select id='ddl_rack_for_trans'>"
-            For i = 0 To ds.Tables(0).Rows.Count - 1
-                res += "<option value='" + ds.Tables(0).Rows(i)("rack").ToString() + "'>" + ds.Tables(0).Rows(i)("rack").ToString() + "</option>"
-            Next
-            res += "</select>"
+            location = ds.Tables(0).Rows(0)("alias").ToString()
         End If
-        Response.Write(res)
+
+        query = "SELECT rack FROM stock WHERE product_code = '" + codigo_tras.ToString() + "' AND qty > 0 AND location = '" + location.ToString() + "'"
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            For i = 0 To ds.Tables(0).Rows.Count - 1
+                Res += ds.Tables(0).Rows(i)("rack").ToString() + "}" + ds.Tables(0).Rows(i)("rack").ToString() + "]"
+            Next
+        End If
+        Response.Write(Res)
     End Sub
 
     Public Sub loadTableResurtido()
@@ -375,7 +393,6 @@ Partial Class ajax_response
             'GridView1.DataBind()
             html_table = "No data"
         End If
-
         Response.Write(html_table)
 
     End Sub
@@ -417,15 +434,10 @@ Partial Class ajax_response
             htmlTable += "<img src='../images/icons/arrowLeft.png' style='cursor:pointer; width:15px;' onClick='showTransferDiv(""" + ds.Tables(0).Rows(i)("Código").ToString() + """);' />"
             htmlTable += "</td>"
             htmlTable += "</tr>"
-
-
         Next
         htmlTable += "</table>"
-
         Return htmlTable
-
     End Function
-
 
     Public Sub getItemInDefaltLocation()
         Dim to_rack As String = "ALMACEN"
@@ -449,7 +461,6 @@ Partial Class ajax_response
         Else
             msg = "0"
         End If
-
         Response.Write(msg)
 
     End Sub
@@ -494,7 +505,6 @@ Partial Class ajax_response
                 query += " inner join locations ON locations.alias = '" + location.ToString() + "'"
                 query += " where products.code = '" + codigo_tras.ToString() + "'"
                 Dataconnect.runquery(query)
-
             End If
 
             query = "update stock set qty = (qty - " + qty.ToString() + ") where id = " + id_from.ToString()
@@ -531,7 +541,6 @@ Partial Class ajax_response
     End Sub
 
     Public Sub loadTableClientes()
-
         Dim user, htmtable As String
         htmtable = ""
         user = Membership.GetUser().UserName
@@ -551,7 +560,6 @@ Partial Class ajax_response
 
             If ds.Tables(0).Rows.Count > 0 Then
                 'do something
-
                 htmtable += "<table id='tabla_clientes' class='tableItems' border='1'><thead>"
                 htmtable += "<tr><th>Editar</th><th>Nombre</th><th>Dirección</th><th>Teléfono</th><th>Paquetería</th><th>Servicio</th><th>Flete</th></tr></thead><tbody>"
                 For i = 0 To ds.Tables(0).Rows.Count - 1
@@ -561,21 +569,15 @@ Partial Class ajax_response
                     For j = 1 To ds.Tables(0).Columns.Count - 1
                         htmtable += "<td><center>" + ds.Tables(0).Rows(i)(j).ToString() + "</center></td>"
                     Next
-
                     htmtable += "</tr>"
                 Next
-
                 htmtable += "</tbody></table>"
             Else
 
             End If
         Else
             'No data
-
         End If
-
-
-
         Response.Write(htmtable)
 
     End Sub
@@ -588,7 +590,6 @@ Partial Class ajax_response
     End Sub
 
     Public Sub loadOrderInfo()
-
         Dim locs As String = "no data"
         query = "select convert(varchar, clients.id, 1) + ' - ' + clients.name as customer, sale_order.location, vendor, urgent, transfer "
         query += " from sale_order inner join clients on clients.id = sale_order.customer"
@@ -599,7 +600,6 @@ Partial Class ajax_response
         End If
 
         Response.Write(locs)
-
     End Sub
 
     Public Sub getVendedores()
@@ -625,17 +625,11 @@ Partial Class ajax_response
                     locs += ds.Tables(0).Rows(i)("id").ToString() + "}" + ds.Tables(0).Rows(i)("emp").ToString() + "]"
                 Next
             End If
-
         Else
             'No data
-
         End If
-
-
         Response.Write(locs)
-
     End Sub
-
 
     Public Sub getLocations()
         Dim locs As String = ""
@@ -646,11 +640,8 @@ Partial Class ajax_response
                 locs += ds.Tables(0).Rows(i)("id").ToString() + "}" + ds.Tables(0).Rows(i)("alias").ToString() + "]"
             Next
         End If
-
         Response.Write(locs)
-
     End Sub
-
 
     Public Sub SaveOrderInfo()
         Dim clienteArr As String()
@@ -712,13 +703,157 @@ Partial Class ajax_response
                 Next
                 table += "</tr>"
             Next
-
             table += "</table>"
         Else
 
         End If
-
         Response.Write(table)
+    End Sub
+
+    Public Sub hacerTransferencia()
+        Dim itemsTransfer() As String = Split(array, "}") ' Se genera el arreglo por renglones
+        Dim Codigo, fromLoc, fromRack, toLoc, toRack, qty As String
+        Dim username As String
+        Dim logevent As String
+        Dim error_msg As String = ""
+        Dim good_msg As String = ""
+        Dim folio As Integer
+
+        username = Membership.GetUser().UserName
+        logevent = "Transferencia interna de los siguientes productos: "
+        good_msg = "Transferencia exitosa: "
+
+        ' Se genera el Folio que identificará todo el grupo de Transferencias
+        query = "SELECT TOP 1 folio FROM transferencias ORDER BY folio DESC"
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            folio = ds.Tables(0).Rows(0)("folio")
+            folio = folio + 1
+        End If
+
+        ' El string recibido tiene 2 tipos de separadores: comas(,) y corchetes(}). Los } separan cada registro y las , separan los items de cada registro.
+        ' El string llega de la siguiente forma:
+        ' 0,CH-036,HENEQUEN,BOD-J,VALENTIN,TEMPORAL,1, } ,1,NI-031,HENEQUEN,H7,VALENTIN,TEMPORAL,1, } ,
+        ' Es decir, en el primer arreglo hay 8 items, contando el vacío entre el último coma y el corchete
+        ' A partir del segundo arreglo, cada arreglo tiene 9 items (se les genera un vacío extra al inicio entre el corchete que cierra cada arreglo y la primera coma)
+
+        For i = 0 To itemsTransfer.Length - 2 ' Es por eso que este for va de 0 al tamaño del arreglo - 2, para contrarrestar los 2 items vacíos
+            Dim items() As String = itemsTransfer(i).Split(",") ' Se genera el arreglo por items
+            If i = 0 Then ' Cuando i=0 los valores requeridos se encuentran en los índices del 1 al 6
+                Codigo = items(1).ToString()
+                fromLoc = items(2).ToString()
+                fromRack = items(3).ToString()
+                toLoc = items(4).ToString()
+                toRack = items(5).ToString()
+                qty = items(6).ToString()
+            Else ' A partir de que i>0 los valores requeridos ya se encontrarán en los índices del 2 al 7
+                Codigo = items(2).ToString()
+                fromLoc = items(3).ToString()
+                fromRack = items(4).ToString()
+                toLoc = items(5).ToString()
+                toRack = items(6).ToString()
+                qty = items(7).ToString()
+            End If
+
+            Dim strProdId, strProdDesc, strProdModel, strProd_lowInv, strCategory As String
+
+            ' Se traen todos los datos del datos del registro con el código ingresado
+            query = "SELECT products.id, categories.name, description, low_inventory, model FROM products INNER JOIN "
+            query += " categories ON products.category = categories.id WHERE code = '" + Codigo.ToString() + "'"
+            ds = Dataconnect.GetAll(query)
+            If ds.Tables(0).Rows.Count > 0 Then 'si el producto existe
+                strProdId = ds.Tables(0).Rows(0)("id")
+                strCategory = ds.Tables(0).Rows(0)("name").ToUpper()
+                strProdDesc = ds.Tables(0).Rows(0)("description")
+                strProdModel = ds.Tables(0).Rows(0)("model").ToUpper()
+                strProd_lowInv = ds.Tables(0).Rows(0)("low_inventory")
+
+                query = "SELECT id, qty FROM stock WHERE product_id = '" + strProdId.ToString() 'verifica que si haya productos en la locación y rack de salida
+                query += "' AND location = '" + fromLoc.ToString() + "' and rack = '" + fromRack.ToString() + "'"
+                ds = Dataconnect.GetAll(query)
+
+                If ds.Tables(0).Rows.Count > 0 Then 'si hay producto en rack de donde se pretende sacar
+                    Dim intFromQty, restFromQty As Integer
+                    Dim strFromStockID As String
+                    intFromQty = ds.Tables(0).Rows(0)("qty")
+                    strFromStockID = ds.Tables(0).Rows(0)("id").ToString()
+                    restFromQty = intFromQty - qty 'resta de producto existente en rack - cantidad a tranferir
+
+                    If restFromQty >= 0 Then 'si la resta es mayor o igual a 0 
+                        query = "SELECT id FROM stock WHERE product_id = '" + strProdId.ToString() + "' AND location = '" + toLoc.ToString() + "' AND rack = '" + toRack.ToString() + "'"
+                        ds = Dataconnect.GetAll(query)
+
+                        If ds.Tables(0).Rows.Count > 0 Then 'hay producto en rack a donde se pretende ingresar, se suma cantidad original más cantidad especificada, se resta la cantidad a la cantidad del rack de donde viene el producto
+                            Dim strToStockID As String
+                            strToStockID = ds.Tables(0).Rows(0)("id").ToString()
+
+                            query = "UPDATE stock SET qty = qty + " + qty.ToString() + ", from_location = '" + fromLoc.ToString() + "', last_update = getdate() WHERE id = " + strToStockID.ToString()
+                            Dataconnect.runquery(query)
+                        Else 'no hay producto en rack a donde se pretende ingresar, se ingresa un nuevo record
+                            Dim idLoc As String
+                            query = "SELECT id FROM locations WHERE alias = '" + toLoc.ToString() + "'"
+                            ds = Dataconnect.GetAll(query)
+                            If ds.Tables(0).Rows.Count > 0 Then 'si el producto existe
+                                idLoc = ds.Tables(0).Rows(0)("id")
+
+                                query = "INSERT INTO stock (product_id, product_code, product_description, product_model, product_low_inventory, product_category, qty, location, last_update, rack, from_location, location_id) VALUES ('"
+                                query += strProdId.ToString() + "', '" + Codigo.ToString().ToUpper() + "', '" + strProdDesc.ToString() + "', '"
+                                query += strProdModel.ToString() + "', " + strProd_lowInv.ToString() + ", '" + strCategory.ToString() + "', " + qty.ToString() + ", '"
+                                query += toLoc.ToString() + "', getDate(), '" + toRack.ToString() + "', '" + fromLoc.ToString() + "', '" + idLoc.ToString() + "')"
+                                Dataconnect.runquery(query)
+                            End If
+                        End If
+
+                        ' Se hace el registro del movimiento en la tabla moves
+                        query = "INSERT INTO moves (product_id, product_code, reason, type, comments, location, rack, [user], row_date, qty) VALUES ('"
+                        query += strProdId.ToString() + "', '" + Codigo.ToString() + "', 'Transferencia', 'Transferencia', 'de :" + fromLoc + " a " + toLoc + "', '"
+                        query += fromLoc.ToString() + "', '" + fromRack + "', '" + username + "', getdate(), " + qty.ToString() + ")"
+                        ' Se genera el registro en logs
+                        query += "INSERT INTO logs VALUES ('" + username + "', 'Trasferencia del producto " + Codigo.ToString() + " locacion:" + fromLoc + " -> " + toLoc + ", rack: " + fromRack.ToString() + " -> " + toRack.ToString() + " por la cantidad de " + qty.ToString() + "', getdate())"
+                        ' Se actualiza la cantidad en stock del producto transferido
+                        query += "UPDATE stock SET qty = qty - " + qty.ToString() + " WHERE id = " + strFromStockID.ToString()
+                        ' Se elimina del stock cualquier registro que tenga una cantidad menor o igual a 0
+                        query += "DELETE FROM stock WHERE qty <= 0"
+                        ' Se hace el registro en la tabla de transferencias
+                        query += "INSERT INTO transferencias (folio, codigo, fromSucursal, fromRack, toSucursal, toRack, cantidad, fechaTransfer, usuario, activo)"
+                        query += "VALUES (" + folio.ToString() + ", '" + Codigo.ToString() + "', '" + fromLoc.ToString() + "', '" + fromRack.ToString() + "', '" + toLoc.ToString() + "', '"
+                        query += toRack.ToString() + "', " + qty.ToString() + ", getDate(), '" + username.ToString() + "', 'false')"
+                        Dataconnect.runquery(query)
+
+                        ' Se agregan los códigos de productos transferidos al msj de éxito
+                        If (i = itemsTransfer.Length - 2) Then
+                            good_msg += Codigo.ToString() + "."
+                        Else
+                            good_msg += Codigo.ToString() + ", "
+                        End If
+
+                    Else 'la cantidad especificada es mayor a lo que queda en el rack
+                        error_msg += "La cantidad especificada excede el inventario del código: " + Codigo.ToString() + ", solo hay " + intFromQty.ToString() + " piezas en el rack " + fromRack.ToString()
+                        good_msg = ""
+                        Response.Write(error_msg)
+                    End If
+                Else 'no hay producto del rack especificado
+                    error_msg += "No hay piezas del producto " + Codigo.ToString() + " en " + fromLoc.ToString() + " dentro del rack " + fromRack.ToString()
+                    good_msg = ""
+                    Response.Write(error_msg)
+                End If
+            Else 'no existe el código
+                error_msg += "No existe el producto: " + Codigo.ToString() + " en el sistema."
+                good_msg = ""
+                Response.Write(error_msg)
+            End If
+        Next
+        Response.Write(good_msg)
+    End Sub
+
+    Public Sub convSucursal()
+        Dim sucursal As String = ""
+        query = "SELECT alias FROM locations WHERE id = " + idSucursal.ToString()
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            sucursal = ds.Tables(0).Rows(0)("alias").ToString()
+        End If
+        Response.Write(sucursal)
     End Sub
 
     Public Sub loadTablePedidos()
@@ -765,11 +900,7 @@ Partial Class ajax_response
             End If
         Else
             'No data
-
         End If
-
-
-
         Response.Write(table)
     End Sub
 
@@ -868,7 +999,6 @@ Partial Class ajax_response
         End If
 
         Response.Write(resp)
-
     End Sub
 
     Public Sub salvarItemsdePedido()
@@ -893,17 +1023,14 @@ Partial Class ajax_response
                 queryLog = "INSERT INTO logs(user_name, event, date) VALUES ('" + username.ToString() + "', '" + logevent.ToString() + "', getDate())"
                 Dataconnect.runquery(queryLog)
 
-
                 If pedidoCompleto = "1" Then
                     For i = 0 To allitems.Length - 2
                         Dim iteminfo() As String = allitems(i).Split("}")
                         saveItemCompleto(Replace(iteminfo(0), " ", ""), iteminfo(1))
                     Next
-
                     'pedidos duplicados
                     query = "update sale_order_items set qty_picked = qty where qty_picked = (qty * 2)"
                     Dataconnect.runquery(query)
-
                     'negadas
                     query = "select id, (qty - qty_picked) as negadas from sale_order_items where order_id = '" + pedido.ToString() + "'"
                     ds = Dataconnect.GetAll(query)
@@ -921,14 +1048,9 @@ Partial Class ajax_response
                                 query += " where sale_order_items.id = '" + myid.ToString() + "'"
 
                                 Dataconnect.runquery(query)
-
                             End If
-
                         Next
-
-
                     End If
-
                     query = "update sale_order set status = 4 where id = " + order.ToString()
                     Dataconnect.runquery(query)
 
@@ -942,9 +1064,7 @@ Partial Class ajax_response
                     sendemail.sendEmail(distro, "Pedido Surtido", body)
 
                     Response.Write("Pedido guardado con exito")
-
                 Else
-
                     For i = 0 To allitems.Length - 2
                         Dim iteminfo() As String = allitems(i).Split("}")
                         saveItem(Replace(iteminfo(0), " ", ""), iteminfo(1))
@@ -958,8 +1078,7 @@ Partial Class ajax_response
 
                     ds = Dataconnect.GetAll(query)
                     If ds.Tables(0).Rows.Count > 0 Then
-
-                        ' erificar si esto aplica de negadas por ser un pedido parcial 
+                        'verificar si esto aplica de negadas por ser un pedido parcial 
                         query = "select id, (qty - qty_picked) as negadas from sale_order_items where order_id = '" + pedido.ToString() + "'"
                         ds = Dataconnect.GetAll(query)
                         If ds.Tables(0).Rows.Count > 0 Then
@@ -976,14 +1095,9 @@ Partial Class ajax_response
                                     query += " where sale_order_items.id = '" + myid.ToString() + "'"
 
                                     Dataconnect.runquery(query)
-
                                 End If
-
                             Next
-
-
                         End If
-
                         'do something
                         query = "update sale_order set status = 4 where id = " + order.ToString()
                         Dataconnect.runquery(query)
@@ -998,31 +1112,17 @@ Partial Class ajax_response
                         sendemail.sendEmail(distro, "Pedido Surtido", body)
 
                         Response.Write("Pedido guardado con exito")
-
                     Else
                         'No data
                     End If
-
-
                 End If
-
             End If
-
-
-
-
         Else
             'No data
         End If
-
-
-
-
-
     End Sub
 
     Public Sub saveItem(ByVal item As String, ByVal qty As String)
-
         Dim order As String = pedido
         Dim sucursal As String = location
 
@@ -1065,24 +1165,18 @@ Partial Class ajax_response
 
                     Else
                         'Sound.Play()
-
                     End If
                 Else
                     'Sound.Play()
-
                 End If
             End If
             'do something
-
         Else
 
         End If
-
     End Sub
 
-
     Public Sub saveItemCompleto(ByVal item As String, ByVal qty As String)
-
         Dim order As String = pedido
         Dim sucursal As String = location
         Dim default_locator As String = "ALMACEN"
@@ -1132,20 +1226,13 @@ Partial Class ajax_response
                 logevent = "Surtido de pedido: " + order.ToString() + " producto: " + item.ToString() + " de la sucursal: " + sucursal.ToString() + " del rack: " + rack.ToString()
                 queryLog = "INSERT INTO logs(user_name, event, date) VALUES ('" + username.ToString() + "', '" + logevent.ToString() + "', getDate())"
                 Dataconnect.runquery(queryLog)
-
             Else
-
                 'Sound.Play()
             End If
         Else
             'Sound.Play()
-
         End If
-
         'do something
-
-
-
     End Sub
 
     Public Sub uploadItemstoOrder()
@@ -1240,7 +1327,20 @@ Partial Class ajax_response
         End If
 
         Response.Write(total)
+    End Sub
 
+    Public Sub cantDisponible()
+        Dim cantidad As String
+        query = "SELECT qty FROM stock WHERE location = '" + fromLocation.ToString() + "' AND product_code = '" + codigo_tras.ToString() + "' AND rack = '" + fromRack.ToString() + "'"
+        ds = Dataconnect.GetAll(query)
+
+        If ds.Tables(0).Rows.Count > 0 Then
+            cantidad = ds.Tables(0).Rows(0)("qty").ToString()
+            If cantidad = "" Then cantidad = "0"
+        Else
+            cantidad = "0"
+        End If
+        Response.Write(cantidad)
     End Sub
 
     Function bodyHtml() As String
@@ -1280,10 +1380,7 @@ Partial Class ajax_response
         Else
             html += "<b> No se tiene mas informacion del pedido</b>"
         End If
-
         Return html
     End Function
-
-
 
 End Class
