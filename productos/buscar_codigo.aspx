@@ -28,7 +28,7 @@
     <br />
     <hr />
     <div style="float: right">
-        <asp:Image ID="Image1" runat="server" ImageUrl="~/images/tapas/no-image.jpg" Height="150px" />
+        <asp:Image ID="img_item" runat="server" ImageUrl="~/images/tapas/no-image.jpg" Height="150px" />
     </div>
     <asp:Panel ID="Panel1" runat="server" DefaultButton="btn_search">        
         <fieldset style="width: 350px; height: 90px;">
