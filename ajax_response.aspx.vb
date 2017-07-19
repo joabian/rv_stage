@@ -40,6 +40,8 @@ Partial Class ajax_response
     Dim table As String
     Dim array As String
     Dim idSucursal As String
+    Dim idCliente As String
+    Dim idOrden As String
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         _REQUEST()
@@ -76,6 +78,8 @@ Partial Class ajax_response
         If _OPTION = "salvarPreciosMasivo" Then salvarPreciosMasivo()
         If _OPTION = "cantDisponible" Then cantDisponible()
         If _OPTION = "convSucursal" Then convSucursal()
+        If _OPTION = "getOrdersfromClient" Then getOrdersfromClient()
+        If _OPTION = "getClient" Then getClient()
 
     End Sub
 
@@ -113,6 +117,8 @@ Partial Class ajax_response
         Codigo = Request("codigo")
         array = Request("arrayTransfer")
         idSucursal = Request("idSucursal")
+        idCliente = Request("idCliente")
+        idOrden = Request("idOrden")
     End Sub
 
     Public Sub salvarPreciosMasivo()
@@ -1382,5 +1388,55 @@ Partial Class ajax_response
         End If
         Return html
     End Function
+
+    Private Sub getOrdersfromClient()
+        Dim ordenes As String = ""
+        query = "SELECT id FROM sale_order WHERE customer = " + idCliente + " AND status >= 5 AND status <> 7 ORDER BY id DESC"
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            For i = 0 To ds.Tables(0).Rows.Count - 1
+                ordenes += ds.Tables(0).Rows(i)("id").ToString() + ","
+            Next
+        End If
+        Response.Write(ordenes)
+    End Sub
+
+    Private Sub getClient()
+        Dim datos As String = ""
+        Dim total As String = ""
+        Dim deuda As String = ""
+
+        query = "SELECT name FROM clients WHERE id = " + idCliente
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            For i = 0 To ds.Tables(0).Rows.Count - 1
+                datos = ds.Tables(0).Rows(i)("name").ToString() + "} "
+            Next
+        End If
+
+        query = "SELECT total FROM sale_order WHERE id = " + idOrden
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            For i = 0 To ds.Tables(0).Rows.Count - 1
+                total = Decimal.Round(ds.Tables(0).Rows(i)("total").ToString())
+                datos += total + "} "
+                datos += Decimal.Round(ds.Tables(0).Rows(i)("total").ToString()).ToString("C2") + "} "
+            Next
+        End If
+
+        query = "SELECT TOP 1 adeudo FROM pagos WHERE idOrden = " + idOrden + " ORDER BY fechaPago DESC"
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            For i = 0 To ds.Tables(0).Rows.Count - 1
+                deuda = Decimal.Round(ds.Tables(0).Rows(i)("adeudo").ToString())
+                datos += deuda + "} "
+                datos += Decimal.Round(ds.Tables(0).Rows(i)("adeudo").ToString()).ToString("C2")
+            Next
+        Else
+            datos += total + "} "
+            datos += Decimal.Round(total).ToString("C2")
+        End If
+        Response.Write(datos)
+    End Sub
 
 End Class

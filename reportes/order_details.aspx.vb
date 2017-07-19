@@ -420,6 +420,7 @@ Partial Class reportes_order_details
     End Sub
 
     Protected Sub btn_ship_Click(sender As Object, e As EventArgs) Handles btn_ship.Click
+        Dim total As Double
         Dim username As String
         Dim logevent As String
         username = Membership.GetUser().UserName
@@ -431,7 +432,9 @@ Partial Class reportes_order_details
             lbl_msg.ForeColor = Drawing.Color.Red
             lbl_msg.Text = "Costo de flete numerico!"
         Else
-            query = "update sale_order set status = '5', flete = '" + tbx_flete.Text + "' where id = '" + lbl_order_number.Text.ToString() + "'"
+            total = Convert.ToDouble(tbx_flete.Text) + Convert.ToDouble(lbl_total.Text)
+            MsgBox(total)
+            query = "update sale_order set status = '5', flete = '" + tbx_flete.Text + "', total = " + Convert.ToString(total) + " where id = '" + lbl_order_number.Text.ToString() + "'"
             Dataconnect.runquery(query)
 
             logevent = "Actualizacion de pedido: " + lbl_order_number.Text.ToString() + " status nuevo: Enviada"
@@ -442,7 +445,7 @@ Partial Class reportes_order_details
             lbl_msg.Text = "Salvada con exito!"
         End If
 
-        
+
         'Response.Redirect("sales_order.aspx?order=" + lbl_order_number.Text.ToString())
     End Sub
 

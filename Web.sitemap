@@ -30,6 +30,7 @@
       <siteMapNode url="reportes/ajustes.aspx" title="Ajustes"  description="" />
       <!--<siteMapNode url="reportes/Bitacora.aspx" title="Bitácora"  description="" />-->
       <siteMapNode url="reportes/clientes.aspx" title="Clientes"  description="" />
+      <siteMapNode url="reportes/estado_de_cuenta.aspx" title="Estado de Cuenta"  description="" />
       <siteMapNode url="reportes/total_stock.aspx" title="Inventario Completo"  description="" />
       <siteMapNode url="reportes/stock_by_location.aspx" title="Inventario por Sucursal"  description="" />
       <siteMapNode url="reportes/moves.aspx" title="Movimientos"  description="" />
@@ -52,6 +53,7 @@
       <siteMapNode url="movimientos/intra_trnsfr.aspx" title="Transferencias"  description="" />
       <!--<siteMapNode url="movimientos/intra_trnsfr.aspx" title="Transf Interna"  description="" />-->
       <siteMapNode url="movimientos/sort_stock.aspx" title="Asignar Racks"  description="" />
+      <siteMapNode url="movimientos/pagos.aspx" title="Pagos"  description="" />
       <siteMapNode url="movimientos/new_order.aspx" title="Hacer Pedido"  description="" />
       <siteMapNode url="movimientos/pedidosParaSurtir.aspx" title="Surtir Pedido"  description="" />
       <siteMapNode url="movimientos/update_prices.aspx" title="Subir Precios"  description="" />
