@@ -13,6 +13,10 @@ Partial Class reportes_clientes
 
     Public Sub populate_clientes()
         Dim user As String
+        lblIdCliente.Text = ""
+        lblNombreCliente.Text = ""
+        lblTelefono.Text = ""
+
         user = Membership.GetUser().UserName
         query = "select location from users where user_name = '" + user + "'"
         ds = Dataconnect.GetAll(query)
@@ -42,6 +46,21 @@ Partial Class reportes_clientes
 
         End If
 
+    End Sub
+
+    Private Sub getData(idCte As String)
+        Dim telCte, nomCte As String
+        telCte = ""
+        nomCte = ""
+        query = "SELECT name, telephone FROM clients WHERE id = " + idCte
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            nomCte = ds.Tables(0).Rows(0)("name")
+            telCte = ds.Tables(0).Rows(0)("telephone")
+        End If
+        lblIdCliente.Text = idCte
+        lblNombreCliente.Text = nomCte
+        lblTelefono.Text = telCte
     End Sub
 
     Protected Sub btn_get_report_Click(sender As Object, e As EventArgs) Handles btn_get_report.Click
@@ -79,10 +98,10 @@ Partial Class reportes_clientes
             End If
 
 
-            query = "select sale_order.id as [No. orden], "
-            query += " employees.name + ' ' + employees.last_name as [vendedor], sale_order.date as"
-            query += " [fecha apertura], start_date as [fecha comienzo surtido], order_status.status as [status], 'ver detalles'"
-            query += " as link from sale_order "
+            query = "select sale_order.id as [No. Orden], "
+            query += " employees.name + ' ' + employees.last_name as [Vendedor], sale_order.date as"
+            query += " [Fecha apertura], start_date as [Fecha comienzo surtido], order_status.status as [Status], 'Ver detalles'"
+            query += " as Link from sale_order "
             query += " inner join order_status on sale_order.status = order_status.id left join employees on sale_order.vendor = employees.id"
             query += " where sale_order.customer = " + client_id.ToString() + " and cast(convert(varchar, sale_order.date, 101) as date) >= '" + from_d + "'"
             query += " and cast(convert(varchar, sale_order.date, 101) as date) <= '" + to_d + "'"
@@ -94,16 +113,26 @@ Partial Class reportes_clientes
                 gv_results.DataBind()
                 btn_export.Enabled = True
                 lbl_error.Text = ""
+                lblOrd.Visible = True
+                lblProd.Visible = True
+                pnlDatosCliente.Visible = True
+                getData(client_id)
             Else
                 gv_results.DataSource = Nothing
                 gv_results.DataBind()
                 btn_export.Enabled = False
                 lbl_error.Text = "No existen pedidos para esta seleccion"
+                lblOrd.Visible = False
+                lblProd.Visible = False
+                pnlDatosCliente.Visible = False
             End If
 
         Else
             btn_export.Enabled = False
             lbl_error.Text = "Ingrese todos los datos"
+            lblOrd.Visible = False
+            lblProd.Visible = False
+            pnlDatosCliente.Visible = False
         End If
 
     End Sub

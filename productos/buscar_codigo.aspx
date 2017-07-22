@@ -45,9 +45,6 @@
             <input id="Button1" type="button" value="Reportar Negada" onclick="show_negadas();" />
             <asp:Label ID="lbl_error" runat="server" Text="" ForeColor="Red"></asp:Label>
         </fieldset><br />
-        <!-- <div style="float: right">
-            <asp:Image ID="img_item" runat="server" ImageUrl="~/images/tapas/no-image.jpg" Height="150px" />
-        </div> -->
     </asp:Panel>
     <hr />
     <br />

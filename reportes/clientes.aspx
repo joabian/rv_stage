@@ -39,6 +39,34 @@
     <br /><hr />
     <fieldset>
         <legend>Filtros:</legend>
+        <asp:Panel runat="server" ID="pnlDatosCliente" HorizontalAlign="Right" Visible="false">
+            <asp:Table runat="server" ID="tblDatos" Caption="Datos de Cliente" HorizontalAlign="Right">                
+                <asp:TableRow>
+                    <asp:TableHeaderCell >
+                        <asp:Label runat="server" Text="ID Cliente: "></asp:Label>
+                    </asp:TableHeaderCell>
+                    <asp:TableCell HorizontalAlign="Left">
+                        <asp:Label runat="server" ID="lblIdCliente"></asp:Label>
+                    </asp:TableCell>
+                </asp:TableRow>
+                <asp:TableRow>
+                    <asp:TableHeaderCell>
+                        <asp:Label runat="server" Text="Nombre: "></asp:Label>
+                    </asp:TableHeaderCell>
+                    <asp:TableCell HorizontalAlign="Left">
+                        <asp:Label runat="server" ID="lblNombreCliente"></asp:Label>
+                    </asp:TableCell>
+                </asp:TableRow>
+                <asp:TableRow>
+                    <asp:TableHeaderCell>
+                        <asp:Label runat="server" Text="Teléfono: "></asp:Label>
+                    </asp:TableHeaderCell>
+                    <asp:TableCell HorizontalAlign="Left">
+                        <asp:Label runat="server" ID="lblTelefono"></asp:Label>
+                    </asp:TableCell>
+                </asp:TableRow>
+            </asp:Table>            
+        </asp:Panel>
         <asp:DropDownList ID="ddl_cliente" runat="server" AppendDataBoundItems="true">
             <asp:ListItem Value="-" Text="Seleccione un Cliente..."></asp:ListItem>
         </asp:DropDownList><br /><br />
@@ -48,18 +76,23 @@
         Hasta:
         <asp:TextBox ID="to_date" runat="server"></asp:TextBox><br /><br />
         <asp:Button ID="btn_get_report" runat="server" Text="Generar Reporte" />&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Button ID="btn_export" runat="server" Text="Exportar a Excel" Enabled="false" />
-        
-    </fieldset>
-
-    <asp:GridView ID="gv_summary" runat="server">
-
-    </asp:GridView>
-    <br /><br />
-    <asp:GridView ID="gv_results" runat="server">
-
-    </asp:GridView>
-    <asp:Label ID="lbl_error" runat="server" Text="" ForeColor="Red"></asp:Label>
+        <asp:Button ID="btn_export" runat="server" Text="Exportar a Excel" Enabled="false" />        
+    </fieldset><hr />
+    <center>        
+        <asp:Label runat="server" ID="lblProd" Text="Por Productos Comprados" Visible="false" Font-Bold="true" Font-Size="Medium"></asp:Label>
+        <br />
+        <br />
+        <asp:GridView ID="gv_summary" runat="server">
+        </asp:GridView>
+        <br />
+        <br />
+        <asp:Label runat="server" ID="lblOrd" Text="Por Órdenes Pedidas" Visible="false" Font-Bold="true" Font-Size="Medium"></asp:Label>
+        <br />
+        <br />
+        <asp:GridView ID="gv_results" runat="server">
+        </asp:GridView>
+        <asp:Label ID="lbl_error" runat="server" Text="" ForeColor="Red"></asp:Label>
+    </center>
 
     <asp:HiddenField ID="hf_qry" runat="server" />
     <asp:HiddenField ID="hf_qry2" runat="server" />
