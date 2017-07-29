@@ -33,81 +33,35 @@ Partial Class reportes_Activity
     End Sub
 
     Protected Sub btnBuscarRec_Click(sender As Object, e As EventArgs) Handles btnBuscarRec.Click
-        Dim cantcode As Integer = txtCodigo.Text.LongCount 'cuenta la cantidad de caracteres que trae el código
-        Dim cantsucursal As Integer = ddlSucursal.Text.LongCount 'cuenta la cantidad de caracteres que trae la sucursal
+        Dim code As String = Replace(txtCodigo.Text & "'", "'", "") 'cuenta la cantidad de caracteres que trae el código
+        Dim sucursal As String = ddlSucursal.SelectedValue.ToString() 'cuenta la cantidad de caracteres que trae la sucursal
         Dim from_d As String = Request.Form("from_date") 'convierte a string la fecha de inicio
         Dim to_d As String = Request.Form("to_date") 'convierte a string la fecha final
 
-        If cantcode > 0 And cantsucursal > 1 Then 'entra aquí si código y sucursal traen caracteres
-            Dim sucursal As String = ddlSucursal.SelectedValue.ToString()
-            Dim codigo As String = Replace(txtCodigo.Text & "'", "'", "").ToString()
 
-            query = "SELECT user_name AS [Usuario], event AS [Evento], date AS [Fecha]"
-            query += " FROM logs WHERE event LIKE '%" + sucursal + "%' AND event LIKE '% " + codigo + " %'"
-            query += " AND cast(convert(varchar, date, 101) as date) >= '" + from_d + "' "
-            query += " AND cast(convert(varchar, date, 101) as date) <= '" + to_d + "' "
-            query += " ORDER BY date DESC"
-            ds = Dataconnect.GetAll(query)
-            If ds.Tables(0).Rows.Count > 0 Then
-                GridView1.DataSource = ds.Tables(0)
-                GridView1.DataBind()
-                lblMsg.Text = "Filtros: Fecha inicial: " + from_d + " - Fecha final: " + to_d + " - Código: " + codigo + " - Sucursal: " + sucursal
-            Else
-                GridView1.DataSource = Nothing
-                GridView1.DataBind()
-                lblMsg.Text = "No existen eventos para los filtros buscados"
-            End If
-        ElseIf cantcode > 0 And cantsucursal = 1 Then 'entra aquí si solo el código trae caracteres
-            Dim codigo As String = Replace(txtCodigo.Text & "'", "'", "").ToString()
-
-            query = "SELECT user_name AS [Usuario], event AS [Evento], date AS [Fecha]"
-            query += " FROM logs WHERE event LIKE '% " + codigo + " %'"
-            query += " AND cast(convert(varchar, date, 101) as date) >= '" + from_d + "' "
-            query += " AND cast(convert(varchar, date, 101) as date) <= '" + to_d + "' "
-            query += " ORDER BY date DESC"
-            ds = Dataconnect.GetAll(query)
-            If ds.Tables(0).Rows.Count > 0 Then
-                GridView1.DataSource = ds.Tables(0)
-                GridView1.DataBind()
-                lblMsg.Text = "Filtros: Fecha inicial: " + from_d + " - Fecha final: " + to_d + " - Código: " + codigo
-            Else
-                GridView1.DataSource = Nothing
-                GridView1.DataBind()
-                lblMsg.Text = "No existen eventos para los filtros buscados"
-            End If
-        ElseIf cantcode = 0 And cantsucursal > 1 Then 'entra aquí si solo la sucursal trae caracteres
-            Dim sucursal As String = ddlSucursal.SelectedValue.ToString()
-
-            query = "SELECT user_name AS [Usuario], event AS [Evento], date AS [Fecha]"
-            query += " FROM logs WHERE event LIKE '%" + sucursal + "%'"
-            query += " AND cast(convert(varchar, date, 101) as date) >= '" + from_d + "' "
-            query += " AND cast(convert(varchar, date, 101) as date) <= '" + to_d + "' "
-            query += " ORDER BY date DESC"
-            ds = Dataconnect.GetAll(query)
-            If ds.Tables(0).Rows.Count > 0 Then
-                GridView1.DataSource = ds.Tables(0)
-                GridView1.DataBind()
-                lblMsg.Text = "Filtros: Fecha inicial: " + from_d + " - Fecha final: " + to_d + " - Sucursal: " + sucursal
-            Else
-                GridView1.DataSource = Nothing
-                GridView1.DataBind()
-                lblMsg.Text = "No existen eventos para los filtros buscados"
-            End If
-        ElseIf cantcode = 0 And cantsucursal = 1 Then 'entra aquí si ni código ni sucursal traen caracteres
-            query = "SELECT user_name AS [Usuario], event AS [Evento], date AS [Fecha]"
-            query += " FROM logs WHERE cast(convert(varchar, date, 101) as date) >= '" + from_d + "' "
-            query += " AND cast(convert(varchar, date, 101) as date) <= '" + to_d + "' "
-            query += " ORDER BY date DESC"
-            ds = Dataconnect.GetAll(query)
-            If ds.Tables(0).Rows.Count > 0 Then
-                GridView1.DataSource = ds.Tables(0)
-                GridView1.DataBind()
-                lblMsg.Text = "Filtros: Fecha inicial: " + from_d + " - Fecha final: " + to_d
-            Else
-                GridView1.DataSource = Nothing
-                GridView1.DataBind()
-                lblMsg.Text = "No existen eventos para los filtros buscados"
-            End If
+        query = "SELECT user_name AS [Usuario], event AS [Evento], date AS [Fecha]"
+        query += " FROM logs WHERE cast(convert(varchar, date, 101) as date) >= '" + from_d + "' "
+        query += " AND cast(convert(varchar, date, 101) as date) <= '" + to_d + "' "
+        If code <> "" Then
+            query += " and event LIKE '%" + code + "%'"
         End If
+        If sucursal <> "-" Then
+            query += " and event LIKE '%" + sucursal + "%'"
+        End If
+        query += " ORDER BY date DESC"
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            GridView1.DataSource = ds.Tables(0)
+            GridView1.DataBind()
+            lblMsg.Text = "Filtros: Fecha inicial: " + from_d + " - Fecha final: " + to_d
+        Else
+            GridView1.DataSource = Nothing
+            GridView1.DataBind()
+            lblMsg.Text = "No existen eventos para los filtros buscados"
+        End If
+
+
+
+
     End Sub
 End Class
