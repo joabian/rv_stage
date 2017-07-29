@@ -41,6 +41,7 @@
         <legend>Filtrar Actividad Reciente </legend>
         <asp:DropDownList ID="ddlSucursal" runat="server" AppendDataBoundItems="true">
             <asp:ListItem Value="-" Text="Seleccione sucursal"></asp:ListItem>
+            <asp:ListItem Value="-" Text="Todas"></asp:ListItem>
         </asp:DropDownList>&nbsp&nbsp
         <asp:Label ID="lblCodigo" runat="server" Text="Código: "></asp:Label>
         <asp:TextBox ID="txtCodigo" runat="server" ></asp:TextBox>&nbsp&nbsp
