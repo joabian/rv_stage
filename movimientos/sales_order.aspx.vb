@@ -830,7 +830,7 @@ Partial Class movimientos_sales_order
         Dim logevent As String
         username = Membership.GetUser().UserName
 
-        query = "update sale_order set status = '2' where id = '" + lbl_order_number.Text.ToString() + "'"
+        query = "update sale_order set status = '2', estatus_pago = 1 where id = '" + lbl_order_number.Text.ToString() + "'"
         Dataconnect.runquery(query)
 
         logevent = "Actualizacion de pedido: " + lbl_order_number.Text.ToString() + " status nuevo: Lista para Surtir"

@@ -496,7 +496,7 @@
                             <%--<%--onblur="saveSucursal();"--%>
                             <%--<input class="textBox" style="display:none" id="id_Sucursal" name="id_Sucursal" asp_id="id_Sucursal"  />--%>
                             <%--4.0.0x18--%>
-                            <%--</div>--%>--%>
+                            <%--</div>--%>
                             <select id="Locations"></select>
                         </td>
                     </tr>

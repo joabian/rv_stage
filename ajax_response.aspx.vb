@@ -40,6 +40,11 @@ Partial Class ajax_response
     Dim table As String
     Dim array As String
     Dim idSucursal As String
+    Dim idCliente As String
+    Dim idOrden As String
+    Dim deuda As String
+    Dim abono As String
+    Dim restante As String
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         _REQUEST()
@@ -76,6 +81,9 @@ Partial Class ajax_response
         If _OPTION = "salvarPreciosMasivo" Then salvarPreciosMasivo()
         If _OPTION = "cantDisponible" Then cantDisponible()
         If _OPTION = "convSucursal" Then convSucursal()
+        If _OPTION = "getOrdersfromClient" Then getOrdersfromClient()
+        If _OPTION = "getClient" Then getClient()
+        If _OPTION = "registrarPago" Then registrarPago()
 
     End Sub
 
@@ -113,6 +121,11 @@ Partial Class ajax_response
         Codigo = Request("codigo")
         array = Request("arrayTransfer")
         idSucursal = Request("idSucursal")
+        idCliente = Request("idCliente")
+        idOrden = Request("idOrden")
+        deuda = Request("deuda")
+        abono = Request("abono")
+        restante = Request("restante")
     End Sub
 
     Public Sub salvarPreciosMasivo()
@@ -1383,4 +1396,86 @@ Partial Class ajax_response
         Return html
     End Function
 
+    Private Sub getOrdersfromClient()
+        Dim ordenes As String = ""
+        Try
+            query = "SELECT id, CONVERT(varchar, date, 101) As Fecha FROM sale_order WHERE customer = " + idCliente + " AND status <> 7 AND estatus_pago <> 3 ORDER BY id DESC"
+            ds = Dataconnect.GetAll(query)
+            If ds.Tables(0).Rows.Count > 0 Then
+                For i = 0 To ds.Tables(0).Rows.Count - 1
+                    ordenes += ds.Tables(0).Rows(i)("id").ToString() + ","
+                    ordenes += ds.Tables(0).Rows(i)("Fecha").ToString() + ","
+                Next
+            End If
+            Response.Write(ordenes)
+        Catch ex As Exception
+            MsgBox("Ha ocurrido un error: " + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub getClient()
+        Dim datos As String = ""
+        Dim total As String = ""
+        Dim deuda As String = ""
+
+        Try
+            query = "SELECT name FROM clients WHERE id = " + idCliente.ToString()
+            ds = Dataconnect.GetAll(query)
+            If ds.Tables(0).Rows.Count > 0 Then
+                For i = 0 To ds.Tables(0).Rows.Count - 1
+                    datos = ds.Tables(0).Rows(i)("name").ToString() + "} "
+                Next
+            End If
+
+            query = "SELECT SUM(sold_price * qty_picked) As [Total Items], ISNULL(sale_order.flete, 0) As Flete FROM sale_order_items "
+            query += "INNER JOIN sale_order ON sale_order_items.order_id = sale_order.id WHERE order_id = " + idOrden.ToString()
+            query += "GROUP BY sale_order.flete"
+            ds = Dataconnect.GetAll(query)
+            Dim totalItems, flete As Double
+            If ds.Tables(0).Rows.Count > 0 Then
+                totalItems = ds.Tables(0).Rows(0)("Total Items")
+                flete = ds.Tables(0).Rows(0)("Flete")
+                total = totalItems + flete
+            Else
+                total = 0
+            End If
+            total = Decimal.Round(total)
+            datos += total + "} "
+            datos += Decimal.Round(total).ToString("C2") + "} "
+
+            query = "SELECT ISNULL(SUM(pago), 0) As [Total Pagos] FROM pagos WHERE idOrden = " + idOrden.ToString()
+            ds = Dataconnect.GetAll(query)
+            Dim totalPagos, adeudo As Double
+            If ds.Tables(0).Rows.Count > 0 Then
+                totalPagos = ds.Tables(0).Rows(0)("Total Pagos")
+                adeudo = total - totalPagos
+            Else
+                adeudo = total
+            End If
+            deuda = Decimal.Round(adeudo)
+            datos += deuda + "} "
+            datos += Decimal.Round(adeudo).ToString("C2")
+
+            Response.Write(datos)
+        Catch ex As Exception
+            MsgBox("Ha ocurrido un error: " + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub registrarPago()
+        Dim msg = ""
+        Dim estatus As String = 2
+        If restante = 0 Then
+            estatus = 3
+        End If
+        Try
+            query = "INSERT INTO pagos (idOrden, pago, fechaPago) VALUES ('" + idOrden + "', '" + abono + "', getDate()) "
+            query += "UPDATE pagosOrdenes SET adeudo = '" + restante + "', status = '" + estatus + "' WHERE idOrden = '" + idOrden + "' AND idCliente = '" + idCliente + "'"
+            Dataconnect.runquery(query)
+            msg = "¡Pago registrado exitosamente!"
+            Response.Write(msg)
+        Catch ex As Exception
+            MsgBox("Ha ocurrido un error: " + ex.Message)
+        End Try
+    End Sub
 End Class

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="intra_trnsfr.aspx.vb" Inherits="movimientos_intra_trnsfr" %>
+﻿    <%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="intra_trnsfr.aspx.vb" Inherits="movimientos_intra_trnsfr" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="Server">
     <script src="../Scripts/jquery.js" type="text/javascript"></script>
@@ -32,6 +32,12 @@
         var rowTransfer = []; // Es el arreglo bidimensional usado para la guardar los registro de las transferencias
         var cantDisp = 0; // Se usa en cantDisponible(), para guardar la cantidad disponible del producto en la Sucursal y Rack seleccionados
         var alias = "";
+
+        $(document).ready(function () {
+            $('.solonumeros').keyup(function () {
+                this.value = (this.value + '').replace(/[^0-9]/g, '');
+            });
+        });
 
         function saveTransfer() { // Se lleva a cabo la Transferencia con todos los registros guardados en el arreglo
             var serializedData = {};
@@ -293,7 +299,7 @@
                     </td>
                     <td align="right">Cantidad:</td>
                     <td style="width: 50px">
-                        <input type="text" id="txtQty" name="txtQty" style="width: 50px;" onblur="agregarTransfer();"/>
+                        <input type="text" id="txtQty" name="txtQty" style="width: 50px;" class="solonumeros" onblur="agregarTransfer();"/>
                     </td>
                     <td align="right">Disponible: </td>
                     <td><span id="cantDisponible">0</span></td>
