@@ -7,9 +7,9 @@
     <script src="../Scripts/jquery-ui-1.7.1.custom.min.js" type="text/javascript"></script>
     <script src="../Scripts/calendar/datepicker.js" type="text/javascript"></script>
     <script src="../Scripts/calendar/datepicker-es.js" type="text/javascript"></script>
-    <link href="../Styles/calendar/datepicker.css" rel="stylesheet" type="text/css" />
-    <link href="../Styles/redmond/jquery-ui-1.8.22.custom.css" type="text/css" rel="stylesheet" />   
     <script src="../Scripts/colorbox/colorbox.js" type="text/javascript"></script>
+    <link href="../Styles/calendar/datepicker.css" rel="stylesheet" type="text/css" />
+    <link href="../Styles/redmond/jquery-ui-1.8.22.custom.css" type="text/css" rel="stylesheet" />    
 
     <style type="text/css">
         .tableItems {
@@ -22,8 +22,8 @@
         .date_hide {
             display: none;
         }
-    </style>
 
+    </style>
     <script type="text/javascript">
         $(function () {
             var dates = $("#<%=fromDate.ClientID%>, #<%=toDate.ClientID%>").datepicker({
@@ -31,8 +31,21 @@
                 changeYear: true,
                 yearRange: '2010:2200', 
                 dateFormat: 'mm/dd/yy',
-                firstDay: 1
+                firstDay: 1,
+                onSelect: function (selectedDate) {
+                    var option = this.id == "<%=fromDate.ClientID%>" ? "minDate" : "maxDate",
+					    instance = $(this).data("datepicker"),
+					    date = $.datepicker.parseDate(
+						    instance.settings.dateFormat ||
+						    $.datepicker._defaults.dateFormat,
+						    selectedDate, instance.settings);
+                    dates.not(this).datepicker("option", option, date);
+                }
             });
+            $("#<%=fromDate.ClientID%>").attr('readOnly', 'true')
+            $("#<%=fromDate.ClientID%>").keypress(function (event) { event.preventDefault(); });
+            $("#<%=toDate.ClientID%>").attr('readOnly', 'true')
+            $("#<%=toDate.ClientID%>").keypress(function (event) { event.preventDefault(); });
         });
     </script>
 </asp:Content>
@@ -45,17 +58,16 @@
             <asp:ListItem Value="-" Text="Seleccione un Cliente..."></asp:ListItem>
         </asp:DropDownList>&nbsp&nbsp
         Desde:
-        <asp:TextBox ID="fromDate" runat="server"></asp:TextBox>&nbsp;&nbsp;
+        <asp:TextBox ID="fromDate" runat="server" ></asp:TextBox> &nbsp;&nbsp;
         Hasta:
-        <asp:TextBox ID="toDate" runat="server"></asp:TextBox><br /><br />
-        <asp:Button ID="btnGetEdoCta" runat="server" Text="Generar Estado de Cuenta" />&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:TextBox ID="toDate" runat="server"></asp:TextBox> <br /><br />
+        <asp:Button ID="btnGetEdoCta" runat="server" Text="Generar Estado de Cuenta"/>&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button ID="btnExport" runat="server" Text="Exportar a Excel" Enabled="false" />        
-    </fieldset>
-    <br /><hr />
+    </fieldset><hr />
     <center>
         <asp:Label ID="lblTitulo" Text="Estado de Cuenta" runat="server" visible="false" style="font-size:medium; font-weight:700"/>
         <br /><br />
-        <asp:Literal ID="tblEdoCta" runat="server"></asp:Literal>
+        <asp:GridView ID="gvEdoCta" runat="server" Width="85%" RowStyle-HorizontalAlign="Center"></asp:GridView>
         <asp:Label ID="lblError" runat="server" Text="" ForeColor="Red"></asp:Label>
     </center>
 

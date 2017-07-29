@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
     <script src="../Scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
-    <script src="Scripts/jquery.js" type="text/javascript"></script>
+    <script src="../Scripts/jquery.js" type="text/javascript"></script>
     <script src="../Scripts/jquery-ui-1.8.22.custom.min.js" type="text/javascript" ></script>
     <script src="../Scripts/jquery-ui-1.7.1.custom.min.js" type="text/javascript"></script>
     <script src="../Scripts/calendar/datepicker.js" type="text/javascript"></script>

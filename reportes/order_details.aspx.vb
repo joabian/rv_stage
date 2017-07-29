@@ -421,6 +421,7 @@ Partial Class reportes_order_details
 
     Protected Sub btn_ship_Click(sender As Object, e As EventArgs) Handles btn_ship.Click
         Dim total As Double
+        Dim idCte = ""
         Dim username As String
         Dim logevent As String
         username = Membership.GetUser().UserName
@@ -430,11 +431,19 @@ Partial Class reportes_order_details
             lbl_msg.Text = "Ingrese costo de flete!"
         ElseIf Not IsNumeric(tbx_flete.Text) Then
             lbl_msg.ForeColor = Drawing.Color.Red
-            lbl_msg.Text = "Costo de flete numerico!"
+            lbl_msg.Text = "Costo de flete numérico!"
         Else
+            query = "SELECT id FROM clients WHERE name = '" + lbl_Client.Text.ToString() + "'"
+            ds = Dataconnect.GetAll(query)
+            If ds.Tables(0).Rows.Count > 0 Then
+                idCte = ds.Tables(0).Rows(0)("id")
+            End If
+
             total = Convert.ToDouble(tbx_flete.Text) + Convert.ToDouble(lbl_total.Text)
-            MsgBox(total)
-            query = "update sale_order set status = '5', flete = '" + tbx_flete.Text + "', total = " + Convert.ToString(total) + " where id = '" + lbl_order_number.Text.ToString() + "'"
+
+            query = "update sale_order set status = '5', flete = '" + tbx_flete.Text + "' where id = '" + lbl_order_number.Text.ToString() + "'"
+            query += "INSERT INTO pagosOrdenes (idOrden, idCliente, status) VALUES ("
+            query += lbl_order_number.Text.ToString() + ", " + idCte + ", 1)"
             Dataconnect.runquery(query)
 
             logevent = "Actualizacion de pedido: " + lbl_order_number.Text.ToString() + " status nuevo: Enviada"
