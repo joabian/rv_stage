@@ -1409,7 +1409,7 @@ Partial Class ajax_response
             End If
             Response.Write(ordenes)
         Catch ex As Exception
-            MsgBox("Ha ocurrido un error: " + ex.Message)
+            'MsgBox("Ha ocurrido un error: " + ex.Message)
         End Try
     End Sub
 
@@ -1470,12 +1470,11 @@ Partial Class ajax_response
         End If
         Try
             query = "INSERT INTO pagos (idOrden, pago, fechaPago) VALUES ('" + idOrden + "', '" + abono + "', getDate()) "
-            query += "UPDATE pagosOrdenes SET adeudo = '" + restante + "', status = '" + estatus + "' WHERE idOrden = '" + idOrden + "' AND idCliente = '" + idCliente + "'"
             Dataconnect.runquery(query)
             msg = "¡Pago registrado exitosamente!"
             Response.Write(msg)
         Catch ex As Exception
-            MsgBox("Ha ocurrido un error: " + ex.Message)
+            'MsgBox("Ha ocurrido un error: " + ex.Message)
         End Try
     End Sub
 End Class
