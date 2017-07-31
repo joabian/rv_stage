@@ -442,8 +442,6 @@ Partial Class reportes_order_details
             total = Convert.ToDouble(tbx_flete.Text) + Convert.ToDouble(lbl_total.Text)
 
             query = "update sale_order set status = '5', flete = '" + tbx_flete.Text + "' where id = '" + lbl_order_number.Text.ToString() + "'"
-            query += "INSERT INTO pagosOrdenes (idOrden, idCliente, status) VALUES ("
-            query += lbl_order_number.Text.ToString() + ", " + idCte + ", 1)"
             Dataconnect.runquery(query)
 
             logevent = "Actualizacion de pedido: " + lbl_order_number.Text.ToString() + " status nuevo: Enviada"
