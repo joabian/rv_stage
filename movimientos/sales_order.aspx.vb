@@ -297,6 +297,7 @@ Partial Class movimientos_sales_order
             orig_status_name = ds.Tables(0).Rows(0)("status_name").ToString()
             orig_location = ds.Tables(0).Rows(0)("location").ToString()
 
+
             Dim username As String
             Dim logevent As String
             username = Membership.GetUser().UserName
@@ -506,6 +507,7 @@ Partial Class movimientos_sales_order
 
     'End Sub
 
+
     Public Sub readExcelNew()
         'Dim filepath As String = "C:\Users\212331260"
         Dim filepath As String = "e:\HostingSpaces\vencedo2\radiadoresvencedores.com\wwwroot\docs"
@@ -558,7 +560,7 @@ Partial Class movimientos_sales_order
     'End Sub
 
     Public Sub readExcelPedidoNew()
-        'Dim path As String = "C:\Users\212331260\Desktop\ejemplo_vencedores.xlsx"
+        'Dim filepath As String = "C:\Users\212331260"
         Dim filepath As String = "e:\HostingSpaces\vencedo2\radiadoresvencedores.com\wwwroot\docs"
         Dim uploadedFiles As HttpFileCollection = Request.Files
         Dim i As Integer = 0
@@ -733,6 +735,7 @@ Partial Class movimientos_sales_order
     End Sub
 
     Public Sub uploadItemstoOrderNew(ByVal list_items As DataSet)
+        Dim error_msg As String = ""
         Dim order_number, item, qty, price, cliente As String
         order_number = lbl_order_number.Text.ToString()
         query = "select default_price, name from sale_order inner join clients on sale_order.customer = clients.id where sale_order.id = " + order_number.ToString()
@@ -754,22 +757,28 @@ Partial Class movimientos_sales_order
             item = Replace(list_items.Tables(0).Rows(i)(0).ToString(), "'", "").ToUpper()
             qty = list_items.Tables(0).Rows(i)(1).ToString()
             'price = "0" 'tbx_precio.Text.ToString()
-            addItem(item, qty, price, order_number)
+            error_msg += addItem(item, qty, price, order_number)
         Next
 
         'populate_order_info()
         'populateItemsGridView()
+        If error_msg = "" Then
+            Response.Redirect("sales_order.aspx?order=" + order_number.ToString())
+        Else
+            ScriptManager.RegisterStartupScript(Me, Page.GetType, "Script", "loatTableItems();", True)
+            lbl_file_errors.Text = "El archivo se cargo con exito, solo corrija los siguientes errores:<br />" + error_msg
+        End If
 
-        Response.Redirect("sales_order.aspx?order=" + order_number.ToString())
 
     End Sub
 
-    Public Sub addItem(ByVal item As String, ByVal qty As String, ByVal price As String, ByVal order_number As String)
+    Public Function addItem(ByVal item As String, ByVal qty As String, ByVal price As String, ByVal order_number As String) As String
         'verificamos que sean cantidades numericas
+        Dim error_msg As String = ""
         Dim id_record As String
 
         If Not IsNumeric(qty) Or Not IsNumeric(price) Then
-            'error_msg += "Campo de Cantidad esta incorrecto para producto: " + item.ToString() + " en linea: " + (i + 1).ToString() + "<br />"
+            error_msg += "Campo de Cantidad esta incorrecto para producto: " + item.ToString() + " <br />"
         Else
             query = "select * from products where code = '" + item.ToString() + "'"
             ds = Dataconnect.GetAll(query)
@@ -794,10 +803,11 @@ Partial Class movimientos_sales_order
                 'queryLog = "INSERT INTO logs(user_name, event, date) VALUES ('" + username.ToString() + "', '" + logevent.ToString() + "', getDate())"
                 'Dataconnect.runquery(queryLog)
                 'error_msg += "El item: " + item.ToString() + " no existe en la base de datos&nbsp;&nbsp;&nbsp;<input type='button' value='Reportar Negada' onclick='show_negadas_pedidos(""?codigo=" + item.ToString() + "&cantidad=" + qty.ToString() + "&cliente=" + cliente.ToString() + "&sucursal=" + ddl_location.SelectedItem.Text + """);' /><br />"
+                error_msg += "El item: " + item.ToString() + " no existe en la base de datos<br />"
             End If
         End If
-
-    End Sub
+        Return error_msg
+    End Function
 
     'Protected Sub btn_Add_Click(sender As Object, e As EventArgs) Handles btn_Add.Click
     '    Dim order_number, item, qty, price, error_msg, cliente As String
@@ -830,7 +840,7 @@ Partial Class movimientos_sales_order
         Dim logevent As String
         username = Membership.GetUser().UserName
 
-        query = "update sale_order set status = '2', estatus_pago = 1 where id = '" + lbl_order_number.Text.ToString() + "'"
+        query = "update sale_order set status = '2' where id = '" + lbl_order_number.Text.ToString() + "'"
         Dataconnect.runquery(query)
 
         logevent = "Actualizacion de pedido: " + lbl_order_number.Text.ToString() + " status nuevo: Lista para Surtir"

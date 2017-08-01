@@ -14,11 +14,12 @@ Partial Class autocomplete
 
     Protected Sub Page_PreInit(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreInit
         _REQUEST()
+
         If OP = "Codigo" Then SearchCodigo()
         If OP = "Cliente" Then SearchCliente()
         If OP = "Vendedor" Then SearchVendedor()
         If OP = "Sucursal" Then SearchSucursal()
-        If OP = "Rack" Then SearchFromRack()
+
     End Sub
 
     Protected Sub _REQUEST()
@@ -112,34 +113,6 @@ Partial Class autocomplete
         If ds.Tables(0).Rows.Count > 0 Then
             For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
                 Response.Write(rows_result(i, ds.Tables(0).Rows(i)("id").ToString(), ds.Tables(0).Rows(i)("name").ToString(), ID))
-            Next i
-        Else
-            Response.Write(rows_result(-1, "-1", "No Search Result", ID))
-        End If
-    End Sub
-
-    Private Sub SearchFromRack()
-        Dim query As String
-        query = "SELECT DISTINCT TOP 15 rack FROM stock"
-        'query = "SELECT DISTINCT TOP 15 rack FROM stock WHERE location= '" + SearchfromRack.Text + "'"
-        ds = Dataconnect.GetAll(query)
-        If ds.Tables(0).Rows.Count > 0 Then
-            For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
-                Response.Write(rows_result_codigo(i, ds.Tables(0).Rows(i)("rack").ToString(), ds.Tables(0).Rows(i)("rack").ToString(), ID))
-            Next i
-        Else
-            Response.Write(rows_result(-1, "-1", "No Search Result", ID))
-        End If
-    End Sub
-
-    Private Sub SearchToRack()
-        Dim query As String
-        query = "SELECT DISTINCT TOP 15 rack FROM stock"
-        'query = "SELECT DISTINCT TOP 15 rack FROM stock WHERE location= '" + SearchtoRack.Text + "'"
-        ds = Dataconnect.GetAll(query)
-        If ds.Tables(0).Rows.Count > 0 Then
-            For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
-                Response.Write(rows_result_codigo(i, ds.Tables(0).Rows(i)("rack").ToString(), ds.Tables(0).Rows(i)("rack").ToString(), ID))
             Next i
         Else
             Response.Write(rows_result(-1, "-1", "No Search Result", ID))

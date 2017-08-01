@@ -1,4 +1,4 @@
-﻿    <%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="intra_trnsfr.aspx.vb" Inherits="movimientos_intra_trnsfr" %>
+﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="intra_trnsfr.aspx.vb" Inherits="movimientos_intra_trnsfr" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="Server">
     <script src="../Scripts/jquery.js" type="text/javascript"></script>

@@ -4,14 +4,36 @@ Partial Class reportes_orders
     Public query As String
     Public Dataconnect As New DataConn_login
     Public ds As New DataSet
+    Public username As String
+    Public location_st As String
+
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+        username = Membership.GetUser().UserName
+
+        If username.ToLower() = "lramos" Or username.ToLower() = "lidia" Or username.ToLower() = "srodriguez" Or username.ToLower() = "omartinez" Or username.ToLower() = "jalvarez" Or username.ToLower() = "joabian" Or username.ToLower() = "sgonzalez" Or username.ToLower() = "admin" Then
+
+        Else
+            Response.Redirect("../access_denied.aspx")
+        End If
+
+        query = "select location from users left join locations on users.location = locations.id where user_name = '" + username + "'"
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            location_st = ds.Tables(0).Rows(0)("location").ToString()
+        Else
+            location_st = "0"
+        End If
+
         query = "select sale_order.id as [No. Orden], clients.name as [Cliente], sale_order.contact_info as [Contacto],"
         query += " employees.name + ' ' + employees.last_name as [Vendedor], sale_order.date as"
         query += " [Fecha Apertura], start_date as [Fecha Comienzo Surtido], order_status.status as [Estatus], 'Ver Detalles'"
         query += " as Link from sale_order inner join clients on sale_order.customer = clients.id"
         query += " inner join order_status on sale_order.status = order_status.id left join employees on sale_order.vendor = employees.id"
         query += " where order_status.id in (4)"
+        If location_st <> "0" Then
+            query += " and clients.location = '" + location_st.ToString() + "'"
+        End If
         query += " order by sale_order.date desc, sale_order.id"
         hf_qry.Value = query
 
@@ -42,6 +64,9 @@ Partial Class reportes_orders
             query += " inner join order_status on sale_order.status = order_status.id left join employees on sale_order.vendor = employees.id"
             query += " where cast(convert(varchar, sale_order.date, 101) as date) >= '" + from_d + "'"
             query += " and cast(convert(varchar, sale_order.date, 101) as date) <= '" + to_d + "'"
+            If location_st <> "0" Then
+                query += " and clients.location = '" + location_st.ToString() + "'"
+            End If
             query += " order by sale_order.date desc, sale_order.id"
             hf_qry.Value = query
             ds = Dataconnect.GetAll(query)
@@ -126,6 +151,11 @@ Partial Class reportes_orders
             query += " inner join employees on myorder.vendor = employees.id"
             query += " where cast(convert(varchar, myorder.date, 101) as date) >= '" + from_d + "'"
             query += " and cast(convert(varchar, myorder.date, 101) as date) <= '" + to_d + "'"
+
+            If location_st <> "0" Then
+                query += " and clients.location = '" + location_st.ToString() + "'"
+            End If
+
             query += " order by myorder.date desc, order_id"
 
             hf_qry.Value = query

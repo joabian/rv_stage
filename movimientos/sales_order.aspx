@@ -337,10 +337,12 @@
                         if (vals[0] == "no data") {
                             $("#addItemsDiv").hide();
                             $("#div_actions").hide();
+                            $("#div-excel").hide();
                             $("#btn_add_items").show();
                         } else {
                             $("#addItemsDiv").show();
                             $("#div_actions").show();
+                            $("#div-excel").show();
                             $("#btn_add_items").hide();
                         }
                     }
@@ -391,6 +393,7 @@
                 success: function (data) {
                     $("#addItemsDiv").show();
                     $("#div_actions").show();
+                    $("#div-excel").show();
                     $("#btn_add_items").hide();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -422,7 +425,8 @@
             <asp:Panel ID="panel_header" runat="server">
                 <table style="width: 750px; margin-left: auto; margin-right: auto;">
                     <tr>
-                        <th style="text-align: right"># Pedido: 
+                        <th style="text-align: right">
+                            # Pedido: 
                         </th>
                         <td style="text-align: left">
                             <asp:Label ID="lbl_order_number" runat="server" Text="" Font-Size="Large" Font-Bold="true" ForeColor="Blue"></asp:Label>
@@ -435,16 +439,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <th style="text-align: right">Cliente: 
+                        <th style="text-align: right">
+                            Cliente: 
                         </th>
                         <td style="text-align: left">
                             <%--<asp:DropDownList ID="ddl_client" runat="server" AppendDataBoundItems="true" AutoPostBack="true">
                                 <asp:ListItem Value="0">Seleccione...</asp:ListItem>
                             </asp:DropDownList>--%>
                             <div id="autocompleteCliente" class="autocompleteContent">
-                                <input id="Cliente" name="Cliente" class="textBox" type="text" autocomplete="on" search="Cliente" style="width: 400px;" />
+                                <input id="Cliente" name="Cliente" class="textBox" type="text" autocomplete="on"
+                                search="Cliente" style="width:400px;"  />
                                 <%--onblur="saveCliente();"--%>
-                                <input class="textBox" style="display: none" id="id_Cliente" name="id_Cliente" asp_id="id_Cliente" />
+                                <input class="textBox" style="display:none" id="id_Cliente" name="id_Cliente" asp_id="id_Cliente"  />
                             </div>
                             <%--<br />
                             <asp:LinkButton ID="LinkButton1" runat="server" PostBackUrl="~/proveedores/agreg_clie.aspx">Nuevo Cliente</asp:LinkButton>
@@ -452,7 +458,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <th style="text-align: right">Paquetería: 
+                        <th style="text-align: right">
+                            Paquetería: 
                         </th>
                         <td style="text-align: left">
                             <select id="ddl_paqueteria">
@@ -466,24 +473,26 @@
                         </td>
                     </tr>
                     <tr>
-                        <th style="text-align: right">Vendedor: </th>
-                        <td style="text-align: left">
-                            <%--<asp:DropDownList ID="ddl_vendor" runat="server" Width="100%" AppendDataBoundItems="true">
+                    <th style="text-align: right">Vendedor: </th>
+                                <td style="text-align: left">
+                                    <%--<asp:DropDownList ID="ddl_vendor" runat="server" Width="100%" AppendDataBoundItems="true">
                                         <asp:ListItem Value="0">Sin asignar</asp:ListItem>
                                     </asp:DropDownList>--%>
-                            <%--<div id="autocompleteVendedor" class="autocompleteContent">
+                                    <%--<div id="autocompleteVendedor" class="autocompleteContent">
                                         <input id="Vendedor" name="Vendedor" class="textBox" type="text" autocomplete="on"
                                         search="Vendedor" style="width:400px;" />--%>
 
-                            <%--onblur="saveVendedor();"--%>
+                                        <%--onblur="saveVendedor();"--%>
+                                        
+                                        <%--<input class="textBox" style="display:none" id="id_Vendedor" name="id_Vendedor" asp_id="id_Vendedor"  />--%>
+                                    <%--</div>--%>
+                                    <select id="Vendedores">
+                                        <option></option>
 
-                            <%--<input class="textBox" style="display:none" id="id_Vendedor" name="id_Vendedor" asp_id="id_Vendedor"  />--%>
-                            <%--</div>--%>
-                            <select id="Vendedores">
-                                <option></option>
-                            </select>
-                        </td>
-                    </tr>
+                                    </select>
+                                </td>
+
+                </tr>
                     <tr>
                         <th style="text-align: right">Punto de Venta: </th>
                         <td style="text-align: left"><%--<asp:Label ID="lbl_location" runat="server" Text=""></asp:Label>--%>
@@ -493,31 +502,37 @@
                             <%--<div id="autocompleteSucursalID" class="autocompleteContentID">
                                         <input id="Sucursal" name="Sucursal" class="textBox" type="text" autocomplete="on"
                                         search="Sucursal" style="width:400px;" />--%>
-                            <%--<%--onblur="saveSucursal();"--%>
-                            <%--<input class="textBox" style="display:none" id="id_Sucursal" name="id_Sucursal" asp_id="id_Sucursal"  />--%>
-                            <%--4.0.0x18--%>
-                            <%--</div>--%>
-                            <select id="Locations"></select>
-                        </td>
-                    </tr>
+                                        <%--onblur="saveSucursal();"--%>
+                                        <%--<input class="textBox" style="display:none" id="id_Sucursal" name="id_Sucursal" asp_id="id_Sucursal"  />--%>
+                                        <%--4.0.0x18--%>
+                                    <%--</div>--%>
+                                    <select id="Locations"></select>
+                                </td>
+                            </tr>
                     <tr>
-                        <th style="text-align: right">Urgente: 
+                        <th style="text-align: right">
+                            Urgente: 
                         </th>
                         <td style="text-align: left">
                             <%--<asp:CheckBox ID="chbx_urgency" runat="server" />--%>
                             <input id="chbx_urgency" type="checkbox" />
+
                         </td>
                     </tr>
                     <tr>
-                        <th style="text-align: right">Transferencia: 
+                        <th style="text-align: right">
+                            Transferencia: 
                         </th>
                         <td style="text-align: left">
                             <%--<asp:CheckBox ID="chbx_urgency" runat="server" />--%>
                             <input id="chbx_transfer" type="checkbox" />
+
                         </td>
                     </tr>
+
                     <tr>
-                        <th style="text-align: right"></th>
+                        <th style="text-align: right">
+                        </th>
                         <td style="text-align: left">
                             <br />
                             <input id="btn_add_items" type="button" value="Agregar Articulo" onclick="SaveOrderInfo();" />
@@ -655,12 +670,16 @@
                     </asp:GridView>
                 </div>
             </asp:Panel>--%>
-            <div id="itemsTable" style="text-align: center">
+            <div style="text-align:center">
+                <asp:Label ID="lbl_file_errors" runat="server" Font-Size="Large" Text="" CssClass="ErrorLabel"></asp:Label>
+            </div>
+            <div id="itemsTable" style="text-align:center">
             </div>
             <br />
-            <div id="div-excel" style="margin-left: auto; margin-right: auto; text-align: center;">
-                <hr />
-                Cargar Excel: 
+            <div id="div-excel" style ="margin-left:auto; margin-right:auto; text-align:center; display:none">
+                    <hr />
+                    
+                    Cargar Excel: 
                     Ejemplo de Archivo:<br />
                 Columna A: Código del Producto<br />
                 Columna B: Cantidad Pedida<br />

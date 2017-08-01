@@ -61,7 +61,7 @@ Partial Class movimientos_sort_stock
         ds = Dataconnect.GetAll(query)
         If ds.Tables(0).Rows.Count > 0 Then
             Dim myhtmltable As String = ""
-            myhtmltable = "<table style='border-collapse:collapse;border:solid 1px black;' border=1><tr><th>De Sucursal</th><th>Fecha</th><th>Codigo</th><th>Descripcion</th><th>Cantidad</th><th><b>Nuevo Rack</b></th></tr>"
+            myhtmltable = "<table style='border-collapse:collapse;border:solid 1px black;' border=1 align='center'><tr><th>De Sucursal</th><th>Fecha</th><th>Codigo</th><th>Descripcion</th><th>Cantidad</th><th><b>Nuevo Rack</b></th></tr>"
             For i = 0 To ds.Tables(0).Rows.Count - 1
                 Dim stockid As String = ds.Tables(0).Rows(i)("id").ToString()
                 myhtmltable += "<tr>"
