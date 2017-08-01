@@ -10,7 +10,7 @@ Partial Class reportes_Activity
             populate_sucursal()
         End If
         lblMsg.Text = ""
-        query = "SELECT user_name AS [Usuario], event AS [Evento], date AS [Fecha] FROM logs WHERE date >= (getdate() - 15) ORDER BY date desc"
+        query = "SELECT user_name AS [Usuario], event AS [Evento], date AS [Fecha] FROM logs WHERE date >= (getdate() - 1) ORDER BY date desc"
         ds = Dataconnect.GetAll(query)
         If ds.Tables(0).Rows.Count > 0 Then
             GridView1.DataSource = ds.Tables(0)
@@ -33,6 +33,9 @@ Partial Class reportes_Activity
     End Sub
 
     Protected Sub btnBuscarRec_Click(sender As Object, e As EventArgs) Handles btnBuscarRec.Click
+        GridView1.DataSource = Nothing
+        GridView1.DataBind()
+
         Dim code As String = Replace(txtCodigo.Text & "'", "'", "") 'cuenta la cantidad de caracteres que trae el código
         Dim sucursal As String = ddlSucursal.SelectedValue.ToString() 'cuenta la cantidad de caracteres que trae la sucursal
         Dim from_d As String = Request.Form("from_date") 'convierte a string la fecha de inicio

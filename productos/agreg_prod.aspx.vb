@@ -49,7 +49,7 @@ Partial Class productos_agreg_prod
                 query += ") VALUES ('" + code.ToString().ToUpper() + "', '" + description.ToString().ToUpper() + "', " + category.ToString() + ", " + price.ToString()
                 query += ", " + cost.ToString() + ", " + low_inventory.ToString() + ", '" + model.ToString().ToUpper() + "',1,getdate(),0)"
                 query += " insert into default_locators (code, location, rack) values ('" + code.ToString() + "','HENEQUEN','ALMACEN')"
-                query += " insert into default_locators (code, location, rack) values ('" + code.ToString() + "','DURANGO','PB')"
+                query += " insert into default_locators (code, location, rack) values ('" + code.ToString() + "','DURANGO','ALMACEN')"
 
                 Dataconnect.runquery(query)
 
@@ -68,9 +68,6 @@ Partial Class productos_agreg_prod
     Public Sub clearcontrols()
 
     End Sub
-
-
-
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Roles.IsUserInRole("admin") Then

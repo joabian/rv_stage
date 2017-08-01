@@ -60,28 +60,8 @@ Partial Class productos_buscar_codigo
 
     End Sub
 
-
-    'Protected Sub lnkbtn_etiqueta_Click(sender As Object, e As EventArgs) Handles lnkbtn_etiqueta.Click
-    '    Dim code_item As String
-    '    code_item = Replace(codigo.Text, "'", "")
-    '    If code_item = "" Then
-
-    '    Else
-    '        Response.Redirect("impr_etiquetas.aspx?code=" + code_item)
-    '    End If
-
-    'End Sub
-
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Dim username As String
-        username = Membership.GetUser().UserName
-        'If username <> "admin" Then
-        '    lnkbtn_etiqueta.Enabled = False
-        '    lnkbtn_etiqueta.Visible = False
-        'Else
-        '    lnkbtn_etiqueta.Enabled = True
-        '    lnkbtn_etiqueta.Visible = True
-        'End If
+        
     End Sub
 
     Protected Sub btn_search_Click(sender As Object, e As EventArgs) Handles btn_search.Click
@@ -106,6 +86,7 @@ Partial Class productos_buscar_codigo
         Dim aliaslistExac2 As String = ""
         Dim aliaslistLike2 As String = ""
 
+
         queryalias = "select alias from products where alias is not null and code = '" + cod.ToString() + "'"
         ds = Dataconnect.GetAll(queryalias)
         If ds.Tables(0).Rows.Count > 0 Then
@@ -123,12 +104,9 @@ Partial Class productos_buscar_codigo
                 dpi_noListLike += " or dpi_no like '%" + myalias(i).ToString() + "%'"
                 inletListLike += " or inlet_no like '%" + myalias(i).ToString() + "%'"
                 outletListLike += " or outlet_no like '%" + myalias(i).ToString() + "%'"
+
             Next
-
-
         End If
-
-        img_item.ImageUrl = "~/images/tapas/" + cod + ".jpg"
 
         query = "select sum(qty) as qty "
         query += " from stock "
@@ -201,6 +179,7 @@ Partial Class productos_buscar_codigo
         If ds.Tables(0).Rows.Count > 0 Then
             gv_general_info.DataSource = ds.Tables(0)
             gv_general_info.DataBind()
+
         Else
             gv_general_info.DataSource = Nothing
             gv_general_info.DataBind()
@@ -356,6 +335,58 @@ Partial Class productos_buscar_codigo
             gv_compativilidad.DataBind()
             lbl_compatibilidad.Text = "Este producto no es compatible con ningún auto de la base de datos"
         End If
+
+        showImage(cod)
+
+    End Sub
+
+    Public Sub showImage(ByVal code As String)
+        Dim HTML_IMG As String = ""
+        Dim dsAlias As DataSet
+        Dim myalias As String()
+        Dim mycode As String
+        Dim myCodeList As List(Of String) = New List(Of String)
+
+
+        'imagen directa:
+        myCodeList.Add(code)
+
+        'alias de producto
+        queryalias = "select alias from products where alias is not null and code = '" + code.ToString() + "'"
+        ds = Dataconnect.GetAll(queryalias)
+        If ds.Tables(0).Rows.Count > 0 Then
+            myalias = Split(ds.Tables(0).Rows(0)("alias"), ",")
+            For i = 0 To myalias.Length - 1
+                myCodeList.Add(myalias(i).ToString())
+            Next
+        End If
+
+        'parent de producto
+        queryalias = "select code from products where code <> '" + code.ToString() + "' and alias like '%" + code.ToString() + "%'"
+        ds = Dataconnect.GetAll(queryalias)
+        If ds.Tables(0).Rows.Count > 0 Then
+            For j = 0 To ds.Tables(0).Rows.Count - 1
+                mycode = ds.Tables(0).Rows(j)(0).ToString()
+                queryalias = "select alias from products where code = '" + mycode + "'"
+                dsAlias = Dataconnect.GetAll(queryalias)
+                If dsAlias.Tables(0).Rows.Count > 0 Then
+                    myalias = Split(dsAlias.Tables(0).Rows(0)("alias"), ",")
+                    For m = 0 To myalias.Length - 1
+                        If myalias(m).ToString() = code.ToString() Then
+                            myCodeList.Add(mycode)
+                        End If
+                    Next
+                End If
+            Next
+        End If
+
+        Dim result As List(Of String) = myCodeList.Distinct().ToList
+
+        For Each element As String In result
+            HTML_IMG += "<div style='float:right'> <b>" + element.ToUpper() + "</b> <img style='height:150px' src='../images/tapas/" + element.ToUpper() + ".jpg' /></div>"
+        Next
+
+        imgs.Text = HTML_IMG
     End Sub
 
 End Class

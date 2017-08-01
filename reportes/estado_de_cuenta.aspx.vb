@@ -36,7 +36,7 @@ Partial Class reportes_estado_de_cuenta
                 End If
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            'MsgBox(ex.Message)
         End Try
     End Sub
 
@@ -85,7 +85,7 @@ Partial Class reportes_estado_de_cuenta
                 End If
 
             Catch ex As Exception
-                MsgBox("Ha ocurrido un error: " + ex.Message)
+                'MsgBox("Ha ocurrido un error: " + ex.Message)
             End Try
         Else
             btnExport.Enabled = False

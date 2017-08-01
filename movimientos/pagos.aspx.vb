@@ -47,7 +47,7 @@ Partial Class movimientos_pagos
                     ddlCliente.DataBind()
                 End If
             Catch ex As Exception
-                MsgBox("Ha ocurrido un error: " + ex.Message)
+                'MsgBox("Ha ocurrido un error: " + ex.Message)
             End Try
 
             If loc_id <> "0" Then

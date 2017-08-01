@@ -27,10 +27,11 @@
     <h1 align="center">Búsqueda de productos por código </h1>
     <br />
     <hr />
-    <div style="float: right">
-        <asp:Image ID="img_item" runat="server" ImageUrl="~/images/tapas/no-image.jpg" Height="150px" />
-    </div>
-    <asp:Panel ID="Panel1" runat="server" DefaultButton="btn_search">        
+    <asp:Panel ID="Panel1" runat="server" DefaultButton="btn_search">  
+        <div style="float: right">
+            <%--<asp:Image ID="img_item" runat="server" ImageUrl="~/images/tapas/no-image.jpg" Height="150px" />--%>
+        <asp:Label ID="imgs" Text="" runat="server"></asp:Label>
+        </div>      
         <fieldset style="width: 350px; height: 90px;">
             <legend>Código de Producto:</legend>
             <asp:TextBox ID="codigo" runat="server" Width="100px"></asp:TextBox>
@@ -45,6 +46,7 @@
             <input id="Button1" type="button" value="Reportar Negada" onclick="show_negadas();" />
             <asp:Label ID="lbl_error" runat="server" Text="" ForeColor="Red"></asp:Label>
         </fieldset><br />
+        
     </asp:Panel>
     <hr />
     <br />

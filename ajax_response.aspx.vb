@@ -84,6 +84,7 @@ Partial Class ajax_response
         If _OPTION = "getOrdersfromClient" Then getOrdersfromClient()
         If _OPTION = "getClient" Then getClient()
         If _OPTION = "registrarPago" Then registrarPago()
+        If _OPTION = "getrackForTransferinSurtir" Then getrackForTransferinSurtir()
 
     End Sub
 
@@ -360,6 +361,7 @@ Partial Class ajax_response
     End Sub
 
     Public Sub getRacks()
+
         Dim res As String = ""
         query = "SELECT alias FROM locations WHERE id = '" + fromLocation + "'"
         ds = Dataconnect.GetAll(query)
@@ -371,10 +373,25 @@ Partial Class ajax_response
         ds = Dataconnect.GetAll(query)
         If ds.Tables(0).Rows.Count > 0 Then
             For i = 0 To ds.Tables(0).Rows.Count - 1
-                Res += ds.Tables(0).Rows(i)("rack").ToString() + "}" + ds.Tables(0).Rows(i)("rack").ToString() + "]"
+                res += ds.Tables(0).Rows(i)("rack").ToString() + "}" + ds.Tables(0).Rows(i)("rack").ToString() + "]"
             Next
         End If
-        Response.Write(Res)
+        Response.Write(res)
+    End Sub
+
+    Public Sub getrackForTransferinSurtir()
+        Dim res As String = "n/a"
+        query = "select rack from stock where product_code = '" + codigo_tras.ToString() + "' and qty > 0 and location = '" + location.ToString() + "'"
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            res = "Rack: <select id='ddl_rack_for_trans'>"
+            For i = 0 To ds.Tables(0).Rows.Count - 1
+                res += "<option value='" + ds.Tables(0).Rows(i)("rack").ToString() + "'>" + ds.Tables(0).Rows(i)("rack").ToString() + "</option>"
+            Next
+            res += "</select>"
+        End If
+        Response.Write(res)
+
     End Sub
 
     Public Sub loadTableResurtido()
@@ -1409,7 +1426,7 @@ Partial Class ajax_response
             End If
             Response.Write(ordenes)
         Catch ex As Exception
-            MsgBox("Ha ocurrido un error: " + ex.Message)
+
         End Try
     End Sub
 
@@ -1458,7 +1475,7 @@ Partial Class ajax_response
 
             Response.Write(datos)
         Catch ex As Exception
-            MsgBox("Ha ocurrido un error: " + ex.Message)
+
         End Try
     End Sub
 
@@ -1474,7 +1491,7 @@ Partial Class ajax_response
             msg = "¡Pago registrado exitosamente!"
             Response.Write(msg)
         Catch ex As Exception
-            MsgBox("Ha ocurrido un error: " + ex.Message)
+
         End Try
     End Sub
 End Class

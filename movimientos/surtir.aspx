@@ -440,7 +440,7 @@
         codigo_tras = code;
         var serializedData = {};
 
-        serializedData.option = "getRacks";
+        serializedData.option = "getrackForTransferinSurtir";
         serializedData.location = location;
         serializedData.codigo_tras = codigo_tras;
 
