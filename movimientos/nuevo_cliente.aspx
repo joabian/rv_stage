@@ -35,6 +35,14 @@
                     <td><asp:TextBox ID="tbx_email" runat="server" CssClass="textEntry"></asp:TextBox></td>
                 </tr>
                 <tr>
+                    <td><asp:Label ID="CompanyTypeLabel" runat="server" Text="Tipo de Cliente: "></asp:Label></td>
+                    <td><asp:DropDownList ID="ddl_tipo_cliente" runat="server" AppendDataBoundItems="true">
+                        <asp:ListItem Value="0">Seleccionar...</asp:ListItem>
+                        </asp:DropDownList>
+
+                    </td>
+                </tr>
+                <tr>
                     <td><asp:Label ID="Label6" runat="server" Text="Términos de Pago: "></asp:Label></td>
                     <td>
                         <asp:DropDownList ID="ddl_terms" runat="server">
