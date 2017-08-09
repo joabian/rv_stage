@@ -13,11 +13,12 @@ Partial Class movimientos_nuevo_cliente
 
     Public Sub save_record()
         Dim contact, comp_name, client_type, terms, email, ship_address, bill_addres, phone, same_address, rfc, sucursal As String
-        Dim street, paqueteria, serv_paq, flete, precio As String
+        Dim street, paqueteria, serv_paq, flete, precio, precioAplicable As String
 
         contact = Replace(tbx_contact.Text & "'", "'", "").ToString().ToUpper
         comp_name = Replace(tbx_company.Text & "'", "'", "").ToString().ToUpper
         client_type = ddl_tipo_cliente.SelectedValue.ToString()
+        precioAplicable = ddl_precioaplicable.SelectedValue.ToString()
         terms = ddl_terms.SelectedValue.ToString()
         email = Replace(tbx_email.Text & "'", "'", "").ToString().ToUpper
         phone = Replace(tbx_phone.Text & "'", "'", "").ToString()
@@ -30,7 +31,7 @@ Partial Class movimientos_nuevo_cliente
         street = Replace(tbx_bill_address.Text & "'", "'", "").ToString().ToUpper
         sucursal = location.SelectedValue.ToString()
 
-        If contact = "" Or comp_name = "" Or street = "" Or sucursal = "0" Or precio = "" Or client_type = "0" Then
+        If contact = "" Or comp_name = "" Or street = "" Or sucursal = "0" Or precio = "" Or client_type = "0" Or precioAplicable = "0" Then
             lbl_error.Text = "Algún campo obligatorio está vacío"
         ElseIf Not IsNumeric(precio) Then
             lbl_error.Text = "El precio no es numérico"
@@ -43,10 +44,10 @@ Partial Class movimientos_nuevo_cliente
                 ship_address = Replace(tbx_ship_address.Text & "'", "'", "").ToString().ToUpper
             End If
 
-            query = "insert into clients (name,terms,contact_name,email,ship_address,bill_address,active,telephone, rfc, location, default_price,paqueteria,serv_paq,flete,tipo_cliente) values ("
+            query = "insert into clients (name,terms,contact_name,email,ship_address,bill_address,active,telephone, rfc, location, default_price,paqueteria,serv_paq,flete,tipo_cliente,precio_aplicable) values ("
             query += "'" + comp_name.ToString() + "', '" + terms.ToString() + "', '" + contact.ToString() + "', '" + email
             query += "','" + ship_address.ToString() + "', '" + bill_addres.ToString() + "', 1, '" + phone.ToString() + "', '"
-            query += rfc.ToString() + "','" + sucursal.ToString() + "','" + precio.ToString() + "','" + paqueteria + "', '" + serv_paq + "', '" + flete + "', " + client_type + ")"
+            query += rfc.ToString() + "','" + sucursal.ToString() + "','" + precio.ToString() + "','" + paqueteria + "', '" + serv_paq + "', '" + flete + "', " + client_type + ", '" + precioAplicable + "')"
             Dataconnect.runquery(query)
             cleanFields()
             lbl_error.ForeColor = Drawing.Color.Green
@@ -59,6 +60,7 @@ Partial Class movimientos_nuevo_cliente
         tbx_company.Text = ""
         ddl_tipo_cliente.SelectedValue = "0"
         ddl_terms.SelectedIndex = 1
+        ddl_precioaplicable.SelectedValue = "0"
         tbx_email.Text = ""
         tbx_phone.Text = ""
         tbx_rfc.Text = ""
@@ -148,8 +150,11 @@ Partial Class movimientos_nuevo_cliente
             tbx_company.Text = ds.Tables(0).Rows(0)("name").ToString()
             ddl_tipo_cliente.SelectedValue = ds.Tables(0).Rows(0)("tipo_cliente").ToString()
             ddl_terms.SelectedValue = ds.Tables(0).Rows(0)("terms").ToString()
+            ddl_precioaplicable.SelectedValue = ds.Tables(0).Rows(0)("precio_aplicable").ToString()
             tbx_contact.Text = ds.Tables(0).Rows(0)("contact_name").ToString()
             tbx_email.Text = ds.Tables(0).Rows(0)("email").ToString()
+            tbx_bill_address.Text = ds.Tables(0).Rows(0)("bill_address").ToString()
+            tbx_ship_address.Text = ds.Tables(0).Rows(0)("ship_address").ToString()
             tbx_phone.Text = ds.Tables(0).Rows(0)("telephone").ToString()
             tbx_rfc.Text = ds.Tables(0).Rows(0)("rfc").ToString()
             location.SelectedValue = ds.Tables(0).Rows(0)("location").ToString()
@@ -162,12 +167,13 @@ Partial Class movimientos_nuevo_cliente
 
     Protected Sub btn_update_Click(sender As Object, e As EventArgs) Handles btn_update.Click
         Dim contact, comp_name, client_type, terms, email, ship_address, bill_addres, phone, same_address, rfc, sucursal As String
-        Dim street, paqueteria, serv_paq, flete, precio As String
+        Dim street, paqueteria, serv_paq, flete, precio, precioAplicable As String
 
         contact = Replace(tbx_contact.Text & "'", "'", "").ToString().ToUpper
         comp_name = Replace(tbx_company.Text & "'", "'", "").ToString().ToUpper
         client_type = ddl_tipo_cliente.SelectedValue.ToString()
         terms = ddl_terms.SelectedValue.ToString()
+        precioAplicable = ddl_precioaplicable.SelectedValue.ToString()
         email = Replace(tbx_email.Text & "'", "'", "").ToString().ToUpper
         phone = Replace(tbx_phone.Text & "'", "'", "").ToString()
         rfc = Replace(tbx_rfc.Text & "'", "'", "").ToString()
@@ -207,6 +213,7 @@ Partial Class movimientos_nuevo_cliente
             query += ",serv_paq = '" + serv_paq.ToString() + "'"
             query += ",flete = '" + flete.ToString() + "'"
             query += ",tipo_cliente = " + client_type.ToString() + ""
+            query += ", precio_aplicable = '" + precioAplicable.ToString() + "'"
             query += " where id = '" + hifd_cliente.Value.ToString() + "'"
             Dataconnect.runquery(query)
             cleanFields()

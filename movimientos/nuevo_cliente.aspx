@@ -55,6 +55,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><asp:Label ID="Label2" runat="server" Text="Precio aplicable: "></asp:Label></td>
+                    <td>
+                        <asp:DropDownList ID="ddl_precioaplicable" runat="server">
+                            <asp:ListItem Value="0">Seleccionar...</asp:ListItem>
+                            <asp:ListItem>MENUDEO</asp:ListItem>
+                            <asp:ListItem>MAYOREO</asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+                <tr>
                     <td><asp:Label ID="Label9" runat="server" Text="Precio por Default:"></asp:Label></td>
                     <td>
                         <asp:TextBox ID="tbx_precio" runat="server" CssClass="textEntry"></asp:TextBox>
