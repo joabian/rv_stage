@@ -985,14 +985,41 @@ Partial Class ajax_response
 
     Public Sub ingresarItemAPedido()
         Dim resp As String = ""
+        Dim precioAplicable As String = ""
+        Dim precioMenudeo As String = ""
+        Dim categoriaProd As String = ""
+        Dim precioMayoreo As String = ""
         Dim price As String
-        query = "select default_price, name from sale_order inner join clients on sale_order.customer = clients.id where sale_order.id = " + pedido.ToString()
-        ds = Dataconnect.GetAll(query)
 
+        'se verifica si el item es un radiador (categoría 1), si lo es, se guardan sus precios de mayoreo o menudeo
+        query = "SELECT category, ISNULL(PRECIO_JUAREZ, 0) As precio_menudeo, ISNULL(PRECIO_MAYOREO_JUAREZ, 0) As precio_mayoreo "
+        query += "FROM products WHERE code = '" + item.ToString() + "' "
+        ds = Dataconnect.GetAll(query)
         If ds.Tables(0).Rows.Count > 0 Then
-            price = ds.Tables(0).Rows(0)("default_price").ToString()
-            If price = "" Then
-                price = "0"
+            categoriaProd = ds.Tables(0).Rows(0)("category").ToString()
+            If categoriaProd = 1 Then
+                precioMenudeo = ds.Tables(0).Rows(0)("precio_menudeo").ToString()
+                precioMayoreo = ds.Tables(0).Rows(0)("precio_mayoreo").ToString()
+            End If
+        End If
+
+        'si el item es un radiador, se verifica el precio aplicable al cliente, para asiganrle el valor de mayoreo o menudeo a price
+        'si no es radiador price será igual al precio_default dado de alta al cliente
+        query = "SELECT ISNULL(default_price, 0) As precio_default, name, precio_aplicable "
+        query += "FROM sale_order "
+        query += "INNER JOIN clients ON sale_order.customer = clients.id "
+        query += "WHERE sale_order.id = " + pedido.ToString()
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            If categoriaProd = 1 Then
+                precioAplicable = ds.Tables(0).Rows(0)("precio_aplicable").ToString()
+                If precioAplicable = "MAYOREO" Then
+                    price = precioMayoreo
+                Else
+                    price = precioMenudeo
+                End If
+            Else
+                price = ds.Tables(0).Rows(0)("precio_default").ToString()
             End If
         Else
             price = "0"
@@ -1024,7 +1051,7 @@ Partial Class ajax_response
                 End If
                 resp = "ok"
             Else
-                resp = "Item inexistente, no se ingreso al pedido"
+                resp = "Item inexistente, no se ingresó al pedido"
             End If
         End If
 
