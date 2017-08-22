@@ -25,7 +25,6 @@
                 <td>    
                     <asp:TextBox ID="codeTB" runat="server"></asp:TextBox>
                 </td>
-
                 <td width="200px" align="right">
                     <asp:Label ID="Label3" runat="server" Text="Precio Juárez: "></asp:Label>
                 </td>
@@ -41,7 +40,6 @@
                    <asp:TextBox ID="descriptionTB" runat="server" Width="500px" 
                         TextMode="MultiLine" Height="100px"></asp:TextBox>
                 </td>
-
                 <td width="200px" align="right">
                     <asp:Label ID="Label8" runat="server" Text="Precio Mayoreo Juárez:"></asp:Label>
                 </td>
@@ -102,7 +100,6 @@
                 <td>
                     <asp:TextBox ID="costTB" runat="server"></asp:TextBox>
                 </td>
-
                 <td width="200px" align="right">
                     <asp:Label ID="Label13" runat="server" Text="Precio Durango: "></asp:Label>
                 </td>
@@ -117,13 +114,12 @@
                 <td>
                     <asp:TextBox ID="low_inventoryTB" runat="server"></asp:TextBox>
                 </td>
-
                 <td width="200px" align="right">
-                    <asp:Label ID="Label14" runat="server" Text="Precio Torreón: "></asp:Label>
+                    <asp:Label ID="Label25" runat="server" Text="Precio Mayoreo Durango: "></asp:Label>
                 </td>
                 <td>    
-                    <asp:TextBox ID="tbx_precio_torreon" runat="server"></asp:TextBox>
-                </td>
+                    <asp:TextBox ID="tbx_precio_mayoreo_durango" runat="server"></asp:TextBox>
+                </td>                
             </tr>
             <tr>
                 <td width="200px" align="right">
@@ -132,13 +128,12 @@
                 <td>
                     <asp:DropDownList ID="ddl_category2" runat="server"></asp:DropDownList>
                 </td>
-
                 <td width="200px" align="right">
-                    <asp:Label ID="Label15" runat="server" Text="Precio León: "></asp:Label>
+                    <asp:Label ID="Label14" runat="server" Text="Precio Torreón: "></asp:Label>
                 </td>
                 <td>    
-                    <asp:TextBox ID="tbx_precio_leon" runat="server"></asp:TextBox>
-                </td>
+                    <asp:TextBox ID="tbx_precio_torreon" runat="server"></asp:TextBox>
+                </td>                
             </tr>
             <tr>
                 <td width="200px" align="right">
@@ -148,14 +143,12 @@
                     <asp:TextBox ID="tbx_alias" runat="server"></asp:TextBox>
                 </td>
                 <td width="200px" align="right">
-                    <asp:Label ID="Label20" runat="server" Text="Dimensiones: "></asp:Label>
+                    <asp:Label ID="Label24" runat="server" Text="Precio Mayoreo Torreón: "></asp:Label>
                 </td>
-                <td>
-                    <asp:TextBox ID="tb_dimensions" runat="server"></asp:TextBox>
-                </td>
-                
+                <td>    
+                    <asp:TextBox ID="tbx_precio_mayoreo_torreon" runat="server"></asp:TextBox>
+                </td>                
             </tr>
-
             <tr>
                 <td width="200px" align="right">
                     <asp:Label ID="Label21" runat="server" Text="Accesorios: "></asp:Label>
@@ -164,15 +157,12 @@
                     <asp:TextBox ID="tb_accesories" Width="400px" runat="server"></asp:TextBox>
                 </td>
                 <td width="200px" align="right">
-                    <asp:Label ID="Label22" runat="server" Text="Accesorio se distribuye instalado: "></asp:Label>
+                    <asp:Label ID="Label15" runat="server" Text="Precio León: "></asp:Label>
                 </td>
-                <td>
-                    <asp:CheckBox ID="cb_install_distribution_flag" runat="server" Text="Si" />
-                </td>
-                
+                <td>    
+                    <asp:TextBox ID="tbx_precio_leon" runat="server"></asp:TextBox>
+                </td>                
             </tr>
-
-
             <tr>
                 <td width="200px" align="right">
                     <asp:Label ID="Label19" runat="server" Text="Fuera del Catálogo: "></asp:Label>
@@ -181,17 +171,36 @@
                     <asp:CheckBox ID="chbx_fuera_catalago" runat="server" Text="Si" />
                 </td>
                 <td width="200px" align="right">
+                    <asp:Label ID="Label23" runat="server" Text="Precio Mayoreo León: "></asp:Label>
+                </td>
+                <td>    
+                    <asp:TextBox ID="tbx_precio_mayoreo_leon" runat="server"></asp:TextBox>
+                </td>                
+            </tr>
+            <tr>
+                <td width="200px" align="right">
+                    <asp:Label ID="Label22" runat="server" Text="Accesorio se distribuye instalado: "></asp:Label>
+                </td>
+                <td>
+                    <asp:CheckBox ID="cb_install_distribution_flag" runat="server" Text="Si" />
+                </td>
+                <td width="200px" align="right">
+                    <asp:Label ID="Label20" runat="server" Text="Dimensiones: "></asp:Label>
+                </td>
+                <td>
+                    <asp:TextBox ID="tb_dimensions" runat="server"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td width="200px" align="right">
                     <asp:Button ID="btn_delete_prod" runat="server" Text="Eliminar Producto" Enabled="false" OnClientClick="return confirm('¿Seguro que desea eliminar el producto seleccionado? También eliminaría el inventario para todas las sucursales!!');" />
                 </td>
                 <td>    
                     &nbsp&nbsp&nbsp&nbsp<asp:Button ID="edit_product" runat="server" Text="Salvar Cambios" Enabled="false" />
                 </td>
             </tr>
-    
-
-            
-
-
         </table>
         <hr />
         <div style="text-align:center;width:320px;margin-left:auto;margin-right:auto">

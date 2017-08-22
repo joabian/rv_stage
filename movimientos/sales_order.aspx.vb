@@ -507,7 +507,6 @@ Partial Class movimientos_sales_order
 
     'End Sub
 
-
     Public Sub readExcelNew()
         'Dim filepath As String = "C:\Users\212331260"
         Dim filepath As String = "e:\HostingSpaces\vencedo2\radiadoresvencedores.com\wwwroot\docs"
@@ -891,5 +890,4 @@ Partial Class movimientos_sales_order
         Response.Redirect("sales_order.aspx?order=" + lbl_order_number.Text.ToString())
     End Sub
 
-    
 End Class

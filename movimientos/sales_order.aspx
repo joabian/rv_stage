@@ -206,12 +206,14 @@
             var pedido = $('#<%=lbl_order_number.ClientID%>').text();
             var item = $("#Codigo").val();
             var qty = $("#txt_qty").val();
+            var suc = $("#Locations").val();
 
             var serializedData = {};
             serializedData.option = "ingresarItemAPedido";
             serializedData.item = item;
             serializedData.pedido = pedido;
             serializedData.qty = qty;
+            serializedData.suc = suc;
 
             $.ajax({
                 type: "POST",

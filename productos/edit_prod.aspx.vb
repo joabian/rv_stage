@@ -145,8 +145,8 @@ Partial Class productos_edit_prod
 
     Protected Sub edit_product_Click(sender As Object, e As System.EventArgs) Handles edit_product.Click
         Dim newdescription, newmodel, newcost, newlow_inventory, newcategory, logevent, prod_alias As String
-        Dim precio_juarez, precio_durango, precio_leon, precio_torreon, precio_mayoreo_juarez, dimensions As String
-        Dim precio_2_juarez, precio_3_juarez, precio_instalado_juarez, precio_dlls_juarez, accesories, install_distribution_flag As String
+        Dim precio_juarez, precio_durango, precio_leon, precio_torreon, precio_mayoreo_juarez, precio_mayoreo_durango, precio_mayoreo_leon, dimensions As String
+        Dim precio_mayoreo_torreon, precio_2_juarez, precio_3_juarez, precio_instalado_juarez, precio_dlls_juarez, accesories, install_distribution_flag As String
         Dim fuera_catalogo = chbx_fuera_catalago.Checked
         install_distribution_flag = cb_install_distribution_flag.Checked
         Dim band As Integer = 0
@@ -166,13 +166,16 @@ Partial Class productos_edit_prod
         precio_leon = tbx_precio_leon.Text
         precio_torreon = tbx_precio_torreon.Text
         precio_mayoreo_juarez = tbx_precio_mayoreo_juarez.Text
+        precio_mayoreo_durango = tbx_precio_mayoreo_durango.Text
+        precio_mayoreo_leon = tbx_precio_mayoreo_leon.Text
+        precio_mayoreo_torreon = tbx_precio_mayoreo_torreon.Text
         precio_2_juarez = tbx_precio_2_juarez.Text
         precio_3_juarez = tbx_precio_3_juarez.Text
         precio_instalado_juarez = tbx_precio_instalado_juarez.Text
         precio_dlls_juarez = tbx_precio_dlls_juarez.Text
         prod_alias = tbx_alias.Text
 
-        logevent = "Edicion del producto con codigo: " + tbx_search.Text.ToString() + ", campos editados: "
+        logevent = "Edición del producto con código: " + tbx_search.Text.ToString() + ", campos editados: "
 
         query = "select top 1"
         query += " description "
@@ -185,6 +188,9 @@ Partial Class productos_edit_prod
         query += ",isnull(precio_leon,0) as precio_leon "
         query += ",isnull(precio_torreon,0) as precio_torreon "
         query += ",isnull(precio_mayoreo_juarez,0) as precio_mayoreo_juarez "
+        query += ",isnull(precio_mayoreo_durango,0) as precio_mayoreo_durango"
+        query += ",isnull(precio_mayoreo_leon,0) as precio_mayoreo_leon "
+        query += ",isnull(precio_mayoreo_torreon,0) as precio_mayoreo_torreon "
         query += ",isnull(precio_2_juarez,0) as precio_2_juarez "
         query += ",isnull(precio_3_juarez,0) as precio_3_juarez "
         query += ",isnull(precio_instalado_juarez,0) as precio_instalado_juarez "
@@ -279,17 +285,38 @@ Partial Class productos_edit_prod
                 band = 1
             End If
 
-            If precio_mayoreo_juarez.ToString() <> ds.Tables(0).Rows(0)("precio_mayoreo_juarez").ToString() Then
-                query += " precio_mayoreo_juarez = " + precio_mayoreo_juarez.ToString() + ", "
-
-                logevent += "precio mayoreo juarez, "
-                band = 1
-            End If
-
             If precio_torreon.ToString() <> ds.Tables(0).Rows(0)("precio_torreon").ToString() Then
                 query += " precio_torreon = " + precio_torreon.ToString() + ", "
 
                 logevent += "precio torreon, "
+                band = 1
+            End If
+
+            If precio_mayoreo_juarez.ToString() <> ds.Tables(0).Rows(0)("precio_mayoreo_juarez").ToString() Then
+                query += " precio_mayoreo_juarez = " + precio_mayoreo_juarez.ToString() + ", "
+
+                logevent += "precio mayoreo juárez, "
+                band = 1
+            End If
+
+            If precio_mayoreo_durango.ToString() <> ds.Tables(0).Rows(0)("precio_mayoreo_durango").ToString() Then
+                query += " precio_mayoreo_durango = " + precio_mayoreo_durango.ToString() + ", "
+
+                logevent += "precio mayoreo durango, "
+                band = 1
+            End If
+
+            If precio_mayoreo_leon.ToString() <> ds.Tables(0).Rows(0)("precio_mayoreo_leon").ToString() Then
+                query += " precio_mayoreo_leon = " + precio_mayoreo_leon.ToString() + ", "
+
+                logevent += "precio mayoreo león, "
+                band = 1
+            End If
+
+            If precio_mayoreo_torreon.ToString() <> ds.Tables(0).Rows(0)("precio_mayoreo_torreon").ToString() Then
+                query += " precio_mayoreo_torreon = " + precio_mayoreo_torreon.ToString() + ", "
+
+                logevent += "precio mayoreo torreón, "
                 band = 1
             End If
 
@@ -347,15 +374,15 @@ Partial Class productos_edit_prod
                 queryLog = "INSERT INTO logs(user_name, event, date) VALUES ('" + username.ToString() + "', '" + logevent.ToString() + "', getDate())"
                 Dataconnect.runquery(queryLog)
                 populateInfo()
-                errorlbl.Text = "cambios guardados!"
+                errorlbl.Text = "¡Cambios guardados!"
                 errorlbl.ForeColor = Drawing.Color.Green
 
             Else
-                errorlbl.Text = "No se realizo ningun cambio!"
+                errorlbl.Text = "No se realizó ningún cambio!"
             End If
 
         Else
-            errorlbl.Text = "Ingrese el codigo del producto"
+            errorlbl.Text = "Ingrese el código del producto"
         End If
 
     End Sub
@@ -385,6 +412,9 @@ Partial Class productos_edit_prod
             query += ",isnull(precio_leon,0) as precio_leon "
             query += ",isnull(precio_torreon,0) as precio_torreon "
             query += ",isnull(precio_mayoreo_juarez,0) as precio_mayoreo_juarez "
+            query += ",isnull(precio_mayoreo_durango,0) as precio_mayoreo_durango "
+            query += ",isnull(precio_mayoreo_leon,0) as precio_mayoreo_leon "
+            query += ",isnull(precio_mayoreo_torreon,0) as precio_mayoreo_torreon "
             query += ",isnull(precio_2_juarez,0) as precio_2_juarez "
             query += ",isnull(precio_3_juarez,0) as precio_3_juarez "
             query += ",isnull(precio_instalado_juarez,0) as precio_instalado_juarez "
@@ -412,9 +442,12 @@ Partial Class productos_edit_prod
                 tbx_precio_dlls_juarez.Text = ds.Tables(0).Rows(0)("precio_dlls_juarez").ToString()
                 tbx_precio_instalado_juarez.Text = ds.Tables(0).Rows(0)("precio_instalado_juarez").ToString()
                 tbx_precio_durango.Text = ds.Tables(0).Rows(0)("precio_durango").ToString()
-                tbx_precio_mayoreo_juarez.Text = ds.Tables(0).Rows(0)("precio_mayoreo_juarez").ToString()
                 tbx_precio_torreon.Text = ds.Tables(0).Rows(0)("precio_torreon").ToString()
                 tbx_precio_leon.Text = ds.Tables(0).Rows(0)("precio_leon").ToString()
+                tbx_precio_mayoreo_juarez.Text = ds.Tables(0).Rows(0)("precio_mayoreo_juarez").ToString()
+                tbx_precio_mayoreo_durango.Text = ds.Tables(0).Rows(0)("precio_mayoreo_durango").ToString()
+                tbx_precio_mayoreo_leon.Text = ds.Tables(0).Rows(0)("precio_mayoreo_leon").ToString()
+                tbx_precio_mayoreo_torreon.Text = ds.Tables(0).Rows(0)("precio_mayoreo_torreon").ToString()
                 tbx_alias.Text = ds.Tables(0).Rows(0)("alias").ToString()
                 tb_dimensions.Text = ds.Tables(0).Rows(0)("dimensions").ToString()
                 tb_accesories.Text = ds.Tables(0).Rows(0)("accesories").ToString()

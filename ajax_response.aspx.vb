@@ -45,6 +45,7 @@ Partial Class ajax_response
     Dim deuda As String
     Dim abono As String
     Dim restante As String
+    Dim suc As String
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         _REQUEST()
@@ -127,6 +128,7 @@ Partial Class ajax_response
         deuda = Request("deuda")
         abono = Request("abono")
         restante = Request("restante")
+        suc = Request("suc")
     End Sub
 
     Public Sub salvarPreciosMasivo()
@@ -985,44 +987,35 @@ Partial Class ajax_response
 
     Public Sub ingresarItemAPedido()
         Dim resp As String = ""
-        Dim precioAplicable As String = ""
-        Dim precioMenudeo As String = ""
-        Dim categoriaProd As String = ""
-        Dim precioMayoreo As String = ""
-        Dim price As String
+        Dim sucursal As String = ""
+        Dim price As String = "0"
 
-        'se verifica si el item es un radiador (categoría 1), si lo es, se guardan sus precios de mayoreo o menudeo
-        query = "SELECT category, ISNULL(PRECIO_JUAREZ, 0) As precio_menudeo, ISNULL(PRECIO_MAYOREO_JUAREZ, 0) As precio_mayoreo "
-        query += "FROM products WHERE code = '" + item.ToString() + "' "
+        ' se obtiene el nombre de la sucursal del pedido para usarla en el siguiente query
+        query = "SELECT alias FROM locations WHERE id = " + suc
         ds = Dataconnect.GetAll(query)
         If ds.Tables(0).Rows.Count > 0 Then
-            categoriaProd = ds.Tables(0).Rows(0)("category").ToString()
-            If categoriaProd = 1 Then
-                precioMenudeo = ds.Tables(0).Rows(0)("precio_menudeo").ToString()
-                precioMayoreo = ds.Tables(0).Rows(0)("precio_mayoreo").ToString()
+            sucursal = ds.Tables(0).Rows(0)("alias").ToString()
+            If sucursal = "HENEQUEN" Or sucursal = "VALENTIN" Then
+                sucursal = "JUAREZ"
             End If
         End If
 
-        'si el item es un radiador, se verifica el precio aplicable al cliente, para asiganrle el valor de mayoreo o menudeo a price
-        'si no es radiador price será igual al precio_default dado de alta al cliente
-        query = "SELECT ISNULL(default_price, 0) As precio_default, name, precio_aplicable "
-        query += "FROM sale_order "
-        query += "INNER JOIN clients ON sale_order.customer = clients.id "
-        query += "WHERE sale_order.id = " + pedido.ToString()
+        ' se obtiene el precio del producto dependiendo de su categoría, precio_default y precio_aplicable
+        query = "SELECT CASE "
+        query += "WHEN category <> 1 THEN ( "
+        query += "SELECT ISNULL(clients.default_price, 0) As default_price "
+        query += "FROM sale_order INNER JOIN clients ON sale_order.customer = clients.id "
+        query += "WHERE sale_order.id = " + pedido + ") "
+        query += "WHEN (SELECT ISNULL(clients.precio_aplicable, 'MENUDEO') As precio_aplicable "
+        query += "FROM sale_order INNER JOIN clients ON sale_order.customer = clients.id "
+        query += "WHERE sale_order.id = " + pedido + ") = 'MENUDEO' "
+        query += "THEN ISNULL(PRECIO_" + sucursal + ", 0) "
+        query += "ELSE ISNULL(PRECIO_MAYOREO_" + sucursal + ", 0) "
+        query += "END As precio "
+        query += "FROM products WHERE code = '" + item + "'"
         ds = Dataconnect.GetAll(query)
         If ds.Tables(0).Rows.Count > 0 Then
-            If categoriaProd = 1 Then
-                precioAplicable = ds.Tables(0).Rows(0)("precio_aplicable").ToString()
-                If precioAplicable = "MAYOREO" Then
-                    price = precioMayoreo
-                Else
-                    price = precioMenudeo
-                End If
-            Else
-                price = ds.Tables(0).Rows(0)("precio_default").ToString()
-            End If
-        Else
-            price = "0"
+            price = ds.Tables(0).Rows(0)("precio").ToString()
         End If
 
         'verificamos que sean cantidades numericas
