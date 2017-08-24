@@ -89,7 +89,7 @@
         <asp:ListItem Value="0">TODOS</asp:ListItem>
         <asp:ListItem Value="Salida">SALIDA</asp:ListItem>
         <asp:ListItem Value="Entrada">ENTRADA</asp:ListItem>
-        <asp:ListItem Value="Transferencia">TRANSFERENCIA</asp:ListItem>
+        <%--<asp:ListItem Value="Transferencia">TRANSFERENCIA</asp:ListItem>--%>
         <asp:ListItem Value="Ajuste">AJUSTE</asp:ListItem>
     </asp:DropDownList>&nbsp;&nbsp;&nbsp;
     Razón:
@@ -100,7 +100,7 @@
         <asp:ListItem Value="Compra">COMPRA</asp:ListItem>
         <asp:ListItem Value="Devolucion">DEVOLUCIÓN</asp:ListItem>
         <asp:ListItem Value="Scrap">SCRAP</asp:ListItem>
-        <asp:ListItem Value="Transferencia">TRANSFERENCIA</asp:ListItem>
+        <%--<asp:ListItem Value="Transferencia">TRANSFERENCIA</asp:ListItem>--%>
         <asp:ListItem Value="Venta">VENTA</asp:ListItem>
         <asp:ListItem Value="Pedido">PEDIDO</asp:ListItem>
     </asp:DropDownList>&nbsp;&nbsp;&nbsp;
