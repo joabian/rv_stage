@@ -11,12 +11,6 @@ Partial Class reportes_orders
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         username = Membership.GetUser().UserName
 
-        If username.ToLower() = "lramos" Or username.ToLower() = "lidia" Or username.ToLower() = "srodriguez" Or username.ToLower() = "omartinez" Or username.ToLower() = "jalvarez" Or username.ToLower() = "joabian" Or username.ToLower() = "sgonzalez" Or username.ToLower() = "admin" Then
-
-        Else
-            Response.Redirect("../access_denied.aspx")
-        End If
-
         query = "select location from users left join locations on users.location = locations.id where user_name = '" + username + "'"
         ds = Dataconnect.GetAll(query)
         If ds.Tables(0).Rows.Count > 0 Then

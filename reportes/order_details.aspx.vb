@@ -5,6 +5,7 @@ Partial Class reportes_order_details
     Public queryLog As String
     Public Dataconnect As New DataConn_login
     Public ds As DataSet
+    Public username As String
 
     Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         ''query = "select * from sale_order order by id desc"
@@ -13,8 +14,23 @@ Partial Class reportes_order_details
             If Request.QueryString("order_no") <> "" Then
                 hf_order_number.Value = Request.QueryString("order_no")
             End If
-            populate_order_info()
-            populateItemsGridView()
+            username = Membership.GetUser().UserName
+
+            If username.ToLower() = "lramos" Or username.ToLower() = "lidia" Or username.ToLower() = "srodriguez" Or username.ToLower() = "omartinez" Or username.ToLower() = "jalvarez" Or username.ToLower() = "joabian" Or username.ToLower() = "sgonzalez" Or username.ToLower() = "admin" Then
+
+                populate_order_info()
+                populateItemsGridView()
+
+            Else
+
+                populate_order_info_NoPrice()
+                populateItemsGridViewNoPrice()
+
+                btn_export_word.Enabled = False
+
+
+            End If
+
         End If
     End Sub
 
@@ -23,6 +39,27 @@ Partial Class reportes_order_details
         query += " sale_order_items.qty as [Cantidad Pedida], sale_order_items.qty_picked as [Cantidad Surtida],"
         query += " sale_order_items.sold_price as [Precio Unitario], (sale_order_items.qty_picked * "
         query += " sale_order_items.sold_price) as [Total] from sale_order_items"
+        query += " inner join products on products.code = sale_order_items.product_code"
+        query += " inner join sale_order on sale_order.id = sale_order_items.order_id"
+        query += " left join max_min on sale_order_items.product_code = max_min.product_code"
+        query += " and max_min.location_id = sale_order.location"
+        query += " where sale_order_items.order_id = " + hf_order_number.Value.ToString()
+        query += " and sale_order_items.active = 1"
+
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            gv_Items.DataSource = ds.Tables(0)
+            gv_Items.DataBind()
+        Else
+            gv_Items.DataSource = Nothing
+            gv_Items.DataBind()
+        End If
+    End Sub
+
+    Sub populateItemsGridViewNoPrice()
+        query = "select sale_order_items.product_code as [Codigo], products.description as [Descripcion],"
+        query += " sale_order_items.qty as [Cantidad Pedida], sale_order_items.qty_picked as [Cantidad Surtida]"
+        query += " from sale_order_items"
         query += " inner join products on products.code = sale_order_items.product_code"
         query += " inner join sale_order on sale_order.id = sale_order_items.order_id"
         query += " left join max_min on sale_order_items.product_code = max_min.product_code"
@@ -101,6 +138,77 @@ Partial Class reportes_order_details
                 lbl_subtotal.Text = "0.00"
                 lbl_total.Text = "0.00"
             End If
+
+        Else
+            lbl_Client.Text = ""
+            ddl_terms.Text = "EFECTIVO"
+            lbl_order_number.Text = ""
+            txt_contact.Text = ""
+            ddl_vendor.Text = "0"
+            lbl_date.Text = ""
+            txt_Phones.Text = ""
+            ddl_Status.Text = "1"
+            txt_Billing_Address.Text = ""
+            txt_Shipping_Address.Text = ""
+            txt_ReqShipDate.Text = ""
+            lbl_subtotal.Text = "0"
+            txt_notes.Text = ""
+
+            lbl_total.Text = "0"
+            txt_email.Text = ""
+            lbl_cajas.Text = ""
+            lbl_paqueteria.Text = ""
+        End If
+
+    End Sub
+
+    Sub populate_order_info_NoPrice()
+        query = "select "
+        query += " clients.name"
+        query += " ,employees.name + ' ' + employees.last_name as empleado"
+        query += " ,sale_order.id"
+        query += " ,clients.bill_address"
+        query += " ,clients.contact_name as contact_info"
+        query += " ,convert(varchar, sale_order.date, 101) as fecha"
+        query += " ,sale_order.notes"
+        query += " ,order_status.status"
+        query += " ,sale_order.location"
+        query += " ,clients.ship_address as shipping_address"
+        query += " ,sale_order.terms"
+        query += " , convert(varchar, sale_order.rsd, 101) as rsd"
+        query += " , clients.telephone as tel"
+        query += " , clients.email"
+        query += " , sale_order.ship_date as [f_envio] "
+        query += " , isnull(sale_order.cajas,0) as cajas"
+        query += " , isnull(sale_order.paqueteria,'N/A') as paqueteria"
+        query += " from sale_order"
+        query += " inner join clients on sale_order.customer = clients.id"
+        query += " inner join employees on sale_order.vendor = employees.id"
+        query += " inner join order_status on sale_order.status = order_status.id"
+        query += " where sale_order.id = " + hf_order_number.Value.ToString()
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            lbl_Client.Text = ds.Tables(0).Rows(0)("name").ToString()
+            ddl_terms.Text = ds.Tables(0).Rows(0)("terms").ToString()
+            lbl_order_number.Text = ds.Tables(0).Rows(0)("id").ToString()
+            txt_contact.Text = ds.Tables(0).Rows(0)("contact_info").ToString()
+            ddl_vendor.Text = ds.Tables(0).Rows(0)("empleado").ToString()
+            lbl_date.Text = ds.Tables(0).Rows(0)("fecha").ToString()
+            txt_Phones.Text = ds.Tables(0).Rows(0)("tel").ToString()
+            ddl_Status.Text = ds.Tables(0).Rows(0)("status").ToString()
+            txt_Billing_Address.Text = ds.Tables(0).Rows(0)("bill_address").ToString()
+            txt_Shipping_Address.Text = ds.Tables(0).Rows(0)("shipping_address").ToString()
+            txt_ReqShipDate.Text = ds.Tables(0).Rows(0)("rsd").ToString()
+            txt_notes.Text = ds.Tables(0).Rows(0)("notes").ToString()
+            txt_email.Text = ds.Tables(0).Rows(0)("email").ToString()
+            lbl_cajas.Text = ds.Tables(0).Rows(0)("cajas").ToString()
+            lbl_paqueteria.Text = ds.Tables(0).Rows(0)("paqueteria").ToString()
+
+            
+            lbl_subtotal.Text = "0.00"
+            lbl_total.Text = "0.00"
+
 
         Else
             lbl_Client.Text = ""
@@ -455,6 +563,7 @@ Partial Class reportes_order_details
 
         'Response.Redirect("sales_order.aspx?order=" + lbl_order_number.Text.ToString())
     End Sub
+
 
 
 

@@ -142,74 +142,77 @@ Partial Class negadas
         qty_req = Replace(tbx_qty.Text, "'", "")
 
         If Not IsNumeric(qty_req) Then
-            qty_req = "0"
-        End If
-        loca = ddl_location.SelectedValue
-        catego = hifd_catego.Value.ToString()
-        desc = Replace(tbx_description.Text, "'", "")
-        notas = Replace(tbx_notas.Text, "'", "")
-        If desc = "" Or notas = "" Then
             lbl_error.ForeColor = Drawing.Color.Red
-            lbl_error.Text = "ingrese todos los datos"
-
+            lbl_error.Text = "Corrija la cantidad"
         Else
-            query = "select * from products where code = '" + tbx_codigo.Text + "'"
-            ds = Dataconnect.GetAll(query)
-            If ds.Tables(0).Rows.Count > 0 Then
-                existe = "Si"
-                query = "select sum(qty) as tot from stock where product_code = '" + tbx_codigo.Text + "' and location = '" + loca.ToString() + "'"
-                ds = Dataconnect.GetAll(query)
-                If ds.Tables(0).Rows.Count > 0 Then
-                    qty_suc = ds.Tables(0).Rows(0)("tot").ToString
-                Else
-                    qty_suc = "0"
-                End If
+            loca = ddl_location.SelectedValue
+            catego = hifd_catego.Value.ToString()
+            desc = Replace(tbx_description.Text, "'", "")
+            notas = Replace(tbx_notas.Text, "'", "")
+            If desc = "" Or notas = "" Then
+                lbl_error.ForeColor = Drawing.Color.Red
+                lbl_error.Text = "ingrese todos los datos"
 
-                query = "select sum(qty) as tot from stock where product_code = '" + tbx_codigo.Text + "'"
+            Else
+                query = "select * from products where code = '" + tbx_codigo.Text + "'"
                 ds = Dataconnect.GetAll(query)
                 If ds.Tables(0).Rows.Count > 0 Then
-                    qty_tot = ds.Tables(0).Rows(0)("tot").ToString
+                    existe = "Si"
+                    query = "select sum(qty) as tot from stock where product_code = '" + tbx_codigo.Text + "' and location = '" + loca.ToString() + "'"
+                    ds = Dataconnect.GetAll(query)
+                    If ds.Tables(0).Rows.Count > 0 Then
+                        qty_suc = ds.Tables(0).Rows(0)("tot").ToString
+                    Else
+                        qty_suc = "0"
+                    End If
+
+                    query = "select sum(qty) as tot from stock where product_code = '" + tbx_codigo.Text + "'"
+                    ds = Dataconnect.GetAll(query)
+                    If ds.Tables(0).Rows.Count > 0 Then
+                        qty_tot = ds.Tables(0).Rows(0)("tot").ToString
+                    Else
+                        qty_tot = "0"
+                    End If
                 Else
+                    existe = "No"
+                    qty_suc = "0"
                     qty_tot = "0"
                 End If
-            Else
-                existe = "No"
-                qty_suc = "0"
-                qty_tot = "0"
-            End If
-            username = Membership.GetUser().UserName
+                username = Membership.GetUser().UserName
 
-            query = "select * from negadas where codigo = '" + tbx_codigo.Text + "'"
-            query += " and sucursal = '" + loca.ToString() + "'"
-            query += " and usuario = '" + username.ToString() + "'"
-            query += " and row_date >= getdate()-0.003472222"
-            ds = Dataconnect.GetAll(query)
-            If ds.Tables(0).Rows.Count > 0 Then
-                lbl_error.ForeColor = Drawing.Color.Red
-                lbl_error.Text = "Este producto fue ingresado hace menos de 5 minos, desea ingresarlo de nuevo?"
-                btn_save.Visible = False
-                btn_save_2.Visible = True
-            Else
-                btn_save_2.Visible = False
-                query = "insert into negadas (codigo, categoria, descripcion, sucursal, notas, qty_req, qty_suc, qty_tot, existe, usuario, row_date) values ("
-                query += "'" + Replace(tbx_codigo.Text.ToUpper(), " ", "") + "'"
-                query += ",'" + hifd_catego.Value.ToString() + "'"
-                query += ",'" + desc.ToString() + "'"
-                query += ",'" + loca.ToString() + "'"
-                query += ",'" + notas.ToString() + "'"
-                query += ",'" + qty_req.ToString() + "'"
-                query += ",'" + qty_suc.ToString() + "'"
-                query += ",'" + qty_tot.ToString() + "'"
-                query += ",'" + existe.ToString() + "'"
-                query += ",'" + username.ToString() + "'"
-                query += ",getdate())"
-                Dataconnect.runquery(query)
+                query = "select * from negadas where codigo = '" + tbx_codigo.Text + "'"
+                query += " and sucursal = '" + loca.ToString() + "'"
+                query += " and usuario = '" + username.ToString() + "'"
+                query += " and row_date >= getdate()-0.003472222"
+                ds = Dataconnect.GetAll(query)
+                If ds.Tables(0).Rows.Count > 0 Then
+                    lbl_error.ForeColor = Drawing.Color.Red
+                    lbl_error.Text = "Este producto fue ingresado hace menos de 5 minos, desea ingresarlo de nuevo?"
+                    btn_save.Visible = False
+                    btn_save_2.Visible = True
+                Else
+                    btn_save_2.Visible = False
+                    query = "insert into negadas (codigo, categoria, descripcion, sucursal, notas, qty_req, qty_suc, qty_tot, existe, usuario, row_date) values ("
+                    query += "'" + Replace(tbx_codigo.Text.ToUpper(), " ", "") + "'"
+                    query += ",'" + hifd_catego.Value.ToString() + "'"
+                    query += ",'" + desc.ToString() + "'"
+                    query += ",'" + loca.ToString() + "'"
+                    query += ",'" + notas.ToString() + "'"
+                    query += ",'" + qty_req.ToString() + "'"
+                    query += ",'" + qty_suc.ToString() + "'"
+                    query += ",'" + qty_tot.ToString() + "'"
+                    query += ",'" + existe.ToString() + "'"
+                    query += ",'" + username.ToString() + "'"
+                    query += ",getdate())"
+                    Dataconnect.runquery(query)
 
-                lbl_error.ForeColor = Drawing.Color.Green
-                lbl_error.Text = "Datos salvados!"
+                    lbl_error.ForeColor = Drawing.Color.Green
+                    lbl_error.Text = "Datos salvados!"
 
+                End If
             End If
         End If
+        
         'End If
     End Sub
 
