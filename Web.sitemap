@@ -33,6 +33,7 @@
       <siteMapNode url="reportes/estado_de_cuenta.aspx" title="Estados de Cuenta"  description="" />
       <siteMapNode url="reportes/total_stock.aspx" title="Inventario Completo"  description="" />
       <siteMapNode url="reportes/stock_by_location.aspx" title="Inventario por Sucursal"  description="" />
+      <siteMapNode url="reportes/transferencias.aspx" title="Transferencias"  description="" />
       <siteMapNode url="reportes/moves.aspx" title="Movimientos"  description="" />
       <siteMapNode url="reportes/negadas.aspx" title="Negadas"  description="" />
       <siteMapNode url="reportes/checadas.aspx" title="Nómina Ent/Sal"  description="" />

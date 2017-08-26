@@ -102,6 +102,8 @@ Partial Class reportes_estado_de_cuenta
             Response.Clear()
             Response.Charset = ""
             Response.ContentType = "application/vnd.ms-excel"
+            Response.ContentEncoding = System.Text.Encoding.Unicode
+            Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble())
 
             Dim stringWrite As System.IO.StringWriter = New System.IO.StringWriter()
             Dim htmlWrite As System.Web.UI.HtmlTextWriter = New System.Web.UI.HtmlTextWriter(stringWrite)

@@ -159,6 +159,7 @@ Partial Class movimientos_intra_trnsfr
     Public Sub transfer_items_from_file(ByVal items_list As DataSet)
         Dim strModel, strFromRack, strToRack, strLocation, strQty, strToLocation As String
         Dim username As String
+        Dim folio As Integer
         'Dim logevent As String
         Dim queryForTemporal = ""
         Dim queryForUpdate = ""
@@ -172,6 +173,14 @@ Partial Class movimientos_intra_trnsfr
         'logevent = "Transferencia interna de los siguientes productos:"
         strLocation = ddl_from_location.SelectedItem.Text.ToString()
         strToLocation = ddl_to_location.SelectedItem.Text.ToString()
+
+        ' Se genera el Folio que identificará todo el grupo de Transferencias
+        query = "SELECT TOP 1 folio FROM transferencias ORDER BY folio DESC"
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            folio = ds.Tables(0).Rows(0)("folio")
+            folio = folio + 1
+        End If
 
         If strLocation = "Seleccione..." Or strToLocation = "Seleccione..." Then
             error_msg = "Verifique las Sucursales"
@@ -236,9 +245,12 @@ Partial Class movimientos_intra_trnsfr
                                                 queryForNewRecord += ", '" + strToLocation.ToString() + "', getDate(), '" + strToRack.ToString() + "', '" + strLocation.ToString() + "'," + ddl_to_location.SelectedValue.ToString() + ") "
                                             End If
                                         End If
+
                                         queryForLogs += "insert into moves (product_id,product_code,reason,type,comments,location,rack,[user],row_date,qty) values ("
                                         queryForLogs += strProdId.ToString() + ", '" + strModel.ToString() + "', 'Transferencia', 'Transferencia', 'de :" + strLocation + " a " + strToLocation + "', '"
                                         queryForLogs += strLocation.ToString() + "', '" + strFromRack + "', '" + username + "', getdate(), " + strQty.ToString() + ")"
+                                        queryForLogs += "INSERT INTO transferencias (folio, codigo, fromSucursal, fromRack, toSucursal, toRack, cantidad, fechaTransfer, usuario, activo) VALUES ( "
+                                        queryForLogs += folio.ToString() + ", '" + strModel + "', '" + strLocation + "', '" + strFromRack + "', '" + strToLocation + "', '" + strToRack + "', " + strQty + ", getDate(), '" + username + "', 'false')"
                                         queryForLogs += " insert into logs values ('" + username + "', 'Trasferencia del producto " + strModel.ToString() + " locacion:" + strLocation + " -> " + strToLocation + ", rack: " + strFromRack.ToString() + " -> " + strToRack.ToString() + " por la cantidad de " + strQty.ToString() + "', getdate())"
                                         queryForLogs += " update stock set qty = qty - " + strQty.ToString() + " where id = " + strFromStockID.ToString()
                                         queryForLogs += " delete from stock where qty <= 0 "
