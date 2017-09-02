@@ -117,7 +117,7 @@
             var toSuc = alias;
             var fromRack = $("#fromRack").val();
             var toRack = $("#<%=toRack.ClientID%>").val();
-            toRack = toRack.replace(" ", "");
+            //toRack = toRack.replace(" ", "");
             var code = $("#Codigo").val();
             var codigo = code.toUpperCase();
             var qty = $("#txtQty").val();

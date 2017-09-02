@@ -841,7 +841,7 @@ Partial Class ajax_response
                         query += strProdId.ToString() + "', '" + Codigo.ToString() + "', 'Transferencia', 'Transferencia', 'de :" + fromLoc + " a " + toLoc + "', '"
                         query += fromLoc.ToString() + "', '" + fromRack + "', '" + username + "', getdate(), " + qty.ToString() + ")"
                         ' Se genera el registro en logs
-                        query += "INSERT INTO logs VALUES ('" + username + "', 'Trasferencia del producto " + Codigo.ToString() + " locacion:" + fromLoc + " -> " + toLoc + ", rack: " + fromRack.ToString() + " -> " + toRack.ToString() + " por la cantidad de " + qty.ToString() + "', getdate())"
+                        query += "INSERT INTO logs VALUES ('" + username + "', 'Transferencia del producto " + Codigo.ToString() + " locación:" + fromLoc + " -> " + toLoc + ", rack: " + fromRack.ToString() + " -> " + toRack.ToString() + " por la cantidad de " + qty.ToString() + "', getdate())"
                         ' Se actualiza la cantidad en stock del producto transferido
                         query += "UPDATE stock SET qty = qty - " + qty.ToString() + " WHERE id = " + strFromStockID.ToString()
                         ' Se elimina del stock cualquier registro que tenga una cantidad menor o igual a 0

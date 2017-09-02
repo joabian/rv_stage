@@ -251,7 +251,7 @@ Partial Class movimientos_intra_trnsfr
                                         queryForLogs += strLocation.ToString() + "', '" + strFromRack + "', '" + username + "', getdate(), " + strQty.ToString() + ")"
                                         queryForLogs += "INSERT INTO transferencias (folio, codigo, fromSucursal, fromRack, toSucursal, toRack, cantidad, fechaTransfer, usuario, activo) VALUES ( "
                                         queryForLogs += folio.ToString() + ", '" + strModel + "', '" + strLocation + "', '" + strFromRack + "', '" + strToLocation + "', '" + strToRack + "', " + strQty + ", getDate(), '" + username + "', 'false')"
-                                        queryForLogs += " insert into logs values ('" + username + "', 'Trasferencia del producto " + strModel.ToString() + " locacion:" + strLocation + " -> " + strToLocation + ", rack: " + strFromRack.ToString() + " -> " + strToRack.ToString() + " por la cantidad de " + strQty.ToString() + "', getdate())"
+                                        queryForLogs += " insert into logs values ('" + username + "', 'Transferencia del producto " + strModel.ToString() + " locación:" + strLocation + " -> " + strToLocation + ", rack: " + strFromRack.ToString() + " -> " + strToRack.ToString() + " por la cantidad de " + strQty.ToString() + "', getdate())"
                                         queryForLogs += " update stock set qty = qty - " + strQty.ToString() + " where id = " + strFromStockID.ToString()
                                         queryForLogs += " delete from stock where qty <= 0 "
 
