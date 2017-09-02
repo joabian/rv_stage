@@ -37,6 +37,12 @@
             </tr>
             <tr>
                 <th>
+                    <asp:Label ID="Label4" runat="server" Text="Cantidad: "></asp:Label></th>
+                <td>
+                    <asp:TextBox ID="tb_qty" runat="server"></asp:TextBox></td>
+            </tr>
+            <tr>
+                <th>
                     <asp:Label ID="Label6" runat="server" Text="Comentario:"></asp:Label></th>
                 <td>
                     <asp:TextBox ID="tb_comments" runat="server" Width="250px" Height="100px" TextMode="MultiLine"></asp:TextBox></td>
