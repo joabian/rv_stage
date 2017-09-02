@@ -46,11 +46,11 @@ Partial Class reportes_transferencias
         fromSuc = ddlFromSuc.SelectedValue.ToString()
         toSuc = ddlToSuc.SelectedValue.ToString()
 
-        query = "SELECT folio As Folio, codigo As Código, ('Sucursal: ' + fromSucursal + ' - Rack: ' + fromRack) As [Origen], "
-        query += "('Sucursal: ' + toSucursal + ' - Rack: ' + toRack) As [Destino], "
-        query += "cantidad As Cantidad, fechaTransfer As [Fecha], (u.name + ' ' + u.f_lastname + ' ' + u.s_lastname) As [Transferencia por:] "
-        query += "FROM transferencias As t "
-        query += "INNER JOIN users As u ON t.usuario = u.user_name "
+        query = "SELECT folio As Folio, codigo As Código, fromSucursal as [De Sucursal], fromRack As [De Rack], "
+        query += "toSucursal as [A Sucursal], toRack As [A Rack], "
+        query += "cantidad As Cantidad, fechaTransfer As [Fecha], usuario as [Transferencia por:] "
+        query += "FROM transferencias "
+		
         query += "WHERE "
         If fromSuc <> "0" Then
             query += "fromSucursal = '" + fromSuc + "' AND "
