@@ -45,11 +45,12 @@
     </siteMapNode>
     <siteMapNode  title="Movimientos"  description="" roles="admin, inventory">
       <!--<siteMapNode url="movimientos/add_to_stock.aspx" title="Agregar a Inventario"  description="" />-->
-      <siteMapNode url="movimientos/auth_ajustes.aspx" title="Ajustes"  description="" />
+      <siteMapNode url="movimientos/auth_ajustes.aspx" title="Lista de Ajustes"  description="" />
       <siteMapNode url="movimientos/clientes.aspx" title="Clientes"  description="" />
       <!--<siteMapNode url="movimientos/modif_stock.aspx" title="Modificar Inventario"  description="" />-->
       <siteMapNode url="movimientos/entries.aspx" title="Entradas"  description="" />
       <siteMapNode url="movimientos/egrees.aspx" title="Salidas"  description="" />
+      <siteMapNode url="movimientos/pedir_ajuste.aspx" title="Pedir Ajuste" description="" />
       <siteMapNode url="movimientos/cambios.aspx" title="Cambios"  description="" />
       <siteMapNode url="movimientos/intra_trnsfr.aspx" title="Transferencias"  description="" />
       <!--<siteMapNode url="movimientos/intra_trnsfr.aspx" title="Transf Interna"  description="" />-->

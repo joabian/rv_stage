@@ -134,6 +134,7 @@ Partial Class movimientos_entries
 
     Public Sub readExcelNew()
         Dim items As String = ""
+        'Dim filepath As String = "C:\Users\Daniel\Desktop\Nueva carpeta"
         Dim filepath As String = "e:\HostingSpaces\vencedo2\radiadoresvencedores.com\wwwroot\docs"
         Dim uploadedFiles As HttpFileCollection = Request.Files
         Dim i As Integer = 0
