@@ -46,6 +46,9 @@ Partial Class ajax_response
     Dim abono As String
     Dim restante As String
     Dim suc As String
+    Dim tipoAjuste As String
+    Dim rackEnt As String
+    Dim rackSal As String
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         _REQUEST()
@@ -86,6 +89,8 @@ Partial Class ajax_response
         If _OPTION = "getClient" Then getClient()
         If _OPTION = "registrarPago" Then registrarPago()
         If _OPTION = "getrackForTransferinSurtir" Then getrackForTransferinSurtir()
+        If _OPTION = "validarCodigoforAjusteEntrada" Then validarCodigoforAjusteEntrada()
+        If _OPTION = "guardarAjuste" Then guardarAjuste()
 
     End Sub
 
@@ -129,6 +134,9 @@ Partial Class ajax_response
         abono = Request("abono")
         restante = Request("restante")
         suc = Request("suc")
+        tipoAjuste = Request("tipoAjuste")
+        rackEnt = Request("rackEnt")
+        rackSal = Request("rackSal")
     End Sub
 
     Public Sub salvarPreciosMasivo()
@@ -260,14 +268,14 @@ Partial Class ajax_response
                     queryLog = "INSERT INTO logs(user_name, event, date) VALUES ('" + Membership.GetUser().UserName.ToString() + "', '" + logevent.ToString() + "', getDate())"
                     Dataconnect.runquery(queryLog)
 
-                    msg = "Ajuste de salida aprobado"
+                    msg = "Ajuste de Salida Aprobado"
 
                     query = "update ajustes set approved = 1, approved_user = '" + Membership.GetUser().UserName.ToString() + "', approved_date = getdate()"
                     query += ",resolved_comments = '" + comments.ToString() + "' where id = " + id_ajuste.ToString()
                     Dataconnect.runquery(query)
 
                 Else
-                    msg = "No existe suficiente cantidad en el rack y locación especificadas para hacer este ajuste"
+                    msg = "No existe suficiente cantidad en el Rack y Locación especificadas para hacer este Ajuste"
                 End If
 
             Else
@@ -300,7 +308,7 @@ Partial Class ajax_response
                 queryLog = "INSERT INTO logs(user_name, event, date) VALUES ('" + Membership.GetUser().UserName.ToString() + "', '" + logevent.ToString() + "', getDate())"
                 Dataconnect.runquery(queryLog)
 
-                msg = "Ajuste de entrada aprobado"
+                msg = "Ajuste de Entrada Aprobado"
 
                 query = "update ajustes set approved = 1, approved_user = '" + Membership.GetUser().UserName.ToString() + "', approved_date = getdate()"
                 query += ",resolved_comments = '" + comments.ToString() + "' where id = " + id_ajuste.ToString()
@@ -309,7 +317,7 @@ Partial Class ajax_response
             End If
 
         Else
-            msg = "No se encuentra el ajuste, contacte al administrador del sistema"
+            msg = "No se encuentra el Ajuste, contacte al Administrador del Sistema"
 
         End If
 
@@ -322,7 +330,7 @@ Partial Class ajax_response
         query += ",resolved_comments = '" + comments.ToString() + "' where id = " + id_ajuste.ToString()
         Dataconnect.runquery(query)
 
-        Response.Write("Ajuste Rechazado con exito")
+        Response.Write("Ajuste Rechazado con Éxito")
 
     End Sub
 
@@ -346,10 +354,11 @@ Partial Class ajax_response
             For i = 0 To ds.Tables(0).Rows.Count - 1
                 html_table += "<tr>"
                 For m = 1 To ds.Tables(0).Columns.Count - 1
-                    html_table += "<td>" + ds.Tables(0).Rows(i)(m).ToString() + "</td>"
+                    html_table += "<td align='center'>" + ds.Tables(0).Rows(i)(m).ToString() + "</td>"
                 Next
-                html_table += "<td>"
+                html_table += "<td align='center'>"
                 If user = "sgonzalez" Or user = "cesar" Or user = "admin" Then
+                    'If user = "sgonzalez" Or user = "cesar" Or user = "admin" Or user = "dportillo" Then
                     html_table += "<img src='../images/icons/edit.png' style='cursor:pointer; width:15px;' onClick='showAjuste(""" + ds.Tables(0).Rows(i)("id").ToString() + """);' />"
                 End If
                 html_table += "</td></tr>"
@@ -1514,4 +1523,57 @@ Partial Class ajax_response
 
         End Try
     End Sub
+
+    Private Sub validarCodigoforAjusteEntrada()
+        Dim msg = ""
+        query = "SELECT id FROM products WHERE code = '" + Codigo + "'"
+        ds = Dataconnect.GetAll(query)
+        If ds.Tables(0).Rows.Count > 0 Then
+            msg = ""
+        Else
+            msg = "El producto ingresado no existe en el sistema"
+        End If
+        Response.Write(msg)
+    End Sub
+
+    Private Sub guardarAjuste()
+        Dim distro = ""
+        Dim username = Membership.GetUser().UserName
+        Dim body As String = ""
+
+        If (suc = "HENEQUEN" And username = "jreyes") Or suc <> "HENEQUEN" Then
+            'If (suc = "HENEQUEN" And username = "dportillo") Or suc <> "HENEQUEN" Then
+            body += "<h1>Notificación</h1><br />"
+            body += "<h2>Se requiere aprobar un Ajuste de Inventario</h2><br />"
+            body += "<h3><b>Información del Ajuste</b><br /><br />"
+            body += "Tipo: <b>" + tipoAjuste + "</b><br />"
+            body += "Sucursal: <b>" + suc + "</b><br />"
+            body += "Producto: <b>" + Codigo + "</b><br />"
+            body += "Cantidad: <b>" + qty + "</b><br />"
+            body += "Notas: <b>" + comments + "</b><br />"
+            body += "Usuario: <b>" + username + "</b><br />"
+            body += "Fecha requerido: <b>" + Date.Now().ToString("dd/MM/yyyy") + "</b><br /></h3>"
+
+            query = "INSERT INTO ajustes (username, location, item, rack, qty, notes, create_date, tipo) VALUES ('"
+            query += username + "', '" + suc + "', '" + Codigo + "', '"
+            If tipoAjuste = "ENTRADA" Then
+                distro = "joabian.alvarez@gmail.com, samuel.gonzalez@radiadoresvencedores.com"
+                'distro = "danielpr96@gmail.com"
+                query += rackEnt + "', '"
+            ElseIf tipoAjuste = "SALIDA" Then
+                distro = "samuel.gonzalez@radiadoresvencedores.com"
+                'distro = "daniel_pr5@hotmail.com"
+                query += rackSal + "', '"
+            End If
+            query += qty + "', '" + comments + "', getdate(), '" + tipoAjuste + "')"
+            Dataconnect.runquery(query)
+
+            sendemail.sendEmail(distro, "Ajuste de Inventario - " + tipoAjuste, body)
+
+            Response.Write("El Ajuste quedó grabado con Éxito, después de revisarlo se procederá a Realizarlo o Negarlo")
+        Else
+            Response.Write("Usted no tiene acceso a realizar ajustes")
+        End If
+    End Sub
+
 End Class

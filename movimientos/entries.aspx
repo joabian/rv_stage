@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="entries.aspx.vb" Inherits="movimientos_entries" %>
+﻿<%@ Page Title="Entrada de Productos" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="entries.aspx.vb" Inherits="movimientos_entries" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="Server">
 </asp:Content>
@@ -8,6 +8,9 @@
     <hr />
     <fieldset style="width:30%; float:left">
         <legend>Datos de Producto</legend>
+        <asp:Label ID="lblMsg" runat="server" Text="PARA PEDIR UN AJUSTE HAGA CLICK " ForeColor="Red" Font-Bold="true" ></asp:Label>
+        <asp:HyperLink ID="linkAjustes" runat="server" Text="AQUÍ" NavigateUrl="~/movimientos/pedir_ajuste.aspx" Font-Bold="true"></asp:HyperLink>
+        <br /><br />
         <table>
             <tr>
                 <th><asp:Label ID="Label1" runat="server" Text="Producto: "></asp:Label></th>
@@ -19,7 +22,7 @@
                     <asp:DropDownList ID="type" runat="server">
                         <asp:ListItem>COMPRA</asp:ListItem>
                         <asp:ListItem>DEVOLUCIÓN</asp:ListItem>
-                        <asp:ListItem>AJUSTE INVENTARIO</asp:ListItem>
+                        <%--<asp:ListItem>AJUSTE INVENTARIO</asp:ListItem>--%>
                         <%--<asp:ListItem>Transferencia</asp:ListItem>--%>
                     </asp:DropDownList>
                 </td>

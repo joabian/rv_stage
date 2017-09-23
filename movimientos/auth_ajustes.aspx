@@ -15,7 +15,6 @@
        
     <script type="text/javascript">
         //$('form').preventDoubleSubmission();
-
         //$('form').submit(function () {
         //    $('input[type=submit]', this).attr('disabled', 'disabled');
         //});
@@ -60,12 +59,10 @@
 
         //function ajustarCantidad() {
         //    var location = $("#Locations :selected").text();
-
         //    var serializedData = {};
         //    serializedData.option = "getItemInDefaltLocation";
         //    serializedData.location = location;
         //    serializedData.codigo_tras = codigo_tras;
-
         //    $.ajax({
         //        type: "POST",
         //        url: "../ajax_response.aspx",
@@ -74,34 +71,21 @@
         //        async: false,
         //        success: function (data) {
         //            //alert(data);
-
-
         //            var MyRows = $('table#htmlTable').find('tbody').find('tr');
-
         //            for (var i = 0; i < MyRows.length; i++) {
         //                var MyIndexValue = $(MyRows[i]).find('td:eq(0)').html().toUpperCase();
         //                //alert(MyIndexValue);
         //                if (codigo_tras.toUpperCase() == MyIndexValue) {
-
         //                    $(MyRows[i]).find('td:eq(4)').html(data);
-
         //                }
         //            }
-
-
-
         //            formatTable();
         //        },
         //        error: function (jqXHR, textStatus, errorThrown) {
         //            alert(textStatus + errorThrown);
         //        }
         //    });
-
         //}
-
-
-        
-        
 
         function loadTableAjustesPendientes() {
             var serializedData = {};
@@ -128,7 +112,6 @@
         }
 
         function showAjuste(id) {
-
             var myhtml = "<br /><h1>Resolver Ajuste";
             myhtml += "</h1><hr/>";
             myhtml += "Comentarios: <br /> <textarea id='txt_qty_for_trans' rows='4' cols='40' /><br /><br />";
@@ -142,8 +125,7 @@
                 width: 360,
                 height: 280,
                 onClosed: function () { loadTableAjustesPendientes(); }
-            });
-            
+            });            
         }
 
         function aprobar(id_ajuste) {
@@ -165,12 +147,12 @@
                     async: false,
                     success: function (data) {
                         alert(data);
+                        $(window).colorbox.close();
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         alert(textStatus + errorThrown);
                     }
                 });
-
             }
         };
 
@@ -193,15 +175,14 @@
                     async: false,
                     success: function (data) {
                         alert(data);
+                        $(window).colorbox.close();
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         alert(textStatus + errorThrown);
                     }
                 });
-
             }
         };
-
 
     </script>
 </asp:Content>
