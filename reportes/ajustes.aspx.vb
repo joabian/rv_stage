@@ -39,8 +39,8 @@ Partial Class reportes_ajustes
         Dim from_d As String = Replace(from_date.Text & "'", "'", "").ToString()
         Dim to_d As String = Replace(to_date.Text & "'", "'", "").ToString()
 
-        'If IsDate(from_d) And IsDate(to_d) Then
-        query = "SELECT username As 'Requisitor', location As 'Sucursal', tipo As 'Tipo', item As 'Item', rack As 'Rack', qty As 'Cantidad', "
+        If IsDate(from_d) And IsDate(to_d) Then
+            query = "SELECT username As 'Requisitor', location As 'Sucursal', tipo As 'Tipo', item As 'Item', rack As 'Rack', qty As 'Cantidad', "
             query += "notes As 'Notas del Requisitor', create_date As 'Fecha de Requisición', "
             query += "CASE WHEN (approved IS NULL AND rejected IS NULL) THEN 'PENDIENTE' ELSE "
             query += "CASE WHEN (approved = 1 AND rejected IS NULL) THEN 'APROBADO' ELSE "
@@ -67,10 +67,10 @@ Partial Class reportes_ajustes
                 btn_export.Enabled = False
                 lbl_error.Text = "No existen ajustes para esta selección"
             End If
-        'Else
-        '    btn_export.Enabled = False
-        '    lbl_error.Text = "Formato de fechas incorrecto"
-        'End If
+        Else
+            btn_export.Enabled = False
+            lbl_error.Text = "Formato de fechas incorrecto"
+        End If
     End Sub
 
     Protected Sub btn_export_Click(sender As Object, e As EventArgs) Handles btn_export.Click
