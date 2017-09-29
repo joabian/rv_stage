@@ -12,7 +12,6 @@
 
     <script type="text/javascript">
 
-
         $(function () {
             var dates = $("#<%=from_date.ClientID%>, #<%=to_date.ClientID%>").datepicker({
                 numberOfMonths: 1,
@@ -45,16 +44,13 @@
         Hasta:
         <asp:TextBox ID="to_date" runat="server"></asp:TextBox><br /><br />
         <asp:Button ID="btn_get_report" runat="server" Text="Generar Reporte" />&nbsp&nbsp&nbsp&nbsp
-        <asp:Button ID="btn_export" runat="server" Text="Exportar a Excel" Enabled="false" />
-        
+        <asp:Button ID="btn_export" runat="server" Text="Exportar a Excel" Enabled="false" />        
     </fieldset>
  
-    <asp:GridView ID="gv_results" runat="server">
-
+    <center><asp:GridView ID="gv_results" runat="server" RowStyle-HorizontalAlign="Center">
     </asp:GridView>
-    <asp:Label ID="lbl_error" runat="server" Text="" ForeColor="Red"></asp:Label>
+    <asp:Label ID="lbl_error" runat="server" Text="" ForeColor="Red"></asp:Label></center>
 
     <asp:HiddenField ID="hf_qry" runat="server" />
-
 </asp:Content>
 
