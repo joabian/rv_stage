@@ -67,7 +67,7 @@ Partial Class reportes_stock_by_location
             query += " (SUM(qty) FOR rack IN ('+ STUFF(REPLACE(@columns, ', p.[', ',['), 1, 1, '')+ ')) AS p;';"
             query += " EXEC sp_executesql @sql;"
         ElseIf chbx_rack.Checked = True Then
-            query = "select product_code as Modelo, min(product_description) as Descripción, product_category as Categoría, sum(qty) as Total, location as Sucursal, rack"
+            query = "select product_code as Modelo, min(product_description) as Descripción, product_category as Categoría, sum(qty) as Total, location as Sucursal, rack As Rack"
             query += " from stock where location = '" + suc.ToString() + "' group by product_code, product_category, location, rack order by product_code"
         Else
             '            query = "select product_code as modelo, min(product_description) as descripcion, product_category as categoria, sum(qty) as total, location as sucursal"
