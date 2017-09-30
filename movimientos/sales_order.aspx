@@ -471,6 +471,7 @@
                                 <option value="Estafeta">Estafeta</option>
                                 <option value="Omnibus">Omnibus</option>
                                 <option value="Aeropuerto">Aeropuerto</option>
+                                <option value="Particular">Particular</option>
                             </select>
                         </td>
                     </tr>

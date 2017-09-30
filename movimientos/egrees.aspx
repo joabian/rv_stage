@@ -26,6 +26,7 @@
                         <asp:ListItem>VENTA</asp:ListItem>
                         <asp:ListItem>SCRAP</asp:ListItem>
                         <%--<asp:ListItem>AJUSTE INVENTARIO</asp:ListItem>--%>
+<asp:ListItem>GARANTIA</asp:ListItem>
                         <%--<asp:ListItem>Transferencia</asp:ListItem>--%>
                     </asp:DropDownList>
                 </td>

@@ -99,6 +99,7 @@
         <asp:ListItem Value="Cambio">CAMBIO</asp:ListItem>
         <asp:ListItem Value="Compra">COMPRA</asp:ListItem>
         <asp:ListItem Value="Devolucion">DEVOLUCIÓN</asp:ListItem>
+        <asp:ListItem Value="Garantia">GARANTIA</asp:ListItem>
         <asp:ListItem Value="Scrap">SCRAP</asp:ListItem>
         <%--<asp:ListItem Value="Transferencia">TRANSFERENCIA</asp:ListItem>--%>
         <asp:ListItem Value="Venta">VENTA</asp:ListItem>
