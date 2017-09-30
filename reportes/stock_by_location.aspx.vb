@@ -67,17 +67,19 @@ Partial Class reportes_stock_by_location
             query += " (SUM(qty) FOR rack IN ('+ STUFF(REPLACE(@columns, ', p.[', ',['), 1, 1, '')+ ')) AS p;';"
             query += " EXEC sp_executesql @sql;"
         ElseIf chbx_rack.Checked = True Then
-            query = "select product_code as modelo, min(product_description) as descripcion, product_category as categoria, sum(qty) as total, location as sucursal, rack"
+            query = "select product_code as Modelo, min(product_description) as Descripción, product_category as Categoría, sum(qty) as Total, location as Sucursal, rack As Rack"
             query += " from stock where location = '" + suc.ToString() + "' group by product_code, product_category, location, rack order by product_code"
         Else
             '            query = "select product_code as modelo, min(product_description) as descripcion, product_category as categoria, sum(qty) as total, location as sucursal"
             '           query += " from stock where location_id = '" + suc_id.ToString() + "' group by product_code, product_category, location order by product_code"
 
-            query = "select stk.product_code as Codigo,stk.total_inv as 'Qty Total', stk.location as Sucursal,"
-            query += " max_min.min_qty as Minimo, max_min.max_qty as Maximo, max_min.volumen as Volumen from "
-            query += " (select product_code, sum(qty) as total_inv, location_id, location from stock group by product_code, location, location_id) as stk "
-            query += " left join max_min on stk.location_id = max_min.location_id and stk.product_code = max_min.product_code"
-            query += " where stk.location_id = " + suc_id.ToString()
+            query = "SELECT stk.product_code As Código, product_description As Descripción, stk.product_category As Categoría, "
+            query += "stk.total_inv As 'Qty Total', stk.location As Sucursal, max_min.min_qty As Mínimo, "
+            query += "max_min.max_qty As Máximo, max_min.volumen As Volumen "
+            query += "FROM (SELECT product_code, product_description, product_category, SUM(qty) As total_inv, location_id, location "
+            query += "FROM stock GROUP BY product_category, product_code, product_description, location, location_id) as stk "
+            query += "LEFT JOIN max_min ON stk.location_id = max_min.location_id AND stk.product_code = max_min.product_code "
+            query += "WHERE stk.location_id = " + suc_id.ToString()
 
         End If
         q = query
